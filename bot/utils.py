@@ -5,7 +5,8 @@ class TestStates(Helper):
     mode = HelperMode.snake_case
 
     STARTED = ListItem()
-    TEST_STATE_1 = ListItem()
+    LANGUAGE_SET = ListItem()
+
     TEST_STATE_2 = ListItem()
     TEST_STATE_3 = ListItem()
     TEST_STATE_4 = ListItem()

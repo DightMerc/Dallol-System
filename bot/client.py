@@ -23,3 +23,39 @@ from bot import models as bot_models
 
 def getMessage(number):
     return bot_models.Message.objects.get(number=number)
+
+def getRegions():
+    return bot_models.Region.objects.all()
+
+def userExsists(user):
+    try:
+        api_models.TelegramUser.objects.get(telegram_id=int(user))
+        return True
+    except Exception as identifier:
+        return False
+
+def userCreate(user):
+    new_user = api_models.TelegramUser()
+
+    new_user.telegram_id = user.id
+    new_user.full_name = user.full_name
+    new_user.username = user.username
+
+    new_user.save()
+
+    return True
+
+def getUser(user):
+    try:
+        api_models.TelegramUser.objects.get(telegram_id=int(user))
+        return api_models.TelegramUser.objects.get(telegram_id=int(user))
+    except Exception as identifier:
+        return False
+
+
+def userSetLanguage(user, language):
+    
+    current_user = api_models.TelegramUser.objects.get(telegram_id=int(user))
+    current_user.language = language
+
+    current_user.save()

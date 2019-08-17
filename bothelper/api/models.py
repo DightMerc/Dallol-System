@@ -8,6 +8,8 @@ class TelegramUser(models.Model):
     username = models.CharField("Username", max_length=255, default="", null=True)
     phone = models.PositiveIntegerField("Phone Number", null=True, blank=True)
 
+    language = models.CharField("Язык", max_length=5, default="RU")
+
     def __str__(self):
         return str(self.telegram_id)
 

@@ -18,7 +18,7 @@ from django.urls import path, re_path, include
 
 from django.conf import settings
 from django.views.static import serve
-
+from controlcenter.views import controlcenter
 from django.conf.urls import url
 
 
@@ -26,7 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('api/(?P<version>(v1|v2))/', include('api.urls')),
     re_path('bot/', include('bot.urls')),
-    path('', include('api.urls'))
+    path('', include('api.urls')),
+    path('admin/dashboard/', controlcenter.urls),
 ]
 
 if settings.DEBUG:

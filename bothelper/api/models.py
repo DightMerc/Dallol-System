@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
  
@@ -9,41 +10,80 @@ class TelegramUser(models.Model):
     phone = models.PositiveIntegerField("Phone Number", null=True, blank=True)
 
     language = models.CharField("Язык", max_length=5, default="RU")
-
     def __str__(self):
         return str(self.telegram_id)
 
-class Category(models.Model):
-    title = models.CharField("Название", max_length=511, default="", unique=False, null=False)
-
-    class Meta:
-         verbose_name = "product type"
+class Photo(models.Model):
+    title = models.CharField("Название", max_length=255, default="", null=False)
+    photo = models.ImageField("Фото", upload_to='media/')
 
     def __str__(self):
-        return str(self.title)   
+        return "{}: {}".format(str(self.id), self.title)
+    
 
-class Product(models.Model):
-    title = models.CharField("Название",max_length=200)
+class TemporaryOrder(models.Model):
 
-    available = models.BooleanField("Есть в наличии", default=False)
+    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    _type = models.CharField("Операция", max_length=10)
+    _property = models.CharField("Тип недвижимости", max_length=30)
+    title = models.TextField("Описание")
+    region = models.CharField("Район", max_length=30)
+    reference = models.CharField("Ориентир", max_length=30)
+    location_X = models.FloatField("Локация: широта")
+    location_Y = models.FloatField("Локация: долгота")
+    room_count = models.PositiveIntegerField("Количество комнат")
+    square = models.PositiveIntegerField("Общая площадь")
+    area = models.PositiveIntegerField("Количество соток")
+    state = models.CharField("Состояние", max_length=30)
+    ammount = models.CharField("Цена", max_length=255)
+    add_info = models.TextField("Инфо")
+    contact = models.PositiveIntegerField("Номер телефона")
+
+    photo = models.ManyToManyField(Photo)
+
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
+
+class OnlineRieltor(models.Model):
+    name = models.CharField("ФИО", max_length=255)
+
+    photo = models.ImageField("Фото", upload_to='media/')
     description = models.TextField("Описание")
 
-    photo = models.ImageField()
-
-    price = models.PositiveIntegerField(default="0")
-
-
     def __str__(self):
-        return self.title
+        return str(self.name)
 
 class Order(models.Model):
-    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
-    published_date = models.DateTimeField(blank=True, null=True)
 
-    products = models.ManyToManyField(Product)
-    
+    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
+
+    pro_order = models.ForeignKey(TemporaryOrder, on_delete=models.CASCADE)
+
+    active = models.BooleanField("Актуально", default=True)
+
+    _type = models.CharField("Операция", max_length=10)
+    _property = models.CharField("Тип недвижимости", max_length=30)
+    title = models.TextField("Описание")
+    region = models.CharField("Район", max_length=30)
+    reference = models.CharField("Ориентир", max_length=30)
+    location_X = models.FloatField("Локация: широта")
+    location_Y = models.FloatField("Локация: долгота")
+    room_count = models.PositiveIntegerField("Количество комнат")
+    square = models.PositiveIntegerField("Общая площадь")
+    area = models.PositiveIntegerField("Количество соток")
+    state = models.CharField("Состояние", max_length=30)
+    ammount = models.CharField("Цена", max_length=255)
+    add_info = models.TextField("Инфо")
+    contact = models.PositiveIntegerField("Номер телефона")
+
+    photo = models.ManyToManyField(Photo)
+
+    created_date = models.DateTimeField(default=timezone.now)
+
     def __str__(self):
-        return str(self.user)
+        return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
+
 

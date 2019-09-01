@@ -41,21 +41,27 @@ def Messages():
         'area_rooms_added': client.getMessage(16).text,
         'area_square_added': client.getMessage(17).text,
         
-
         'flat_rooms_added': client.getMessage(16).text,
         'flat_square_added': client.getMessage(17).text,
 
         'land_square_added': client.getMessage(17).text,
 
-
         'free_area_square_added': client.getMessage(17).text,
         'free_area_state_added': client.getMessage(14).text,
 
-
-
-
         'photo1': client.getMessage(18).text,
         'photo2': client.getMessage(19).text,
+        'photo3': client.getMessage(20).text,
+
+        'ammount': client.getMessage(21).text,
+        'ammount_set': client.getMessage(22).text,
+
+        'contacts': client.getMessage(23).text,
+
+        'price_list': client.getMessage(24).text,
+
+
+
 
 
 

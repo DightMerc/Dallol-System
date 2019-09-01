@@ -1,4 +1,5 @@
 from django.db import models
+from api.models import TelegramUser
 
 # Create your models here.
 
@@ -36,7 +37,10 @@ class Setting(models.Model):
         return self.title
 
 
+class Admin(models.Model):
+    title = models.CharField(max_length=200)
 
+    user = models.ManyToManyField(TelegramUser)
 
 
 

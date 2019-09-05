@@ -45,14 +45,17 @@ def OnlineGenerateEndText(data):
     _ammount = data[10]
     _add_info = data[11]
     _contact = data[12]
+    _master = data[13]
 
     ann_number = client.GetLastAnnouncment()
 
-    first_phrase = "Продается"
     if _type == "sale":
-        pass
+        first_phrase = "Продажа"
+    elif _type == "rent":
+        first_phrase = "Аренда"
     else:
-        first_phrase = "Сдается в аренду"
+        first_phrase = "Поиск"
+
 
     if _add_info == "None":
         _add_info = ""
@@ -60,13 +63,13 @@ def OnlineGenerateEndText(data):
         _add_info = "\n{}\n".format(_add_info)
 
     if _property == "Участок":
-        return "№{} {} {}\n{}\n\n{}\nОриентир: {}\n\nКомнаты: {}\nПлощадь: {}\nСоток: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+        return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\nОриентир: {}\n\nКомнаты: {}\nПлощадь: {}\nСоток: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
     elif _property == "Квартира":
-        return "№{} {} {}\n{}\n\n{}\nОриентир: {}\n\nКомнаты: {}\nПлощадь: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _ammount, _add_info, str(_contact).replace("+",""))
+        return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\nОриентир: {}\n\nКомнаты: {}\nПлощадь: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _room_count, _square, _ammount, _add_info, str(_contact).replace("+",""))
     elif _property == "Участок земли":
-        return "№{} {} {}\n{}\n\n{}\nОриентир: {}\n\nПлощадь: {}\nСоток: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+        return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\nОриентир: {}\n\nПлощадь: {}\nСоток: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
     elif _property == "Нежилая недвижимость":
-        return "№{} {} {}\n{}\n\n{}\nОриентир: {}\n\nСостояние: {}\nСоток: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _state, _area, _ammount, _add_info, str(_contact).replace("+",""))
+        return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\nОриентир: {}\n\nСостояние: {}\nСоток: {}\n\nЦена: {}\n{}\nКонтакты: +{}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _state, _area, _ammount, _add_info, str(_contact).replace("+",""))
 
 
 

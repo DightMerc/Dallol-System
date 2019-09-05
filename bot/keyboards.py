@@ -121,8 +121,150 @@ def SearchKeyboard(mode):
                         ).add(
                                 KeyboardButton('Назад'),
                         )
+
+def PhotoPaginationKeyboard(length, current):
+        keyboard = InlineKeyboardMarkup()
+        if current!=1:
+                if current==length:
+                        keyboard.row(
+                                InlineKeyboardButton(text="<<", callback_data="pagination prev {}".format(current-1)),
+                                InlineKeyboardButton(text="{}/{}".format(current, length), callback_data="pagination None"),
+                                InlineKeyboardButton(text=">>", callback_data="pagination next {}".format(current+1)))
+                else:
+                        keyboard.row(
+                                InlineKeyboardButton(text="<<", callback_data="pagination prev {}".format(current-1)),
+                                InlineKeyboardButton(text="{}/{}".format(current, length), callback_data="pagination None"),
+                                InlineKeyboardButton(text=">>", callback_data="pagination next {}".format(current+1)))
+        else:
+                keyboard.row(
+                        InlineKeyboardButton(text="<<", callback_data="pagination prev {}".format(current-1)),
+                        InlineKeyboardButton(text="{}/{}".format(current, length), callback_data="pagination None"),
+                        InlineKeyboardButton(text=">>", callback_data="pagination next {}".format(current+1)))
+        
+        keyboard.row(InlineKeyboardButton(text="Изменить", callback_data="pagination change {}".format(current)),
+                        InlineKeyboardButton(text="Удалить", callback_data="pagination delete {}".format(current)))
+        keyboard.add(InlineKeyboardButton(text="Отмена", callback_data="pagination cancel"))
+
+
+        return keyboard
+
         
 
+def EditOnlineMarkup(data):
+        _type = data[0]
+        _property = data[1]
+        _title = data[2]
+        _region = data[3]
+        _reference = data[4]
+        _location = data[5]
+        _room_count = data[6]
+        _square = data[7]
+        _area = data[8]
+        _state = data[9]
+        _ammount = data[10]
+        _add_info = data[11]
+        _contact = data[12]
+
+        keyboard = InlineKeyboardMarkup()
+
+        if _property == "Участок":
+                keyboard.add(
+                        InlineKeyboardButton(text="Риелтор", callback_data="edit master"),
+                ).add(
+                        InlineKeyboardButton(text="Недвижимость", callback_data="edit property"),
+                ).row(
+                        InlineKeyboardButton(text="Описание", callback_data="edit title"),
+                        InlineKeyboardButton(text="Район", callback_data="edit region")
+                ).row(
+                        InlineKeyboardButton(text="Ориентир", callback_data="edit reference"),
+                        InlineKeyboardButton(text="Количество комнат", callback_data="edit room_count")
+                ).add(
+                        InlineKeyboardButton(text="Локация", callback_data="edit location")
+                ).row(
+                        InlineKeyboardButton(text="Площадь", callback_data="edit square"),
+                        InlineKeyboardButton(text="Количество соток", callback_data="edit area")
+                ).row(
+                        InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
+                        InlineKeyboardButton(text="Контакты", callback_data="edit phone")
+                ).add(
+                        InlineKeyboardButton(text="Фото", callback_data="edit photo"),
+                ).add(
+                        InlineKeyboardButton(text="Отмена", callback_data="edit cancel"),
+                )
+                return keyboard
+
+        elif _property == "Квартира":
+                keyboard.add(
+                        InlineKeyboardButton(text="Риелтор", callback_data="edit master"),
+                ).add(
+                        InlineKeyboardButton(text="Недвижимость", callback_data="edit property"),
+                ).row(
+                        InlineKeyboardButton(text="Описание", callback_data="edit title"),
+                        InlineKeyboardButton(text="Район", callback_data="edit region")
+                ).row(
+                        InlineKeyboardButton(text="Ориентир", callback_data="edit reference"),
+                        InlineKeyboardButton(text="Количество комнат", callback_data="edit room_count")
+                ).add(
+                        InlineKeyboardButton(text="Локация", callback_data="edit location")
+                ).add(
+                        InlineKeyboardButton(text="Площадь", callback_data="edit square")
+                ).row(
+                        InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
+                        InlineKeyboardButton(text="Контакты", callback_data="edit phone")
+                ).add(
+                        InlineKeyboardButton(text="Фото", callback_data="edit photo"),
+                ).add(
+                        InlineKeyboardButton(text="Отмена", callback_data="edit cancel"),
+                )
+                return keyboard
+        elif _property == "Участок земли":
+                keyboard.add(
+                        InlineKeyboardButton(text="Риелтор", callback_data="edit master"),
+                ).add(
+                        InlineKeyboardButton(text="Недвижимость", callback_data="edit property"),
+                ).row(
+                        InlineKeyboardButton(text="Описание", callback_data="edit title"),
+                        InlineKeyboardButton(text="Район", callback_data="edit region")
+                ).add(
+                        InlineKeyboardButton(text="Ориентир", callback_data="edit reference")
+                ).add(
+                        InlineKeyboardButton(text="Локация", callback_data="edit location")
+                ).row(
+                        InlineKeyboardButton(text="Площадь", callback_data="edit square"),
+                        InlineKeyboardButton(text="Количество соток", callback_data="edit area")
+                ).row(
+                        InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
+                        InlineKeyboardButton(text="Контакты", callback_data="edit phone")
+                ).add(
+                        InlineKeyboardButton(text="Фото", callback_data="edit photo"),
+                ).add(
+                        InlineKeyboardButton(text="Отмена", callback_data="edit cancel"),
+                )
+                return keyboard
+        elif _property == "Нежилая недвижимость":
+                keyboard.add(
+                        InlineKeyboardButton(text="Риелтор", callback_data="edit master"),
+                ).add(
+                        InlineKeyboardButton(text="Недвижимость", callback_data="edit property"),
+                ).row(
+                        InlineKeyboardButton(text="Описание", callback_data="edit title"),
+                        InlineKeyboardButton(text="Район", callback_data="edit region")
+                ).add(
+                        InlineKeyboardButton(text="Ориентир", callback_data="edit reference")
+                ).add(
+                        InlineKeyboardButton(text="Локация", callback_data="edit location")
+                ).row(
+                        InlineKeyboardButton(text="Состояние", callback_data="edit state"),
+                        InlineKeyboardButton(text="Количество соток", callback_data="edit area")
+                ).row(
+                        InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
+                        InlineKeyboardButton(text="Контакты", callback_data="edit phone")
+                ).add(
+                        InlineKeyboardButton(text="Фото", callback_data="edit photo"),
+                ).add(
+                        InlineKeyboardButton(text="Отмена", callback_data="edit cancel"),
+                )
+                return keyboard
 
 def EditMarkup(data):
         _type = data[0]

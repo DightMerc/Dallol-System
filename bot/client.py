@@ -70,8 +70,42 @@ async def Search(_type, _property, price, region, room_count, area):
 
         return order_list
     
+async def createOnlineTemporaryOrder(user, data):
+    order = api_models.OnlineRieltorTemporaryOrder()
 
+    order.user = get_object_or_404(api_models.TelegramUser, telegram_id=user)
+    order._type = data[0]
+    order._property = data[1]
+    order.title = data[2]
+    order.region = data[3]
+    order.reference = data[4]
+    order.location_X = data[5].split(" ")[0]
+    order.location_Y = data[5].split(" ")[1]
+    order.room_count = data[6]
+    order.square = data[7]
+    order.area = data[8]
+    order.state = data[9]
+    order.ammount = data[10]
+    order.add_info = data[11]
+    order.contact = data[12]
+    order.rieltor = get_object_or_404(api_models.OnlineRieltor, name=data[13])
+    order.save()
 
+    photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+    for photo in photoes:
+        print(os.getcwd())
+        path = os.getcwd().replace('bot', 'bothelper') + "\media\\" + str(photo)
+        print(path)
+        shutil.move(os.getcwd()+"\\Users\\" + str(user)+"\\" + str(photo), path)
+
+        image = api_models.Photo()
+        image.title = str(photo)
+        image.photo = path
+        image.save()
+        order.photo.add(get_object_or_404(api_models.Photo, pk=image.id))
+
+    return order.id
+    
 async def createTemporaryOrder(user, data):
     order = api_models.TemporaryOrder()
 

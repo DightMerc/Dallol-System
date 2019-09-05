@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import logging
 
 from aiogram import Bot, types
@@ -134,8 +136,8 @@ async def process_start_command(message: types.Message, state: FSMContext):
     user = message.from_user.id
 
 
-    if not os.path.exists(os.getcwd()+"\\Users\\" + str(user)):
-        os.mkdir(os.getcwd()+"\\Users\\" + str(user), 0o777)
+    if not os.path.exists(os.getcwd()+"/Users/" + str(user)):
+        os.mkdir(os.getcwd()+"/Users/" + str(user), 0o777)
 
     if not client.userExsists(user):
         client.userCreate(message.from_user)
@@ -156,6 +158,7 @@ async def get_MyState(message: types.Message):
     state = await dp.current_state(user=message.from_user.id).get_state()
 
     await bot.send_message(user, state)
+
 
 @dp.message_handler(text="Назад", state="*")
 async def back_handler(message: types.Message):
@@ -368,10 +371,10 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
 
         await bot.send_location(user, latitude=X, longitude=Y)
 
-    photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     media = []
     for photo in photoes:
-        media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+        media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
     
 
     markup = keyboards.EditApplyKeyboard()
@@ -380,7 +383,7 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
         await bot.send_media_group(user, media)
     else:
         await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+        await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
     await bot.send_message(user, text, reply_markup=markup)
 
 
@@ -458,17 +461,17 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
                     await bot.send_location(user, latitude=X, longitude=Y)
 
-                photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+                photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 media = []
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
 
                 if len(media)!=1:
                     await bot.send_chat_action(user, action="upload_photo")
                     await bot.send_media_group(user, media)
                 else:
                     await bot.send_chat_action(user, action="upload_photo")
-                    await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+                    await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
 
                 markup = keyboards.EditOnlineMarkup(user_data)
                 
@@ -484,17 +487,17 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
                     await bot.send_location(user, latitude=X, longitude=Y)
 
-                photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+                photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 media = []
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
 
                 if len(media)!=1:
                     await bot.send_chat_action(user, action="upload_photo")
                     await bot.send_media_group(user, media)
                 else:
                     await bot.send_chat_action(user, action="upload_photo")
-                    await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+                    await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
 
                 markup = keyboards.EditMarkup(user_data)
                 
@@ -568,9 +571,9 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
                 
                 media = []
-                photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+                photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
                 #заменить user на admin
                 admin = await client.getAdmin()
 
@@ -589,7 +592,7 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 else:
                     await bot.send_chat_action(user, action="upload_photo")
 
-                    await bot.send_photo(admin[0], InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+                    await bot.send_photo(admin[0], InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
                     
                 num = await client.createOnlineTemporaryOrder(user, user_data)
 
@@ -602,9 +605,9 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
                 
                 media = []
-                photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+                photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
                 #заменить user на admin
                 admin = await client.getAdmin()
 
@@ -674,7 +677,7 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
         number = int(content.replace("next ", ""))
 
-        path = os.getcwd()+"\\Users\\"+"{}\\".format(user)
+        path = os.getcwd()+"/Users/"+"{}/".format(user)
         photoes = os.listdir(path)
 
         if number!=len(photoes)+1:
@@ -700,7 +703,7 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
         number = int(content.replace("prev ", ""))
 
-        path = os.getcwd()+"\\Users\\"+"{}\\".format(user)
+        path = os.getcwd()+"/Users/"+"{}/".format(user)
         photoes = os.listdir(path)
 
         if number!=0:
@@ -723,7 +726,7 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
         number = int(content.replace("delete ", ""))
 
-        path = os.getcwd()+"\\Users\\"+"{}\\".format(user)
+        path = os.getcwd()+"/Users/"+"{}/".format(user)
         photoes = os.listdir(path)
         os.remove(path + photoes[number - 1])
 
@@ -830,10 +833,10 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
             await bot.send_location(user, latitude=X, longitude=Y)
 
-        photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+        photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
         
 
         markup = keyboards.EditApplyKeyboard()
@@ -842,7 +845,7 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
         await bot.send_message(user, text, reply_markup=markup)
     
     if "change" in content:
@@ -853,7 +856,7 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
         await bot.delete_message(user, message_id)
 
-        path = os.getcwd()+"\\Users\\"+"{}\\".format(user)
+        path = os.getcwd()+"/Users/"+"{}/".format(user)
         photoes = os.listdir(path)
         os.remove(path + photoes[number - 1])
 
@@ -872,13 +875,13 @@ async def sale_edit_photo_added_handler(message: types.Message, state: FSMContex
 
     user = message.from_user.id
 
-    count = len(os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\"))
+    count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
 
     if count+1<10:
         text = Messages()["photo3"].format(count+1)
 
         photo = await bot.get_file(message.photo[-1].file_id)
-        await photo.download(os.getcwd()+"\\Users\\" + str(user)+"\\{}.jpg".format(message.photo[-1].file_id))
+        await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
 
         markup = keyboards.BackNextKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
@@ -939,7 +942,7 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             markup = keyboards.OnlineKeyboard()
             text = "Сейчас: {}\n\nВыберите другой вариант".format(field)
         elif content == "photo":
-            path = os.getcwd()+"\\Users\\"+"{}\\".format(user)
+            path = os.getcwd()+"/Users/"+"{}/".format(user)
 
             await Edit.photo.set()
 
@@ -1031,10 +1034,10 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
 
             await bot.send_location(user, latitude=X, longitude=Y)
 
-        photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+        photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
 
         markup = keyboards.EditApplyKeyboard()
         if len(media)!=1:
@@ -1042,7 +1045,7 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
         await bot.send_message(user, text, reply_markup=markup)
 
     
@@ -1128,17 +1131,17 @@ async def text_edit_handler(message: types.Message, state: FSMContext):
 
         await bot.send_location(user, latitude=X, longitude=Y)
     
-    photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     media = []
     for photo in photoes:
-        media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+        media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
 
     if len(media)!=1:
         await bot.send_chat_action(user, action="upload_photo")
         await bot.send_media_group(user, media)
     else:
         await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+        await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
    
 
     await Edit.started.set()
@@ -1213,17 +1216,17 @@ async def location_edit_handler(message: types.Message, state: FSMContext):
         await bot.send_chat_action(user, action="find_location")
         await bot.send_location(user, latitude=X, longitude=Y)
 
-    photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     media = []
     for photo in photoes:
-        media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+        media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
 
     if len(media)!=1:
         await bot.send_chat_action(user, action="upload_photo")
         await bot.send_media_group(user, media)
     else:
         await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+        await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
    
     markup = keyboards.EditMarkup(user_data)
 
@@ -1309,17 +1312,17 @@ async def edit_property_handler(message: types.Message, state: FSMContext):
 
             await bot.send_location(user, latitude=X, longitude=Y)
 
-        photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+        photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
 
         if len(media)!=1:
             await bot.send_chat_action(user, action="upload_photo")
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
 
         markup = keyboards.EditMarkup(user_data)
         
@@ -1484,10 +1487,10 @@ async def next_button_handler(message: types.Message, state: FSMContext):
 
             await bot.send_location(user, latitude=X, longitude=Y)
 
-        photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+        photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
         
 
         markup = keyboards.EditApplyKeyboard()
@@ -1496,7 +1499,7 @@ async def next_button_handler(message: types.Message, state: FSMContext):
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photoes[0]))
+            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
         await bot.send_message(user, text, reply_markup=markup)
 
         
@@ -2028,10 +2031,10 @@ async def data_search_handler(message: types.Message, state: FSMContext):
 
                 await bot.send_location(user, latitude=X, longitude=Y)
 
-            # photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+            # photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
             # media = []
             # for photo in photoes:
-            #     media.append(InputMediaPhoto((InputFile(os.getcwd()+"\\Users\\" + str(user)+"\\"+photo))))
+            #     media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
             
             # await bot.send_media_group(user, media)
 
@@ -2273,13 +2276,13 @@ async def sale_area_photo_added_handler(message: types.Message, state: FSMContex
 
     user = message.from_user.id
 
-    count = len(os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\"))
+    count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
 
     if count+1<10:
         text = Messages()["photo3"].format(count+1)
 
         photo = await bot.get_file(message.photo[-1].file_id)
-        await photo.download(os.getcwd()+"\\Users\\" + str(user)+"\\{}.jpg".format(message.photo[-1].file_id))
+        await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
 
         markup = keyboards.BackNextKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
@@ -2447,7 +2450,7 @@ async def shutdown(dispatcher: Dispatcher):
 
 
 if __name__ == '__main__':
-    if not os.path.exists(os.getcwd()+"\\Users\\"):
-        os.mkdir(os.getcwd()+"\\Users\\", 0o777)
+    if not os.path.exists(os.getcwd()+"/Users/"):
+        os.mkdir(os.getcwd()+"/Users/", 0o777)
         
     executor.start_polling(dp, on_shutdown=shutdown)

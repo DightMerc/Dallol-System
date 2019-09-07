@@ -69,8 +69,17 @@ async def Search(_type, _property, price, region, room_count, area):
 
 
         return order_list
+
+async def getRieltorPhoto(person):
+    return api_models.OnlineRieltor.objects.get(name=person).photo
+
+async def getAllPhotoes():
+    return api_models.OnlineRieltor.objects.get(name=person).photo
+
+async def getRieltorDescription(person):
+    return api_models.OnlineRieltor.objects.get(name=person).description
     
-async def createOnlineTemporaryOrder(user, data):
+def createOnlineTemporaryOrder(user, data):
     order = api_models.OnlineRieltorTemporaryOrder()
 
     order.user = get_object_or_404(api_models.TelegramUser, telegram_id=user)
@@ -106,7 +115,7 @@ async def createOnlineTemporaryOrder(user, data):
 
     return order.id
     
-async def createTemporaryOrder(user, data):
+def createTemporaryOrder(user, data):
     order = api_models.TemporaryOrder()
 
     order.user = get_object_or_404(api_models.TelegramUser, telegram_id=user)
@@ -128,9 +137,7 @@ async def createTemporaryOrder(user, data):
 
     photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
     for photo in photoes:
-        print(os.getcwd())
-        path = os.getcwd().replace('bot', 'bothelper') + "\media\\" + str(photo)
-        print(path)
+        path = os.getcwd().replace('bot', 'bothelper') + "\\media\\" + str(photo)
         shutil.move(os.getcwd()+"\\Users\\" + str(user)+"\\" + str(photo), path)
 
         image = api_models.Photo()

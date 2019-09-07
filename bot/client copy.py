@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import logging
 
 from aiogram import Bot, types
@@ -159,21 +157,24 @@ async def get_MyState(message: types.Message):
 
     await bot.send_message(user, state)
 
-
 @dp.message_handler(text="Назад", state="*")
-async def back_handler(message: types.Message):
+async def back_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
-    state = await dp.current_state(user=message.from_user.id).get_state()
+    current_state = await dp.current_state(user=message.from_user.id).get_state()
 
-    if state in ["Sale:started", "Rent:started"]:
+    if current_state in ["Sale:started", "Rent:started"]:
 
         await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
         text = "Выберите действие"
         markup = keyboards.MenuKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif state == "Sale:announcement":
+    elif current_state == "Sale:announcement":
 
         await Sale.started.set()
 
@@ -181,14 +182,14 @@ async def back_handler(message: types.Message):
         markup = keyboards.SaleAndRentKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
     
-    elif state == "Sale:type_choosen":
+    elif current_state == "Sale:type_choosen":
 
         await Sale.announcement.set()
 
         text = "Выберите действие"
         markup = keyboards.SaleSearchAndannouncementKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
-    elif state in "Rent:announcement":
+    elif current_state in "Rent:announcement":
 
         await Rent.started.set()
 
@@ -196,7 +197,7 @@ async def back_handler(message: types.Message):
         markup = keyboards.SaleAndRentKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif state == "Rent:type_choosen":
+    elif current_state == "Rent:type_choosen":
 
         await Rent.announcement.set()
 
@@ -204,49 +205,128 @@ async def back_handler(message: types.Message):
         markup = keyboards.SaleSearchAndannouncementKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif state in ["Rent:title_added", "Rent:region_added", "Rent:reference", "Rent:OnlineSearch.","Sale:title_added", "Sale:region_added", "Sale:reference", "Sale:OnlineSearch."]:
+    elif current_state in ["Rent:title_added", "Rent:region_added", "Rent:reference", "Rent:OnlineSearch.","Sale:title_added", "Sale:region_added", "Sale:reference", "Sale:OnlineSearch"]:
 
-        if "Rent" in state:
+        if "Rent" in current_state:
             await Rent.announcement.set()
-        elif "Sale" in state:
+        elif "Sale" in current_state:
             await Sale.announcement.set()
 
         text = "Выберите действие"
         markup = keyboards.SaleSearchAndannouncementKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif "Area" in state:
+    elif "Area" in current_state:
         await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
         text = "Выберите действие"
         markup = keyboards.MenuKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
-    elif "Flat" in state:
+    elif "Flat" in current_state:
         await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
         text = "Выберите действие"
         markup = keyboards.MenuKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
-    elif "Land" in state:
+    elif "Land" in current_state:
         await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
         text = "Выберите действие"
         markup = keyboards.MenuKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
-    elif "Free_area" in state:
+    elif "Free_area" in current_state:
         await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
         text = "Выберите действие"
         markup = keyboards.MenuKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
-    elif state == "Search:started":
+    elif current_state == "Search:started":
         await Sale.search.set()
 
         text = "Выберите действие"
         markup = keyboards.SaleSearchAndannouncementKeyboard()
         await bot.send_message(user, text, reply_markup=markup)
 
+    elif current_state == "Online:order":
+        await Online.mode.set()
 
+        text = "Выберите действие"
+        markup = keyboards.OnlineKeyboard()
+        await bot.send_message(user, text, reply_markup=markup)
+
+    elif current_state == "Online:mode":
+        await Online.started.set()
+
+        text = "Выберите действие"
+        markup = keyboards.OnlineSaleAndRentKeyboard()
+        await bot.send_message(user, text, reply_markup=markup)
+
+    elif current_state == "Online:started":
+        await User.language_set.set()
+
+        await state.set_data({})
+
+
+        text = "Выберите действие"
+        markup = keyboards.MenuKeyboard()
+        await bot.send_message(user, text, reply_markup=markup)
+
+    elif current_state == "User:edit":
+        await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
+
+        await state.set_data({})
+
+
+        text = "Выберите действие"
+        markup = keyboards.MenuKeyboard()
+        await bot.send_message(user, text, reply_markup=markup)
+    
+    elif current_state in ["Search:price", "Search:region", "Search:room_count", "Search:area"]:
+        
+        async with state.proxy() as data:
+            prop = data['property']
+
+        await Search.started.set()
+
+        text = "Установите фильтр"
+        markup = keyboards.SearchKeyboard(prop)
+        await bot.send_message(user, text, reply_markup=markup)
+
+    elif current_state == "Sale:search":
+        await Sale.started.set()
+
+        text = "Выберите действие"
+        markup = keyboards.SaleAndRentKeyboard()
+        await bot.send_message(user, text, reply_markup=markup)
+    
+    elif current_state == "Rent:search":
+        await Rent.started.set()
+
+        text = "Выберите действие"
+        markup = keyboards.SaleAndRentKeyboard()
+        await bot.send_message(user, text, reply_markup=markup)
+
+        
 
 
 
@@ -594,7 +674,7 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
                     await bot.send_photo(admin[0], InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
                     
-                num = await client.createOnlineTemporaryOrder(user, user_data)
+                num = client.createOnlineTemporaryOrder(user, user_data)
 
                 markup = keyboards.AdminApplyKeyboard(num)
 
@@ -624,10 +704,11 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                     await bot.send_media_group(admin[0], media)
                 else:
                     await bot.send_chat_action(user, action="upload_photo")
+                    with open(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]) as f:
+                        photo = inputFile(f)
+                    await bot.send_photo(admin[0], photo)
 
-                    await bot.send_photo(admin[0], media[0])
-
-                num = await client.createTemporaryOrder(user, user_data)
+                num = client.createTemporaryOrder(user, user_data)
 
 
                 markup = keyboards.AdminApplyKeyboard(num)
@@ -1518,7 +1599,7 @@ async def next_button_handler(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(state=User.started)
-async def language_handler(message: types.Message):
+async def language_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     recieved_text = message.text
 
@@ -1530,6 +1611,13 @@ async def language_handler(message: types.Message):
             client.userSetLanguage(user, "UZ")
 
         await User.language_set.set()
+
+        photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
+        for a in photoes:
+            os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
+
+        await state.set_data({})
+
 
         text = "Выберите действие"
         markup = keyboards.MenuKeyboard()
@@ -1613,16 +1701,24 @@ async def online_mode_handler(message: types.Message, state: FSMContext):
     recieved_text = message.text
 
     online_list = []
-    for a in client.api_models.OnlineRieltor.objects.all():
+    for a in client.api_models.OnlineRieltor.obects.all():
         online_list.append(a.name)
-
-    
 
     if recieved_text in online_list:
         await Online.order.set()
 
         async with state.proxy() as data:
             data['master'] = recieved_text
+
+        await bot.send_chat_action(user, action="upload_photo")
+
+        photo = await client.getRieltorPhoto(recieved_text)
+        photo = str(os.getcwd()).replace("bot","")+"bothelper/media/{}".format(str(photo).replace("/","/"))
+        
+        description = await client.getRieltorDescription(recieved_text)
+
+        await bot.send_photo(user, InputFile(photo), caption=description)
+        
 
         text = "Выберите действие"
         markup = keyboards.OnlineKeyboardApply()
@@ -1913,7 +2009,22 @@ async def sale_search_handler(message: types.Message, state: FSMContext):
     await Search.started.set()
 
     async with state.proxy() as data:
-            data['property'] = message.text
+        data['property'] = message.text
+
+
+    text = "Установите фильтр"
+    markup = keyboards.SearchKeyboard(message.text)
+    await bot.send_message(user, text, reply_markup=markup)
+
+@dp.message_handler(state=Rent.search)
+async def rent_search_handler(message: types.Message, state: FSMContext):
+    user = message.from_user.id
+    recieved_text = message.text
+
+    await Search.started.set()
+
+    async with state.proxy() as data:
+        data['property'] = message.text
 
 
     text = "Установите фильтр"
@@ -1984,62 +2095,86 @@ async def data_search_handler(message: types.Message, state: FSMContext):
             
 
         orders = await SearchAnnouncement(search_data)
-        for order in orders:
+        if len(orders)!=0:
+            for order in orders:
 
-            _ann_number = order.id
-            _type = order._type
-            _property = order._property
-            _title = order.title
-            _region = order.region
-            _reference = order.reference
-            _location = '{} {}'.format(order.location_X, order.location_Y)
-            _room_count = order.room_count
+                _ann_number = order.id
+                _type = order._type
+                _property = order._property
+                _title = order.title
+                _region = order.region
+                _reference = order.reference
+                _location = '{} {}'.format(order.location_X, order.location_Y)
+                _room_count = order.room_count
 
-            _square = order.square
-            _area = order.area
-            
-            _state = order.state
+                _square = order.square
+                _area = order.area
+                
+                _state = order.state
 
-            _ammount = order.ammount
-            _add_info = order.add_info
-            _contact = order.contact
-
-
-
-            user_data = []
-            user_data.append(_type)
-            user_data.append(_property)
-            user_data.append(_title)
-            user_data.append(_region)
-            user_data.append(_reference)
-            user_data.append(_location)
-            user_data.append(_room_count)
-            user_data.append(_square)
-            user_data.append(_area)
-            user_data.append(_state)
-            user_data.append(_ammount)
-            user_data.append(_add_info)
-            user_data.append(_contact)
-            user_data.append(_ann_number)
+                _ammount = order.ammount
+                _add_info = order.add_info
+                _contact = order.contact
 
 
-            text = GenerateEndText(user_data, True)
-            if _location != "0 0":
-                X = _location.split(" ")[0]
-                Y = _location.split(" ")[1]
-                await bot.send_chat_action(user, action="find_location")
 
-                await bot.send_location(user, latitude=X, longitude=Y)
+                user_data = []
+                user_data.append(_type)
+                user_data.append(_property)
+                user_data.append(_title)
+                user_data.append(_region)
+                user_data.append(_reference)
+                user_data.append(_location)
+                user_data.append(_room_count)
+                user_data.append(_square)
+                user_data.append(_area)
+                user_data.append(_state)
+                user_data.append(_ammount)
+                user_data.append(_add_info)
+                user_data.append(_contact)
+                user_data.append(_ann_number)
 
-            # photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-            # media = []
-            # for photo in photoes:
-            #     media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
-            
-            # await bot.send_media_group(user, media)
 
-            
+                text = GenerateEndText(user_data, True)
+                if _location != "0 0":
+                    X = _location.split(" ")[1]
+                    Y = _location.split(" ")[0]
+                    await bot.send_chat_action(user, action="find_location")
+
+                    await bot.send_location(user, latitude=X, longitude=Y)
+
+                ann_photoes = order.photo.all()
+                if len(ann_photoes)!=1:
+
+                    media = []
+
+                    for photo in ann_photoes:
+                        photoToUpload = str(os.getcwd()).replace("bot","")+"bothelper/media/{}".format(str(photo).replace("/","/"))
+                        media.append(InputMediaPhoto((InputFile(photoToUpload))))
+
+                    await bot.send_media_group(user, media)
+                else:
+                    photoToUpload = str(os.getcwd()).replace("bot","")+"bothelper/media/{}".format(str(ann_photoes[0]).replace("/","/"))
+
+                    await bot.send_photo(user, InputFile(photoToUpload))
+
+
+
+                
+
+                # photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
+                # media = []
+                # for photo in photoes:
+                #     media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+                
+                # await bot.send_media_group(user, media)
+
+                
+                await bot.send_message(user, text, reply_markup=None)
+        else:
+            text = "Объявлений не найдено"
             await bot.send_message(user, text, reply_markup=None)
+
 
     
         

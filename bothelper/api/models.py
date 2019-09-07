@@ -18,7 +18,7 @@ class Photo(models.Model):
     photo = models.ImageField("Фото", upload_to='media/')
 
     def __str__(self):
-        return "{}: {}".format(str(self.id), self.title)
+        return self.title
     
 
 class TemporaryOrder(models.Model):
@@ -54,7 +54,10 @@ class OnlineRieltor(models.Model):
     name = models.CharField("ФИО", max_length=255)
 
     photo = models.ImageField("Фото", upload_to='media/')
-    description = models.TextField("Описание")
+    description = models.TextField("Описание РУС")
+
+    description_UZ = models.TextField("Описание УЗБ")
+
 
     def __str__(self):
         return str(self.name)

@@ -5,6 +5,7 @@ import os, sys
 # from django.utils import timezone
 import django
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 import shutil
 # from django.conf import settings
  
@@ -74,7 +75,7 @@ async def Search(_type, _property, price, region, room_count, area):
             pass
 
 
-        return order_list
+        return Paginator(order_list, 5)
 
 def getUserLanguage(user):
     return str(api_models.TelegramUser.objects.get(telegram_id=int(user)).language)
@@ -113,7 +114,7 @@ def createOnlineTemporaryOrder(user, data):
     photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     for photo in photoes:
         print(os.getcwd())
-        path = os.getcwd().replace('bot', 'bothelper') + "\media/" + str(photo)
+        path = os.getcwd().replace('bot', 'bothelper') + "/media/" + str(photo)
         print(path)
         shutil.move(os.getcwd()+"/Users/" + str(user)+"/" + str(photo), path)
 
@@ -162,6 +163,36 @@ async def CreateRealOrder(num):
     temp = api_models.TemporaryOrder.objects.get(pk=num)
     order = api_models.Order()
 
+    order.user = temp.user
+    order._type = temp._type
+    order._property = temp._property
+    order.title = temp.title
+    order.region = temp.region
+    order.reference = temp.reference
+    order.location_X = temp.location_X
+    order.location_Y = temp.location_Y
+    order.room_count = temp.room_count
+    order.square = temp.square
+    order.area = temp.area
+    order.state = temp.state
+    order.ammount = temp.ammount
+    order.add_info = temp.add_info
+    order.contact = temp.contact
+
+    order.pro_order = temp
+
+    order.save()
+
+    for photo in temp.photo.all():
+        order.photo.add(photo)
+
+    return order.id
+
+async def CreateRealOnlineOrder(num):
+    temp = api_models.OnlineRieltorTemporaryOrder.objects.get(pk=num)
+    order = api_models.OnlineRieltorOrder()
+
+    order.rieltor = temp.rieltor
     order.user = temp.user
     order._type = temp._type
     order._property = temp._property

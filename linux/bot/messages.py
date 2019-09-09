@@ -77,9 +77,9 @@ def Messages(user):
 
             'data_clear': client.getMessage(30).text,
 
-            "digits_only": client.getMessage(61).text,
+            "digits_only": client.getMessage(31).text,
 
-            "price_list2": client.getMessage(63).text,
+            "price_list2": client.getMessage(32).text,
 
             
 
@@ -87,60 +87,60 @@ def Messages(user):
         }
     else:
         MESSAGES = {
-            'start': client.getMessage(31).text,
+            'start': client.getMessage(33).text,
             
-            'language': client.getMessage(32).text,
+            'language': client.getMessage(34).text,
 
-            'area': client.getMessage(33).text,
-            'flat': client.getMessage(34).text,
-            'land': client.getMessage(35).text,
-            'free_area': client.getMessage(36).text,
+            'area': client.getMessage(35).text,
+            'flat': client.getMessage(36).text,
+            'land': client.getMessage(37).text,
+            'free_area': client.getMessage(38).text,
 
-            'title_added': client.getMessage(37).text,
+            'title_added': client.getMessage(39).text,
 
-            'region_added': client.getMessage(38).text,
+            'region_added': client.getMessage(40).text,
 
-            'geo1': client.getMessage(39).text,
-            'geo2': client.getMessage(40).text,
-            'geo3': client.getMessage(41).text,
+            'geo1': client.getMessage(41).text,
+            'geo2': client.getMessage(42).text,
+            'geo3': client.getMessage(43).text,
 
-            'area_started': client.getMessage(42).text,
-            'flat_started': client.getMessage(43).text,
-            'land_started': client.getMessage(44).text,
-            'free_area_started': client.getMessage(45).text,
+            'area_started': client.getMessage(44).text,
+            'flat_started': client.getMessage(45).text,
+            'land_started': client.getMessage(46).text,
+            'free_area_started': client.getMessage(47).text,
 
-            'area_rooms_added': client.getMessage(46).text,
-            'area_square_added': client.getMessage(47).text,
+            'area_rooms_added': client.getMessage(48).text,
+            'area_square_added': client.getMessage(49).text,
             
-            'flat_rooms_added': client.getMessage(46).text,
-            'flat_square_added': client.getMessage(47).text,
+            'flat_rooms_added': client.getMessage(48).text,
+            'flat_square_added': client.getMessage(49).text,
 
-            'land_square_added': client.getMessage(47).text,
+            'land_square_added': client.getMessage(49).text,
 
-            'free_area_square_added': client.getMessage(47).text,
-            'free_area_state_added': client.getMessage(44).text,
+            'free_area_square_added': client.getMessage(49).text,
+            'free_area_state_added': client.getMessage(46).text,
 
-            'photo1': client.getMessage(48).text,
-            'photo2': client.getMessage(49).text,
-            'photo3': client.getMessage(50).text,
+            'photo1': client.getMessage(50).text,
+            'photo2': client.getMessage(51).text,
+            'photo3': client.getMessage(52).text,
 
-            'ammount': client.getMessage(51).text,
-            'ammount_set': client.getMessage(52).text,
+            'ammount': client.getMessage(53).text,
+            'ammount_set': client.getMessage(54).text,
 
-            'contacts': client.getMessage(53).text,
+            'contacts': client.getMessage(55).text,
 
-            'price_list': client.getMessage(54).text,
-            'choose_action': client.getMessage(55).text,
-            'filter': client.getMessage(56).text,
-            'send_text': client.getMessage(57).text,
+            'price_list': client.getMessage(56).text,
+            'choose_action': client.getMessage(57).text,
+            'filter': client.getMessage(58).text,
+            'send_text': client.getMessage(59).text,
 
-            'choose_photo_edit': client.getMessage(58).text,
+            'choose_photo_edit': client.getMessage(60).text,
 
-            'edit_text_now': client.getMessage(59).text,
+            'edit_text_now': client.getMessage(61).text,
 
-            'data_clear': client.getMessage(60).text,
+            'data_clear': client.getMessage(62).text,
 
-            "digits_only": client.getMessage(62).text,
+            "digits_only": client.getMessage(63).text,
 
             "price_list2": client.getMessage(64).text,
 

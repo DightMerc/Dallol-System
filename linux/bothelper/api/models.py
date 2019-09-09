@@ -95,7 +95,7 @@ class OnlineRieltorTemporaryOrder(models.Model):
 class OnlineRieltorOrder(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
 
-    pro_order = models.ForeignKey(TemporaryOrder, on_delete=models.CASCADE)
+    pro_order = models.ForeignKey(OnlineRieltorTemporaryOrder, on_delete=models.CASCADE)
 
     active = models.BooleanField("Актуально", default=True)
 

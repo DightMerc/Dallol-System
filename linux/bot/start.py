@@ -132,6 +132,9 @@ class Online(StatesGroup):
 async def process_start_command(message: types.Message, state: FSMContext):
     
     await Admin.started.set()
+
+
+
     
 
 @dp.message_handler(commands=['start'], state="*")
@@ -163,7 +166,7 @@ async def get_MyState(message: types.Message):
 
     await bot.send_message(user, state)
 
-@dp.message_handler(text="Назад", state="*")
+@dp.message_handler(text="⏮ Назад", state="*")
 async def back_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     current_state = await dp.current_state(user=message.from_user.id).get_state()
@@ -293,7 +296,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif current_state == "User:edit":
+    elif current_state in ["User:edit","User:ammount_set","User:add_info","User:ammount_set", "User:contact"]:
         await User.language_set.set()
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
@@ -406,14 +409,16 @@ async def back_handler(message: types.Message, state: FSMContext):
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
         if len(media)!=1:
             await bot.send_chat_action(user, action="upload_photo")
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+            # await bot.send_photo(user, photoes[0].replace(".jpg",""))
+
     
 
         await Edit.started.set()
@@ -422,7 +427,7 @@ async def back_handler(message: types.Message, state: FSMContext):
     
 
 
-@dp.message_handler(text="Оркага", state="*")
+@dp.message_handler(text="⏮ Оркага", state="*")
 async def back1_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     current_state = await dp.current_state(user=message.from_user.id).get_state()
@@ -666,14 +671,14 @@ async def back1_handler(message: types.Message, state: FSMContext):
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
         if len(media)!=1:
             await bot.send_chat_action(user, action="upload_photo")
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
     
 
         await Edit.started.set()
@@ -813,7 +818,7 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
     photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     media = []
     for photo in photoes:
-        media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+        media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
     
 
     markup = keyboards.EditApplyKeyboard(user)
@@ -822,7 +827,8 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
         await bot.send_media_group(user, media)
     else:
         await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+        await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+        
     await bot.send_message(user, text, reply_markup=markup)
 
 
@@ -903,14 +909,14 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 media = []
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+                    media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
                 if len(media)!=1:
                     await bot.send_chat_action(user, action="upload_photo")
                     await bot.send_media_group(user, media)
                 else:
                     await bot.send_chat_action(user, action="upload_photo")
-                    await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+                    await bot.send_photo(user, str(photoes[0]).replace(".jpg", ""))
 
                 markup = keyboards.EditOnlineMarkup(user_data, user)
                 
@@ -929,14 +935,15 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 media = []
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+                    media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+                    
 
                 if len(media)!=1:
                     await bot.send_chat_action(user, action="upload_photo")
                     await bot.send_media_group(user, media)
                 else:
                     await bot.send_chat_action(user, action="upload_photo")
-                    await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+                    await bot.send_photo(user, str(photoes[0]).replace(".jpg", ""))
 
                 markup = keyboards.EditMarkup(user_data, user)
                 
@@ -1012,92 +1019,181 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 media = []
                 photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+                    media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
                 #заменить user на admin
                 admin = await client.getAdmin()
 
                 if _location != "0 0":
                     X = _location.split(" ")[0]
                     Y = _location.split(" ")[1]
-                    await bot.send_chat_action(user, action="find_location")
 
-                    await bot.send_location(admin[0], latitude=X, longitude=Y)
+                    await bot.send_location(-1001450628461, latitude=X, longitude=Y)
 
                 
                 if len(media)!=1:
-                    await bot.send_chat_action(user, action="upload_photo")
 
-                    await bot.send_media_group(admin[0], media)
+                    await bot.send_media_group(-1001450628461, media)
                 else:
-                    await bot.send_chat_action(user, action="upload_photo")
 
-                    await bot.send_photo(admin[0], InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+                    await bot.send_photo(-1001450628461, str(photoes[0]).replace(".jpg", ""))
                     
                 num = client.createOnlineTemporaryOrder(user, user_data)
 
-                markup = keyboards.AdminApplyKeyboard(num)
+                markup = keyboards.AdminApplyKeyboard("online", num)
 
-                await bot.send_message(admin[0], text, reply_markup=markup)
+                await bot.send_message(-1001450628461, text, reply_markup=markup)
 
             except Exception as e:
+
                 text = GenerateEndText(user_data, False)
 
                 
                 media = []
                 photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 for photo in photoes:
-                    media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+                    media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
                 #заменить user на admin
                 admin = await client.getAdmin()
 
                 if _location != "0 0":
                     X = _location.split(" ")[0]
                     Y = _location.split(" ")[1]
-                    await bot.send_chat_action(user, action="find_location")
 
-                    await bot.send_location(admin[0], latitude=X, longitude=Y)
+                    await bot.send_location(-1001466052079, latitude=X, longitude=Y)
 
                 if len(media)!=1:
-                    await bot.send_chat_action(user, action="upload_photo")
 
-                    await bot.send_media_group(admin[0], media)
+                    await bot.send_media_group(-1001466052079, media)
                 else:
-                    await bot.send_chat_action(user, action="upload_photo")
-                    with open(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0], "rb") as f:
-                        photo = InputFile(f)
-                        await bot.send_photo(admin[0], photo)
+                    await bot.send_photo(-1001466052079, str(photoes[0]).replace(".jpg", ""))
 
                 num = client.createTemporaryOrder(user, user_data)
 
 
-                markup = keyboards.AdminApplyKeyboard(num)
+                markup = keyboards.AdminApplyKeyboard("default", num)
+                
 
-                await bot.send_message(admin[0], text, reply_markup=markup)
+                await bot.send_message(-1001466052079, text, reply_markup=markup)
 
-@dp.callback_query_handler(state=Admin.started)
-async def callback_edit_message_handler(callback_query: types.CallbackQuery, state: FSMContext):   
+
+
+
+@dp.callback_query_handler(state=Search.started)
+async def callback_search_handler(callback_query: types.CallbackQuery, state: FSMContext): 
     user = callback_query.from_user.id
-    data = callback_query.data
+    num = int(callback_query.data)
 
-    if "delete" in data:
-        num = int(data.replace("delete ", ""))
+    await bot.edit_message_reply_markup(user, callback_query.message.message_id, reply_markup=None)
 
-        markup=None
-        text = "Объявление удалено"
 
-        await bot.answer_callback_query(callback_query.id, text=text)
+    search_data = {}
 
-        await bot.delete_message(user, callback_query.message.message_id)
+    async with state.proxy() as data:
         
-    elif "apply":
-        num = int(data.replace("apply ", ""))
+        try:
+            search_data["type"] = data["type"]
+        except Exception as e:
+            search_data["type"] = ""
+        try:
+            search_data["property"] = data["property"]
+        except Exception as e:
+            search_data["property"] = ""
+        try:
+            search_data["price"] = data["search price"]
+        except Exception as e:
+            search_data["price"] = ""
+        try:
+            search_data["region"] = data["search region"]
+        except Exception as e:
+            search_data["region"] = ""
+        try:
+            search_data["room_count"] = data["search room_count"]
+        except Exception as e:
+            search_data["room_count"] = ""
+        try:
+            search_data["area"] = data["search area"]
+        except Exception as e:
+            search_data["area"] = ""
+        
 
-        await client.CreateRealOrder(num)
+    orders = await SearchAnnouncement(search_data)
+    if orders.count!=0:
+        a = 1
+        for order in orders.get_page(num):
+            _ann_number = order.id
+            _type = order._type
+            _property = order._property
+            _title = order.title
+            _region = order.region
+            _reference = order.reference
+            _location = '{} {}'.format(order.location_X, order.location_Y)
+            _room_count = order.room_count
 
-        await bot.edit_message_reply_markup(user, callback_query.message.message_id, reply_markup=None)
-        text = "Объявление опубликовано"
-        await bot.answer_callback_query(callback_query.id, text=text)
+            _square = order.square
+            _area = order.area
+            
+            _state = order.state
 
+            _ammount = order.ammount
+            _add_info = order.add_info
+            _contact = order.contact
+
+
+
+            user_data = []
+            user_data.append(_type)
+            user_data.append(_property)
+            user_data.append(_title)
+            user_data.append(_region)
+            user_data.append(_reference)
+            user_data.append(_location)
+            user_data.append(_room_count)
+            user_data.append(_square)
+            user_data.append(_area)
+            user_data.append(_state)
+            user_data.append(_ammount)
+            user_data.append(_add_info)
+            user_data.append(_contact)
+            user_data.append(_ann_number)
+
+            text = GenerateEndText(user_data, True)
+            print(_location)
+            if _location != "0.0 0.0":
+                X = float(_location.split(" ")[0])
+                Y = float(_location.split(" ")[1])
+                await bot.send_chat_action(user, action="find_location")
+
+                await bot.send_location(user, latitude=X, longitude=Y)
+
+            ann_photoes = order.photo.all()
+            if len(ann_photoes)!=1:
+
+                media = []
+
+                for photo in ann_photoes:
+                    media.append(InputMediaPhoto(str(photo).replace(".jpg","")))
+
+                await bot.send_media_group(user, media)
+            else:
+
+                await bot.send_photo(user, str(ann_photoes[0]).replace(".jpg",""))
+
+
+
+            
+
+            # photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
+            # media = []
+            # for photo in photoes:
+            #     media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+            
+            # await bot.send_media_group(user, media)
+
+            if a==5:
+                await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, num+1))
+            else:
+                await bot.send_message(user, text, reply_markup=None)
+            a+=1
 
 @dp.callback_query_handler(state=Edit.photo)
 async def callback_pagination_handler(callback_query: types.CallbackQuery, state: FSMContext):   
@@ -1273,14 +1369,14 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
         if len(media)!=1:
             await bot.send_chat_action(user, action="upload_photo")
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
     
 
         await Edit.started.set()
@@ -1317,7 +1413,8 @@ async def sale_edit_photo_added_handler(message: types.Message, state: FSMContex
     count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
 
     if count+1<10:
-        text = Messages(user)["photo3"].format(count+1)
+        count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
+        text = Messages(user)["photo3"].format(count)
 
         photo = await bot.get_file(message.photo[-1].file_id)
         await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
@@ -1389,9 +1486,9 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             photoes = os.listdir(path)
             markup = keyboards.PhotoPaginationKeyboard(len(photoes), 1, user)
             text = Messages(user)['choose_photo_edit']
-            media = InputFile(path + photoes[0])
             await bot.send_chat_action(user, action="upload_photo")
-            message = await bot.send_photo(user, media, reply_markup=markup)
+            
+            message = await bot.send_photo(user, str(photoes[0]).replace(".jpg",""), reply_markup=markup)
 
             await bot.send_message(user, text, reply_markup=None)
 
@@ -1476,7 +1573,7 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
         markup = keyboards.EditApplyKeyboard(user)
         if len(media)!=1:
@@ -1484,12 +1581,55 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
         await bot.send_message(user, text, reply_markup=markup)
 
     
 
+@dp.callback_query_handler(state="*")
+async def callback_edit_message_handler(callback_query: types.CallbackQuery, state: FSMContext):   
+    user = callback_query.from_user.id
+    data = callback_query.data
+    if "default" in data:
+        data = data.replace("default ", "")
+        if "delete" in data:
+            num = int(data.replace("delete ", ""))
 
+            markup=None
+            text = "Объявление удалено"
+
+            await bot.answer_callback_query(callback_query.id, text=text)
+
+            await bot.edit_message_reply_markup(-1001466052079, callback_query.message.message_id, reply_markup=None)
+            
+        elif "apply":
+            num = int(data.replace("apply ", ""))
+
+            await client.CreateRealOrder(num)
+
+            await bot.edit_message_reply_markup(-1001466052079, callback_query.message.message_id, reply_markup=None)
+            text = "Объявление опубликовано"
+            await bot.answer_callback_query(callback_query.id, text=text)
+    elif "online" in data:
+        data = data.replace("online ", "")
+        if "delete" in data:
+            num = int(data.replace("delete ", ""))
+
+            markup=None
+            text = "Объявление удалено"
+
+            await bot.answer_callback_query(callback_query.id, text=text)
+
+            await bot.edit_message_reply_markup(-1001450628461, callback_query.message.message_id, reply_markup=None)
+            
+        elif "apply":
+            num = int(data.replace("apply ", ""))
+
+            await client.CreateRealOnlineOrder(num)
+
+            await bot.edit_message_reply_markup(-1001450628461, callback_query.message.message_id, reply_markup=None)
+            text = "Объявление опубликовано"
+            await bot.answer_callback_query(callback_query.id, text=text)
 
 
 @dp.message_handler(state=Edit.second)
@@ -1584,14 +1724,14 @@ async def text_edit_handler(message: types.Message, state: FSMContext):
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
         if len(media)!=1:
             await bot.send_chat_action(user, action="upload_photo")
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
     
 
         await Edit.started.set()
@@ -1669,14 +1809,14 @@ async def location_edit_handler(message: types.Message, state: FSMContext):
     photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     media = []
     for photo in photoes:
-        media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+        media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
     if len(media)!=1:
         await bot.send_chat_action(user, action="upload_photo")
         await bot.send_media_group(user, media)
     else:
         await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+        await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
    
     markup = keyboards.EditMarkup(user_data, user)
 
@@ -1765,14 +1905,14 @@ async def edit_property_handler(message: types.Message, state: FSMContext):
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
         if len(media)!=1:
             await bot.send_chat_action(user, action="upload_photo")
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
 
         markup = keyboards.EditMarkup(user_data, user)
         
@@ -1940,7 +2080,7 @@ async def next_button_handler(message: types.Message, state: FSMContext):
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
         
 
         markup = keyboards.EditApplyKeyboard(user)
@@ -1949,7 +2089,7 @@ async def next_button_handler(message: types.Message, state: FSMContext):
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
         await bot.send_message(user, text, reply_markup=markup)
 
         
@@ -2116,7 +2256,7 @@ async def next1_button_handler(message: types.Message, state: FSMContext):
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
         media = []
         for photo in photoes:
-            media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
         
 
         markup = keyboards.EditApplyKeyboard(user)
@@ -2125,7 +2265,7 @@ async def next1_button_handler(message: types.Message, state: FSMContext):
             await bot.send_media_group(user, media)
         else:
             await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photoes[0]))
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
         await bot.send_message(user, text, reply_markup=markup)
 
         
@@ -2232,7 +2372,7 @@ async def online_started_handler(message: types.Message, state: FSMContext):
         text = Messages(user)['choose_action']
         markup = keyboards.OnlineKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
-    elif recieved_text in ["Поиск", "Қидириш"]:
+    elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
         
         async with state.proxy() as data:
             data['type'] = "search"
@@ -2300,18 +2440,18 @@ async def Search_type_choosen_handler(message: types.Message, state: FSMContext)
 
     if recieved_text in keyboards.SaleSearchAndannouncementKeyboardList:
 
-        MessageDict = {'Участок': Messages(user)['area'], 'Квартира': Messages(user)['flat'], 'Участок земли': Messages(user)['land'], 'Нежилая недвижимость': Messages(user)['free_area'],
-                        'Ховли': Messages(user)['area'], 'Ер': Messages(user)['land'], 'Уй-жойсиз қурилиш': Messages(user)['free_area'] }
+        MessageDict = {'🏠 Участок': Messages(user)['area'], '🏬 Квартира': Messages(user)['flat'], '🏡 Участок земли': Messages(user)['land'], '🏗 Нежилая недвижимость': Messages(user)['free_area'],
+                        '🏠 Ховли': Messages(user)['area'], '🏡 Ер': Messages(user)['land'], '🏗 Уй-жойсиз қурилиш': Messages(user)['free_area'] }
 
         await OnlineSearch.type_choosen.set()
 
-        if recieved_text in ["Участок", "Ховли"]:
+        if recieved_text in ['🏠 Участок', "🏠 Ховли"]:
             prop = "Участок"
-        if recieved_text in ["Квартира"]:
+        if recieved_text in ["🏬 Квартира"]:
             prop = "Квартира"
-        if recieved_text in ["Участок земли", "Ер"]:
+        if recieved_text in ["🏡 Участок земли", "🏡 Ер"]:
             prop = "Участок земли"
-        if recieved_text in ["Нежилая недвижимость", "Уй-жойсиз қурилиш"]:
+        if recieved_text in ["🏗 Нежилая недвижимость", "🏗 Уй-жойсиз қурилиш"]:
             prop = "Нежилая недвижимость"
 
         
@@ -2426,7 +2566,7 @@ async def rent_handler(message: types.Message):
         text = Messages(user)['choose_action']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
-    elif recieved_text in ["Поиск", "Қидириш"]:
+    elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
         await Rent.search.set()
 
         text = Messages(user)['choose_action']
@@ -2441,18 +2581,18 @@ async def rent_type_choosen_handler(message: types.Message, state: FSMContext):
 
     if recieved_text in keyboards.SaleSearchAndannouncementKeyboardList:
 
-        MessageDict = {'Участок': Messages(user)['area'], 'Квартира': Messages(user)['flat'], 'Участок земли': Messages(user)['land'], 'Нежилая недвижимость': Messages(user)['free_area'],
-                        'Ховли': Messages(user)['area'], 'Ер': Messages(user)['land'], 'Уй-жойсиз қурилиш': Messages(user)['free_area'] }
+        MessageDict = {'🏠 Участок': Messages(user)['area'], '🏬 Квартира': Messages(user)['flat'], '🏡 Участок земли': Messages(user)['land'], '🏗 Нежилая недвижимость': Messages(user)['free_area'],
+                        '🏠 Ховли': Messages(user)['area'], '🏡 Ер': Messages(user)['land'], '🏗 Уй-жойсиз қурилиш': Messages(user)['free_area'] }
 
         await Rent.type_choosen.set()
 
-        if recieved_text in ["Участок", "Ховли"]:
+        if recieved_text in ['🏠 Участок', "🏠 Ховли"]:
             prop = "Участок"
-        if recieved_text in ["Квартира"]:
+        if recieved_text in ["🏬 Квартира"]:
             prop = "Квартира"
-        if recieved_text in ["Участок земли", "Ер"]:
+        if recieved_text in ["🏡 Участок земли", "🏡 Ер"]:
             prop = "Участок земли"
-        if recieved_text in ["Нежилая недвижимость", "Уй-жойсиз қурилиш"]:
+        if recieved_text in ["🏗 Нежилая недвижимость", "🏗 Уй-жойсиз қурилиш"]:
             prop = "Нежилая недвижимость"
 
         
@@ -2566,7 +2706,7 @@ async def sale_handler(message: types.Message):
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif recieved_text in ["Поиск", "Қидириш"]:
+    elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
         await Sale.search.set()
 
         text = Messages(user)['choose_action']
@@ -2580,13 +2720,13 @@ async def sale_search_handler(message: types.Message, state: FSMContext):
 
     await Search.started.set()
 
-    if recieved_text in ["Участок", "Ховли"]:
+    if recieved_text in ['🏠 Участок', "🏠 Ховли"]:
         prop = "Участок"
-    if recieved_text in ["Квартира"]:
+    if recieved_text in ["🏬 Квартира"]:
         prop = "Квартира"
-    if recieved_text in ["Участок земли", "Ер"]:
+    if recieved_text in ["🏡 Участок земли", "🏡 Ер"]:
         prop = "Участок земли"
-    if recieved_text in ["Нежилая недвижимость", "Уй-жойсиз қурилиш"]:
+    if recieved_text in ["🏗 Нежилая недвижимость", "🏗 Уй-жойсиз қурилиш"]:
         prop = "Нежилая недвижимость"
 
         
@@ -2606,13 +2746,13 @@ async def rent_search_handler(message: types.Message, state: FSMContext):
 
     await Search.started.set()
 
-    if recieved_text in ["Участок", "Ховли"]:
+    if recieved_text in ['🏠 Участок', "🏠 Ховли"]:
         prop = "Участок"
-    if recieved_text in ["Квартира"]:
+    if recieved_text in ["🏬 Квартира"]:
         prop = "Квартира"
-    if recieved_text in ["Участок земли", "Ер"]:
+    if recieved_text in ["🏡 Участок земли", "🏡 Ер"]:
         prop = "Участок земли"
-    if recieved_text in ["Нежилая недвижимость", "Уй-жойсиз қурилиш"]:
+    if recieved_text in ["🏗 Нежилая недвижимость", "🏗 Уй-жойсиз қурилиш"]:
         prop = "Нежилая недвижимость"
 
         
@@ -2675,7 +2815,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
 
             await bot.send_message(user, "Фильтры очищены", reply_markup=None)
 
-    elif recieved_text in ["Поиск", "Қидириш"]:
+    elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
         search_data = {}
 
         async with state.proxy() as data:
@@ -2707,10 +2847,10 @@ async def data_search_handler(message: types.Message, state: FSMContext):
             
 
         orders = await SearchAnnouncement(search_data)
-        print(orders)
-        if len(orders)!=0:
-            for order in orders:
-
+        if orders.count!=0:
+            a = 1
+            for order in orders.get_page(1):
+                
                 _ann_number = order.id
                 _type = order._type
                 _property = order._property
@@ -2762,14 +2902,12 @@ async def data_search_handler(message: types.Message, state: FSMContext):
                     media = []
 
                     for photo in ann_photoes:
-                        photoToUpload = str(os.getcwd()).replace("bot","")+"bothelper/media/{}".format(str(photo).replace("/","/"))
-                        media.append(InputMediaPhoto((InputFile(photoToUpload))))
+                        media.append(InputMediaPhoto(str(photo).replace(".jpg","")))
 
                     await bot.send_media_group(user, media)
                 else:
-                    photoToUpload = str(os.getcwd()).replace("bot","")+"bothelper/media/{}".format(str(ann_photoes[0]).replace("/","/"))
+                    await bot.send_photo(user, str(ann_photoes[0]).replace(".jpg",""))
 
-                    await bot.send_photo(user, InputFile(photoToUpload))
 
 
 
@@ -2778,12 +2916,15 @@ async def data_search_handler(message: types.Message, state: FSMContext):
                 # photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
                 # media = []
                 # for photo in photoes:
-                #     media.append(InputMediaPhoto((InputFile(os.getcwd()+"/Users/" + str(user)+"/"+photo))))
+                #     media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
                 
                 # await bot.send_media_group(user, media)
 
-                
-                await bot.send_message(user, text, reply_markup=None)
+                if a==5:
+                    await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, 2))
+                else:
+                    await bot.send_message(user, text, reply_markup=None)
+                a+=1
         else:
             text = "Объявлений не найдено"
             await bot.send_message(user, text, reply_markup=None)
@@ -2898,18 +3039,18 @@ async def sale_type_choosen_handler(message: types.Message, state: FSMContext):
 
     if recieved_text in keyboards.SaleSearchAndannouncementKeyboardList:
 
-        MessageDict = {'Участок': Messages(user)['area'], 'Квартира': Messages(user)['flat'], 'Участок земли': Messages(user)['land'], 'Нежилая недвижимость': Messages(user)['free_area'],
-                        'Ховли': Messages(user)['area'], 'Ер': Messages(user)['land'], 'Уй-жойсиз қурилиш': Messages(user)['free_area'] }
+        MessageDict = {'🏠 Участок': Messages(user)['area'], '🏬 Квартира': Messages(user)['flat'], '🏡 Участок земли': Messages(user)['land'], '🏗 Нежилая недвижимость': Messages(user)['free_area'],
+                        '🏠 Ховли': Messages(user)['area'], '🏡 Ер': Messages(user)['land'], '🏗 Уй-жойсиз қурилиш': Messages(user)['free_area'] }
 
         await Sale.type_choosen.set()
 
-        if recieved_text in ["Участок", "Ховли"]:
+        if recieved_text in ['🏠 Участок', "🏠 Ховли"]:
             prop = "Участок"
-        if recieved_text in ["Квартира"]:
+        if recieved_text in ["🏬 Квартира"]:
             prop = "Квартира"
-        if recieved_text in ["Участок земли", "Ер"]:
+        if recieved_text in ["🏡 Участок земли", "🏡 Ер"]:
             prop = "Участок земли"
-        if recieved_text in ["Нежилая недвижимость", "Уй-жойсиз қурилиш"]:
+        if recieved_text in ["🏗 Нежилая недвижимость", "🏗 Уй-жойсиз қурилиш"]:
             prop = "Нежилая недвижимость"
 
         
@@ -3089,14 +3230,21 @@ async def sale_area_photo_added_handler(message: types.Message, state: FSMContex
     count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
 
     if count+1<10:
-        text = Messages(user)["photo3"].format(count+1)
+        
 
         photo = await bot.get_file(message.photo[-1].file_id)
         await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
 
+        count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
+        text = Messages(user)["photo3"].format(count)
+
+
         markup = keyboards.BackNextKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     else:
+        photo = await bot.get_file(message.photo[-1].file_id)
+        await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
+
         text = Messages(user)["ammount"]
         await User.ammount_set.set()
         

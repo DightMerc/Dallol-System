@@ -7,6 +7,7 @@ from django.db import IntegrityError
 
 from datetime import date, timedelta, time, datetime
 from django.utils import timezone
+from django.db.models import Count
 
 def StatView(request):
 
@@ -15,9 +16,14 @@ def StatView(request):
     today = date.today()
 
     rieltors = OnlineRieltor.objects.all()
-    top_rieltors = OnlineRieltor.objects.annotate(order_count=Count('book')).order_by('-num_books')[:5]
-    # https://docs.djangoproject.com/en/dev/topics/db/aggregation/
-    
+
+    max = 0
+    Top_rieltor = None
+    for rieltor in rieltors:
+        if OnlineRieltorOrder.objects.filter(rieltor=rieltor).count() > max:
+            max = OnlineRieltorOrder.objects.filter(rieltor=rieltor).count()
+            Top_rieltor = rieltor
+
 
     return render(request, 'api/index.html', {
        'users' : TelegramUser.objects.all(), 
@@ -28,8 +34,15 @@ def StatView(request):
        'last_week_orders': Order.objects.filter(created_date__gte=week),
        'today_orders': Order.objects.filter(created_date__day=today.day),
 
+       'Top_rieltor': Top_rieltor,
+
+
        'orders': Order.objects.all(),
        'online_orders': OnlineRieltorOrder.objects.all(),
+
+       'last_week_online_orders': OnlineRieltorOrder.objects.filter(created_date__gte=week),
+       'today_online_orders': OnlineRieltorOrder.objects.filter(created_date__day=today.day),
+
        'temp_orders': TemporaryOrder.objects.all(),
        'online_temp_orders': OnlineRieltorTemporaryOrder.objects.all(),
        'photoes':Photo.objects.all()})

@@ -15,6 +15,7 @@ from utils import TestStates, GenerateEndText, SearchAnnouncement, OnlineGenerat
 from messages import Messages
 
 from aiogram.types import ParseMode, InputMediaPhoto, InputMediaVideo, ChatActions, InputFile
+from aiogram.types import ReplyKeyboardRemove
 
 import client
 
@@ -94,17 +95,22 @@ class Area(StatesGroup):
     started = State()
     square = State()
     area = State()
+    state = State()
     
 
 class Flat(StatesGroup):
     started = State()
     square = State()
     area = State()
+    state = State()
+
 
 class Land(StatesGroup):
     started = State()
     square = State()
     area = State()
+    state = State()
+
 
 class Free_area(StatesGroup):
     started = State()
@@ -266,7 +272,12 @@ async def back_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif current_state == "Search:started":
-        await Sale.search.set()
+        async with state.proxy() as data:
+            prop = data['type']
+        if prop == "sale":
+            await Sale.search.set()
+        elif prop == "rent":
+            await Rent.search.set()
 
         text = Messages(user)['choose_action']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
@@ -296,7 +307,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif current_state in ["User:edit","User:ammount_set","User:add_info","User:ammount_set", "User:contact"]:
+    elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo"]:
         await User.language_set.set()
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
@@ -370,7 +381,6 @@ async def back_handler(message: types.Message, state: FSMContext):
             _contact = data['phone']
 
 
-
             user_data = []
             user_data.append(_type)
             user_data.append(_property)
@@ -387,14 +397,21 @@ async def back_handler(message: types.Message, state: FSMContext):
             user_data.append(_contact)
 
 
+
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
+
 
                 text = OnlineGenerateEndText(user_data)
                 markup = keyboards.EditOnlineMarkup(user_data, user)
 
             except Exception as e:
+                await bot.send_message(user, str(e))
+
+
                 text = GenerateEndText(user_data, False)
                 markup = keyboards.EditMarkup(user_data, user)
 
@@ -527,7 +544,12 @@ async def back1_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif current_state == "Search:started":
-        await Sale.search.set()
+        async with state.proxy() as data:
+            prop = data['type']
+        if prop == "sale":
+            await Sale.search.set()
+        elif prop == "rent":
+            await Rent.search.set()
 
         text = Messages(user)['choose_action']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
@@ -557,7 +579,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif current_state == "User:edit":
+    elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo"]:
         await User.language_set.set()
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
@@ -650,8 +672,10 @@ async def back1_handler(message: types.Message, state: FSMContext):
 
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
                 markup = keyboards.EditOnlineMarkup(user_data, user)
@@ -798,8 +822,10 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
         user_data.append(_contact)
 
         try:
+            _type = data['type']
             _online_status = data["online"]
             user_data.append(data['master'])
+            user_data.append(data['{} prop_state'.format(_type)])
 
             text = OnlineGenerateEndText(user_data)
         except Exception as e:
@@ -894,8 +920,10 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
 
@@ -1010,8 +1038,10 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
 
@@ -1223,7 +1253,8 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
         markup = keyboards.PhotoPaginationKeyboard(len(photoes), number, user)
         text = Messages(user)['choose_photo_edit']
-        media = InputFile(path + photoes[number-1])
+        media = str(photoes[number-1]).replace(".jpg","")
+        
 
         
         await bot.edit_message_media(media=types.input_media.InputMediaPhoto(media=media), chat_id=user, message_id=message_id, reply_markup=markup)
@@ -1249,7 +1280,7 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
         markup = keyboards.PhotoPaginationKeyboard(len(photoes), number, user)
         text = Messages(user)['choose_photo_edit']
-        media = InputFile(path + photoes[number-1])
+        media = str(photoes[number-1]).replace(".jpg","")
 
         await bot.edit_message_media(media=types.input_media.InputMediaPhoto(media=media), chat_id=user, message_id=message_id, reply_markup=markup)
 
@@ -1271,10 +1302,10 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
         if len(photoes)!=0:
             if number!=1:
                 markup = keyboards.PhotoPaginationKeyboard(len(photoes), number - 1, user)
-                media = InputFile(path + photoes[number-2])
+                media = str(photoes[number-2]).replace(".jpg","")
             else:
                 markup = keyboards.PhotoPaginationKeyboard(len(photoes), number, user)
-                media = InputFile(path + photoes[0])
+                media = str(photoes[0]).replace(".jpg","")
 
 
 
@@ -1348,8 +1379,10 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
 
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
                 markup = keyboards.EditOnlineMarkup(user_data, user)
@@ -1413,14 +1446,40 @@ async def sale_edit_photo_added_handler(message: types.Message, state: FSMContex
     count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
 
     if count+1<10:
-        count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
-        text = Messages(user)["photo3"].format(count)
+        
 
         photo = await bot.get_file(message.photo[-1].file_id)
         await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
 
+        count = len(os.listdir(os.getcwd()+"/Users/" + str(user)+"/"))
+        text = Messages(user)["photo3"].format(count)
+
+
         markup = keyboards.BackNextKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
+    else:
+        photo = await bot.get_file(message.photo[-1].file_id)
+        await photo.download(os.getcwd()+"/Users/" + str(user)+"/{}.jpg".format(message.photo[-1].file_id))
+
+        path = os.getcwd()+"/Users/"+"{}/".format(user)
+
+        await Edit.photo.set()
+
+
+        photoes = os.listdir(path)
+        markup = keyboards.PhotoPaginationKeyboard(len(photoes), 1, user)
+        text = Messages(user)['choose_photo_edit']
+        await bot.send_chat_action(user, action="upload_photo")
+        
+        message = await bot.send_photo(user, str(photoes[0]).replace(".jpg",""), reply_markup=markup)
+
+        await bot.send_message(user, text, reply_markup=ReplyKeyboardRemove())
+
+
+        async with state.proxy() as data:
+            data['last'] = message.message_id
+
+        return
     
 
 @dp.callback_query_handler(state=Edit.started)
@@ -1490,7 +1549,7 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             
             message = await bot.send_photo(user, str(photoes[0]).replace(".jpg",""), reply_markup=markup)
 
-            await bot.send_message(user, text, reply_markup=None)
+            await bot.send_message(user, text, reply_markup=ReplyKeyboardRemove())
 
 
             async with state.proxy() as data:
@@ -1555,8 +1614,10 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             user_data.append(_contact)
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
             except Exception as e:
@@ -1703,8 +1764,10 @@ async def text_edit_handler(message: types.Message, state: FSMContext):
 
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
                 markup = keyboards.EditOnlineMarkup(user_data, user)
@@ -2060,8 +2123,10 @@ async def next_button_handler(message: types.Message, state: FSMContext):
             user_data.append(_contact)
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
             except Exception as e:
@@ -2236,8 +2301,10 @@ async def next1_button_handler(message: types.Message, state: FSMContext):
             user_data.append(_contact)
 
             try:
+                _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
 
                 text = OnlineGenerateEndText(user_data)
             except Exception as e:
@@ -2760,9 +2827,11 @@ async def rent_search_handler(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['property'] = prop
 
-
     text = Messages(user)['filter']
-    markup = keyboards.SearchKeyboard(message.text, user)
+    markup = keyboards.SearchKeyboard(prop, user)
+    
+
+
     await bot.send_message(user, text, reply_markup=markup)
 
 @dp.message_handler(state=Search.started)
@@ -2813,7 +2882,8 @@ async def data_search_handler(message: types.Message, state: FSMContext):
             data["search room_count"] = ""
             data["search area"] = ""
 
-            await bot.send_message(user, "Фильтры очищены", reply_markup=None)
+            text = Messages(user)["filters_clear"]
+            await bot.send_message(user, text, reply_markup=None)
 
     elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
         search_data = {}
@@ -2926,7 +2996,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
                     await bot.send_message(user, text, reply_markup=None)
                 a+=1
         else:
-            text = "Объявлений не найдено"
+            text = Messages(user)["no_ann"]
             await bot.send_message(user, text, reply_markup=None)
 
 
@@ -3152,6 +3222,61 @@ async def sale_location_added_handler(message: types.Message, state: FSMContext)
 
     await bot.send_message(user, text, reply_markup=markup)
 
+
+@dp.message_handler(state=Area.state)
+async def sale_area_state_handler(message: types.Message, state: FSMContext):
+    
+    user = message.from_user.id
+    recieved_text = message.text
+
+    async with state.proxy() as data:
+        _type = data["type"]
+        data["{} prop_state".format(_type)] = recieved_text
+        
+    await Area.square.set()
+
+    # text = Messages(user)["area_square_added"]
+    text = Messages(user)["area_rooms_added"]
+    markup = keyboards.BackKeyboard(user)
+    await bot.send_message(user, text, reply_markup=markup)
+
+@dp.message_handler(state=Flat.state)
+async def sale_flat_state_handler(message: types.Message, state: FSMContext):
+    
+    user = message.from_user.id
+    recieved_text = message.text
+
+    async with state.proxy() as data:
+        _type = data["type"]
+        data["{} prop_state".format(_type)] = recieved_text
+        
+    await Flat.square.set()
+
+    # text = Messages(user)["area_square_added"]
+    text = Messages(user)["flat_rooms_added"]
+    markup = keyboards.BackKeyboard(user)
+    await bot.send_message(user, text, reply_markup=markup)
+
+@dp.message_handler(state=Land.state)
+async def sale_land_state_handler(message: types.Message, state: FSMContext):
+    
+    user = message.from_user.id
+    recieved_text = message.text
+
+    async with state.proxy() as data:
+        _type = data["type"]
+        data["{} prop_state".format(_type)] = recieved_text
+        
+    await Land.square.set()
+
+    # text = Messages(user)["area_square_added"]
+    text = Messages(user)["land_square_added"]
+    markup = keyboards.BackKeyboard(user)
+    await bot.send_message(user, text, reply_markup=markup)
+
+
+    
+
 @dp.message_handler(state=Area.started)
 async def sale_area_room_count_handler(message: types.Message, state: FSMContext):
     
@@ -3160,15 +3285,34 @@ async def sale_area_room_count_handler(message: types.Message, state: FSMContext
 
     
     if recieved_text.isdigit():
+        try:
+            async with state.proxy() as data:
+                _type = data["online"]
 
-        await Area.square.set()
+            await Area.state.set()
 
-        async with state.proxy() as data:
-            data["sale room_count"] = recieved_text
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} room_count".format(_type)] = recieved_text
 
-        text = Messages(user)["area_rooms_added"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
+            # text = Messages(user)["area_rooms_added"]
+            text = Messages(user)["prop_state"]
+            "Состояние ремонта недвижимости (например: Евро ремонт)"
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+
+        except Exception as e:
+
+
+            await Area.square.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} room_count".format(_type)] = recieved_text
+
+            text = Messages(user)["area_rooms_added"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
 
     else:
         text = Messages(user)["digits_only"]
@@ -3187,10 +3331,120 @@ async def sale_area_square_handler(message: types.Message, state: FSMContext):
         await Area.area.set()
 
         async with state.proxy() as data:
-            data["sale square"] = recieved_text
+            _type = data["type"]
+            data["{} square".format(_type)] = recieved_text
+            
 
         text = Messages(user)["area_square_added"]
         markup = keyboards.BackKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
+    else:
+        text = Messages(user)["digits_only"]
+        markup = keyboards.BackKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
+
+@dp.message_handler(state=User.contact)
+async def text_phone_handler(message: types.Message, state: FSMContext):
+    
+    user = message.from_user.id
+    recieved_text = message.text
+    data = recieved_text.replace(" ", "")
+    data = data.replace("+", "")
+
+
+    if data.isdigit():
+
+
+        phone = data
+
+
+        async with state.proxy() as data:
+            data['phone'] = phone
+
+        async with state.proxy() as data:
+
+            _type = data['type']
+            
+            _property = data['property']
+            _title = data['{} title'.format(_type)]
+            _region = data['{} region'.format(_type)]
+            _reference = data['{} reference'.format(_type)]
+            _location = data['{} location'.format(_type)]
+            try:
+                _room_count = data['{} room_count'.format(_type)]
+            except Exception as e:
+                _room_count = 0
+
+            try:
+                _square = data['{} square'.format(_type)]
+            except Exception as e:
+                _square = 0
+            
+            try:
+                _area = data['{} area'.format(_type)]
+            except Exception as e:
+                _area = 0
+            
+            try:
+                _state = data['{} state'.format(_type)]
+            except Exception as e:
+                _state = ""
+
+            _ammount = data['ammount']
+            _add_info = data['add_info']
+            _contact = data['phone']
+
+
+
+            user_data = []
+            user_data.append(_type)
+            user_data.append(_property)
+            user_data.append(_title)
+            user_data.append(_region)
+            user_data.append(_reference)
+            user_data.append(_location)
+            user_data.append(_room_count)
+            user_data.append(_square)
+            user_data.append(_area)
+            user_data.append(_state)
+            user_data.append(_ammount)
+            user_data.append(_add_info)
+            user_data.append(_contact)
+
+            try:
+                _type = data['type']
+                _online_status = data["online"]
+                user_data.append(data['master'])
+                user_data.append(data['{} prop_state'.format(_type)])
+
+                text = OnlineGenerateEndText(user_data)
+            except Exception as e:
+                text = GenerateEndText(user_data, False)
+
+
+        await User.edit.set()
+
+        if _location != "0 0":
+            X = _location.split(" ")[0]
+            Y = _location.split(" ")[1]
+            await bot.send_chat_action(user, action="find_location")
+
+            await bot.send_location(user, latitude=X, longitude=Y)
+
+        photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
+        media = []
+        for photo in photoes:
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        
+
+        markup = keyboards.EditApplyKeyboard(user)
+        if len(media)!=1:
+            await bot.send_chat_action(user, action="upload_photo")
+            await bot.send_media_group(user, media)
+        else:
+            await bot.send_chat_action(user, action="upload_photo")
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+            
         await bot.send_message(user, text, reply_markup=markup)
     else:
         text = Messages(user)["digits_only"]
@@ -3209,7 +3463,8 @@ async def sale_area_handler(message: types.Message, state: FSMContext):
         await User.photo.set()
 
         async with state.proxy() as data:
-            data["sale area"] = recieved_text
+            _type = data["type"]
+            data["{} area".format(_type)] = recieved_text
 
         text = Messages(user)["photo1"]
         await bot.send_message(user, text, reply_markup=None)
@@ -3261,15 +3516,32 @@ async def sale_flat_room_count_handler(message: types.Message, state: FSMContext
     user = message.from_user.id
     recieved_text = message.text
     if recieved_text.isdigit():
+        try:
+            async with state.proxy() as data:
+                _type = data["online"]
 
-        await Flat.square.set()
+            await Flat.state.set()
 
-        async with state.proxy() as data:
-            data["sale room_count"] = recieved_text
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} room_count".format(_type)] = recieved_text
 
-        text = Messages(user)["flat_rooms_added"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
+            # text = Messages(user)["area_rooms_added"]
+            text = Message(user)["prop_state"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+
+        except Exception as e:
+
+            await Flat.square.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} room_count".format(_type)] = recieved_text
+
+            text = Messages(user)["flat_rooms_added"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
     else:
         text = Messages(user)["digits_only"]
         markup = keyboards.BackKeyboard(user)
@@ -3287,7 +3559,8 @@ async def sale_flat_square_handler(message: types.Message, state: FSMContext):
         await User.photo.set()
 
         async with state.proxy() as data:
-            data["sale square"] = recieved_text
+            _type = data["type"]
+            data["{} square".format(_type)] = recieved_text
 
         text = Messages(user)["photo1"]
         await bot.send_message(user, text, reply_markup=None)
@@ -3308,16 +3581,33 @@ async def sale_land_square_handler(message: types.Message, state: FSMContext):
     recieved_text = message.text
 
     if recieved_text.isdigit():
+        try:
+            async with state.proxy() as data:
+                _type = data["online"]
+
+            await Land.state.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} square".format(_type)] = recieved_text
+
+            # text = Messages(user)["area_rooms_added"]
+            text = Message(user)["prop_state"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+
+        except Exception as e:
 
 
-        await Land.square.set()
+            await Land.square.set()
 
-        async with state.proxy() as data:
-            data["sale square"] = recieved_text
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} square".format(_type)] = recieved_text
 
-        text = Messages(user)["land_square_added"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
+            text = Messages(user)["land_square_added"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
 
     else:
         text = Messages(user)["digits_only"]
@@ -3338,7 +3628,8 @@ async def sale_land_area_handler(message: types.Message, state: FSMContext):
         await User.photo.set()
 
         async with state.proxy() as data:
-            data["sale area"] = recieved_text
+            _type = data["type"]
+            data["{} area".format(_type)] = recieved_text
 
         text = Messages(user)["photo1"]
         await bot.send_message(user, text, reply_markup=None)
@@ -3369,7 +3660,8 @@ async def sale_free_area_room_count_handler(message: types.Message, state: FSMCo
         await Free_area.square.set()
 
         async with state.proxy() as data:
-            data["sale state"] = AreaState
+            _type = data["type"]
+            data["{} state".format(_type)] = recieved_text
 
         text = Messages(user)["free_area_square_added"]
         markup = keyboards.BackKeyboard(user)
@@ -3390,7 +3682,8 @@ async def sale_free_area_square_handler(message: types.Message, state: FSMContex
     await Free_area.square.set()
 
     async with state.proxy() as data:
-        data["sale area"] = recieved_text
+        _type = data["type"]
+        data["{} area".format(_type)] = recieved_text
 
     text = Messages(user)["free_area_square_added"]
     markup = keyboards.BackKeyboard(user)
@@ -3404,10 +3697,11 @@ async def sale_free_area_area_handler(message: types.Message, state: FSMContext)
 
     if recieved_text.isdigit():
 
-        await User.photo.set()
+        await User.photo.set() 
 
         async with state.proxy() as data:
-            data["sale area"] = recieved_text
+            _type = data["type"]
+            data["{} area".format(_type)] = recieved_text
 
         text = Messages(user)["photo1"]
         await bot.send_message(user, text, reply_markup=None)

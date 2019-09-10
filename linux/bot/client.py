@@ -75,7 +75,7 @@ async def Search(_type, _property, price, region, room_count, area):
             pass
 
 
-        return Paginator(order_list, 5)
+        return Paginator(order_list.filter(active=True), 5)
 
 def getUserLanguage(user):
     return str(api_models.TelegramUser.objects.get(telegram_id=int(user)).language)

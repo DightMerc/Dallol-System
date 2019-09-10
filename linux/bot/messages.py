@@ -81,6 +81,10 @@ def Messages(user):
 
             "price_list2": client.getMessage(32).text,
 
+            "filters_clear": client.getMessage(65).text,
+            "prop_state": client.getMessage(66).text,
+            "no_ann": client.getMessage(67).text,
+
             
 
 
@@ -143,6 +147,10 @@ def Messages(user):
             "digits_only": client.getMessage(63).text,
 
             "price_list2": client.getMessage(64).text,
+
+            "filters_clear": client.getMessage(68).text,
+            "prop_state": client.getMessage(69).text,
+            "no_ann": client.getMessage(70).text,
 
 
 

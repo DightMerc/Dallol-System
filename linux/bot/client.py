@@ -108,7 +108,10 @@ def createOnlineTemporaryOrder(user, data):
     order.ammount = data[10]
     order.add_info = data[11]
     order.contact = data[12]
-    order.rieltor = get_object_or_404(api_models.OnlineRieltor, name=data[13])
+    order.main_floor = data[13]
+    order.floor = data[14]
+    order.rieltor = get_object_or_404(api_models.OnlineRieltor, name=data[15])
+    order.main_state = data[16]
     order.save()
 
     photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
@@ -144,6 +147,9 @@ def createTemporaryOrder(user, data):
     order.ammount = data[10]
     order.add_info = data[11]
     order.contact = data[12]
+    order.main_floor = data[13]
+    order.floor = data[14]
+
     order.save()
 
     photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
@@ -178,6 +184,8 @@ async def CreateRealOrder(num):
     order.ammount = temp.ammount
     order.add_info = temp.add_info
     order.contact = temp.contact
+    order.main_floor = temp.main_floor
+    order.floor = temp.floor
 
     order.pro_order = temp
 
@@ -193,6 +201,7 @@ async def CreateRealOnlineOrder(num):
     order = api_models.OnlineRieltorOrder()
 
     order.rieltor = temp.rieltor
+    order.main_state = temp.main_state
     order.user = temp.user
     order._type = temp._type
     order._property = temp._property
@@ -208,6 +217,8 @@ async def CreateRealOnlineOrder(num):
     order.ammount = temp.ammount
     order.add_info = temp.add_info
     order.contact = temp.contact
+    order.main_floor = temp.main_floor
+    order.floor = temp.floor
 
     order.pro_order = temp
 

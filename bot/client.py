@@ -5,23 +5,28 @@ import os, sys
 # from django.utils import timezone
 import django
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 import shutil
 # from django.conf import settings
  
 
 
 
-proj_path = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0] + "\\bothelper\\"
+proj_path = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0] + "/bothelper/"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bothelper.settings")
 sys.path.append(proj_path)
 
+print(proj_path)
 django.setup()
 
 from api import models as api_models
 from bot import models as bot_models
 
+def GetToken():
+    return bot_models.Setting.objects.get(pk=1).token
 
 async def Search(_type, _property, price, region, room_count, area):
+
     order_list = api_models.Order.objects.all()
 
     order_list = order_list.filter(_type=_type)
@@ -33,42 +38,48 @@ async def Search(_type, _property, price, region, room_count, area):
             if price!="":
                 if " " in price:
                     prices = price.split(" ")
-                    filtered = order_list.filter(ammount__lte=prices[1])
-                    if len(filtered)>0:
-                        order_list = filtered
-                    filtered = order_list.filter(ammount__gte=prices[0])
-                    if len(filtered)>0:
-                        order_list = filtered
+                    filtered = order_list.filter(ammount__lte=int(prices[1]))
+                    order_list = filtered
+                    filtered = order_list.filter(ammount__gte=int(prices[0]))
+                    order_list = filtered
+                    
                 else:
-                    if price!="100000":
-                        filtered = order_list.filter(ammount__lte=price)
-                        if len(filtered)>0:
-                            order_list = filtered
+
+                    if int(price)!=100000:
+
+                        filtered = order_list.filter(ammount__lte=int(price))
+                        order_list = filtered
+
                     else:
-                        filtered = order_list.filter(ammount__gte=price)
-                        if len(filtered)>0:
-                            order_list = filtered
+
+                        filtered = order_list.filter(ammount__gte=int(price))
+                        order_list = filtered
                 
+              
 
             if region!="":
                 filtered = order_list.filter(region=region)
-                if len(filtered)>0:
-                    order_list = filtered
+                order_list = filtered
+            
 
             if room_count!="":
                 filtered = order_list.filter(room_count=room_count)
-                if len(filtered)>0:
-                    order_list = filtered
+                order_list = filtered
+
 
             if area!="":
                 filtered = order_list.filter(area=area)
-                if len(filtered)>0:
-                    order_list = filtered
+                order_list = filtered
+            
         else:
             pass
 
 
-        return order_list
+        return Paginator(order_list.filter(active=True), 5)
+
+def getUserLanguage(user):
+    return str(api_models.TelegramUser.objects.get(telegram_id=int(user)).language)
+    
 
 async def getRieltorPhoto(person):
     return api_models.OnlineRieltor.objects.get(name=person).photo
@@ -97,15 +108,17 @@ def createOnlineTemporaryOrder(user, data):
     order.ammount = data[10]
     order.add_info = data[11]
     order.contact = data[12]
+    order.main_floor = data[13]
+    order.floor = data[14]
     order.rieltor = get_object_or_404(api_models.OnlineRieltor, name=data[13])
     order.save()
 
-    photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     for photo in photoes:
         print(os.getcwd())
-        path = os.getcwd().replace('bot', 'bothelper') + "\media\\" + str(photo)
+        path = os.getcwd().replace('bot', 'bothelper') + "/media/" + str(photo)
         print(path)
-        shutil.move(os.getcwd()+"\\Users\\" + str(user)+"\\" + str(photo), path)
+        shutil.move(os.getcwd()+"/Users/" + str(user)+"/" + str(photo), path)
 
         image = api_models.Photo()
         image.title = str(photo)
@@ -133,12 +146,15 @@ def createTemporaryOrder(user, data):
     order.ammount = data[10]
     order.add_info = data[11]
     order.contact = data[12]
+    order.main_floor = data[13]
+    order.floor = data[14]
+
     order.save()
 
-    photoes = os.listdir(os.getcwd()+"\\Users\\" + str(user)+"\\")
+    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
     for photo in photoes:
-        path = os.getcwd().replace('bot', 'bothelper') + "\\media\\" + str(photo)
-        shutil.move(os.getcwd()+"\\Users\\" + str(user)+"\\" + str(photo), path)
+        path = os.getcwd().replace('bot', 'bothelper') + "/media/" + str(photo)
+        shutil.move(os.getcwd()+"/Users/" + str(user)+"/" + str(photo), path)
 
         image = api_models.Photo()
         image.title = str(photo)
@@ -167,6 +183,40 @@ async def CreateRealOrder(num):
     order.ammount = temp.ammount
     order.add_info = temp.add_info
     order.contact = temp.contact
+    order.main_floor = temp.main_floor
+    order.floor = temp.floor
+
+    order.pro_order = temp
+
+    order.save()
+
+    for photo in temp.photo.all():
+        order.photo.add(photo)
+
+    return order.id
+
+async def CreateRealOnlineOrder(num):
+    temp = api_models.OnlineRieltorTemporaryOrder.objects.get(pk=num)
+    order = api_models.OnlineRieltorOrder()
+
+    order.rieltor = temp.rieltor
+    order.user = temp.user
+    order._type = temp._type
+    order._property = temp._property
+    order.title = temp.title
+    order.region = temp.region
+    order.reference = temp.reference
+    order.location_X = temp.location_X
+    order.location_Y = temp.location_Y
+    order.room_count = temp.room_count
+    order.square = temp.square
+    order.area = temp.area
+    order.state = temp.state
+    order.ammount = temp.ammount
+    order.add_info = temp.add_info
+    order.contact = temp.contact
+    order.main_floor = temp.main_floor
+    order.floor = temp.floor
 
     order.pro_order = temp
 

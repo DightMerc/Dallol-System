@@ -20,7 +20,7 @@ def PriceSetKeyboard(user):
         if client.getUserLanguage(user)=="RU":
                 keyboard.add(KeyboardButton('⏮ Назад'))
         else:
-                keyboard.add(KeyboardButton('⏮ Оркага'))
+                keyboard.add(KeyboardButton('⏮ Ортга'))
         return keyboard
 
 def OnlineKeyboard(user):
@@ -33,7 +33,7 @@ def OnlineKeyboard(user):
         if client.getUserLanguage(user)=="RU":
                 keyboard.add(KeyboardButton('⏮ Назад'))
         else:
-                keyboard.add(KeyboardButton('⏮ Оркага'))
+                keyboard.add(KeyboardButton('⏮ Ортга'))
         return keyboard
 
 def OnlineKeyboardApply(user):
@@ -44,7 +44,7 @@ def OnlineKeyboardApply(user):
         else:
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True
                         ).add(KeyboardButton("Буюртма бериш")
-                        ).add(KeyboardButton('⏮ Оркага'))
+                        ).add(KeyboardButton('⏮ Ортга'))
         
 
 def MenuKeyboard(user):
@@ -79,7 +79,7 @@ def SaleAndRentKeyboard(user):
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
                         KeyboardButton('Эълон бериш'),
                         KeyboardButton('Қидирув 🔍')
-                ).add(KeyboardButton('⏮ Оркага'))
+                ).add(KeyboardButton('⏮ Ортга'))
     
 
 def SaleSearchAndannouncementKeyboard(user):
@@ -90,7 +90,7 @@ def SaleSearchAndannouncementKeyboard(user):
                         KeyboardButton('🏬 Квартира')
                 ).row(
                         KeyboardButton('🏡 Участок земли'),
-                        KeyboardButton('🏗 Нежилая недвижимость')
+                        KeyboardButton('🏗 Коммерческая недвижимость')
                 ).add(KeyboardButton('⏮ Назад'))
         else:
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
@@ -98,8 +98,8 @@ def SaleSearchAndannouncementKeyboard(user):
                         KeyboardButton('🏬 Квартира')
                 ).row(
                         KeyboardButton('🏡 Ер'),
-                        KeyboardButton('🏗 Уй-жойсиз қурилиш')
-                ).add(KeyboardButton('⏮ Оркага'))
+                        KeyboardButton('🏗 Тижорат кўчмас мулки')
+                ).add(KeyboardButton('⏮ Ортга'))
 
     
 
@@ -115,7 +115,7 @@ def OnlineSaleAndRentKeyboard(user):
                                 KeyboardButton('Сотув'),
                                 KeyboardButton('Ижара')
                         ).add(KeyboardButton('Қидирув 🔍')
-                        ).add(KeyboardButton('⏮ Оркага'))
+                        ).add(KeyboardButton('⏮ Ортга'))
         
 
 def EditApplyKeyboard(user):
@@ -126,9 +126,9 @@ def EditApplyKeyboard(user):
                 ).add(KeyboardButton('⏮ Назад'))
         else:
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('Озгартириш'),
+                        KeyboardButton('Ўзгартириш'),
                         KeyboardButton('Юбориш')
-                ).add(KeyboardButton('⏮ Оркага'))
+                ).add(KeyboardButton('⏮ Ортга'))
         
 
 def AdminApplyKeyboard(mode, num):
@@ -173,7 +173,7 @@ def SearchKeyboard(mode, user):
                                 ).add(
                                         KeyboardButton('⏮ Назад'),
                                 )
-                elif mode == "Нежилая недвижимость":
+                elif mode == "Коммерческая недвижимость":
                         return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
                                 KeyboardButton('Цена'),
                                 KeyboardButton('Район'),
@@ -196,7 +196,7 @@ def SearchKeyboard(mode, user):
                                         KeyboardButton('Тозалаш'),
 
                                 ).add(
-                                        KeyboardButton('⏮ Оркага'),
+                                        KeyboardButton('⏮ Ортга'),
                                 )
                 elif mode=="Квартира":
                         return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
@@ -207,7 +207,7 @@ def SearchKeyboard(mode, user):
                                         KeyboardButton('Тозалаш'),
 
                                 ).add(
-                                        KeyboardButton('⏮ Оркага'),
+                                        KeyboardButton('⏮ Ортга'),
                                 )
                 elif mode == "Участок земли":
                         return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
@@ -219,9 +219,9 @@ def SearchKeyboard(mode, user):
                                         KeyboardButton('Тозалаш'),
 
                                 ).add(
-                                        KeyboardButton('⏮ Оркага'),
+                                        KeyboardButton('⏮ Ортга'),
                                 )
-                elif mode == "Нежилая недвижимость":
+                elif mode == "Коммерческая недвижимость":
                         return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
                                 KeyboardButton('Нарх'),
                                 KeyboardButton('Туман'),
@@ -231,7 +231,7 @@ def SearchKeyboard(mode, user):
                                         KeyboardButton('Тозалаш'),
 
                                 ).add(
-                                        KeyboardButton('⏮ Оркага'),
+                                        KeyboardButton('⏮ Ортга'),
                                 )
         
 
@@ -259,7 +259,7 @@ def PhotoPaginationKeyboard(length, current, user):
                         InlineKeyboardButton(text="Удалить", callback_data="pagination delete {}".format(current)))
                 keyboard.add(InlineKeyboardButton(text="Отмена", callback_data="pagination cancel"))
         else:
-                keyboard.row(InlineKeyboardButton(text="Озгартириш", callback_data="pagination change {}".format(current)),
+                keyboard.row(InlineKeyboardButton(text="Ўзгартириш", callback_data="pagination change {}".format(current)),
                         InlineKeyboardButton(text="Удалить", callback_data="pagination delete {}".format(current)))
                 keyboard.add(InlineKeyboardButton(text="Бекор килиш", callback_data="pagination cancel"))
         
@@ -338,6 +338,9 @@ def EditOnlineMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Площадь", callback_data="edit square")
                         ).row(
+                                InlineKeyboardButton(text="Этажи в доме", callback_data="edit main_floor"),
+                                InlineKeyboardButton(text="Этаж квартиры", callback_data="edit floor")
+                        ).row(
                                 InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
                                 InlineKeyboardButton(text="Контакты", callback_data="edit phone")
                         ).add(
@@ -374,7 +377,7 @@ def EditOnlineMarkup(data, user):
                                 InlineKeyboardButton(text="Подтвердить", callback_data="edit cancel"),
                         )
                         return keyboard
-                elif _property == "Нежилая недвижимость":
+                elif _property == "Коммерческая недвижимость":
                         keyboard.add(
                                 InlineKeyboardButton(text="Риелтор", callback_data="edit master"),
                         ).add(
@@ -388,8 +391,7 @@ def EditOnlineMarkup(data, user):
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
                                 InlineKeyboardButton(text="Информация", callback_data="edit add_info")
-                        ).row(
-                                InlineKeyboardButton(text="Состояние", callback_data="edit state"),
+                        ).add(
                                 InlineKeyboardButton(text="Количество соток", callback_data="edit area")
                         ).row(
                                 InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
@@ -411,11 +413,11 @@ def EditOnlineMarkup(data, user):
                                 InlineKeyboardButton(text="Туман", callback_data="edit region")
                         ).row(
                                 InlineKeyboardButton(text="Mўлжал", callback_data="edit reference"),
-                                InlineKeyboardButton(text="Количество комнат", callback_data="edit room_count")
+                                InlineKeyboardButton(text="Ҳоналар сони", callback_data="edit room_count")
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
                         ).add(
                                 InlineKeyboardButton(text="Даража", callback_data="edit prop_state")
                         ).row(
@@ -427,7 +429,7 @@ def EditOnlineMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
 
@@ -441,22 +443,25 @@ def EditOnlineMarkup(data, user):
                                 InlineKeyboardButton(text="Туман", callback_data="edit region")
                         ).row(
                                 InlineKeyboardButton(text="Mўлжал", callback_data="edit reference"),
-                                InlineKeyboardButton(text="Количество комнат", callback_data="edit room_count")
+                                InlineKeyboardButton(text="Ҳоналар сони", callback_data="edit room_count")
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
                         ).add(
                                 InlineKeyboardButton(text="Даража", callback_data="edit prop_state")
                         ).add(
                                 InlineKeyboardButton(text="Умумий майдон", callback_data="edit square")
+                        ).row(
+                                InlineKeyboardButton(text="Каватлар", callback_data="edit main_floor"),
+                                InlineKeyboardButton(text="Квартиранинг кавати", callback_data="edit floor")
                         ).row(
                                 InlineKeyboardButton(text="Нарх", callback_data="edit ammount"),
                                 InlineKeyboardButton(text="Телефон", callback_data="edit phone")
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
                 elif _property == "Участок земли":
@@ -472,11 +477,10 @@ def EditOnlineMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
                         ).add(
                                 InlineKeyboardButton(text="Даража", callback_data="edit prop_state")
-                        ).row(
-                                InlineKeyboardButton(text="Умумий майдон", callback_data="edit square"),
+                        ).add(
                                 InlineKeyboardButton(text="Соток", callback_data="edit area")
                         ).row(
                                 InlineKeyboardButton(text="Нарх", callback_data="edit ammount"),
@@ -484,10 +488,10 @@ def EditOnlineMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
-                elif _property == "Нежилая недвижимость":
+                elif _property == "Коммерческая недвижимость":
                         keyboard.add(
                                 InlineKeyboardButton(text="Риелтор", callback_data="edit master"),
                         ).add(
@@ -500,9 +504,8 @@ def EditOnlineMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
-                        ).row(
-                                InlineKeyboardButton(text="Даража", callback_data="edit state"),
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
+                        ).add(
                                 InlineKeyboardButton(text="Соток", callback_data="edit area")
                         ).row(
                                 InlineKeyboardButton(text="Нарх", callback_data="edit ammount"),
@@ -510,7 +513,7 @@ def EditOnlineMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
 
@@ -576,6 +579,9 @@ def EditMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Площадь", callback_data="edit square")
                         ).row(
+                                InlineKeyboardButton(text="Этажи в доме", callback_data="edit main_floor"),
+                                InlineKeyboardButton(text="Этаж квартиры", callback_data="edit floor")
+                        ).row(
                                 InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
                                 InlineKeyboardButton(text="Контакты", callback_data="edit phone")
                         ).add(
@@ -608,7 +614,7 @@ def EditMarkup(data, user):
                                 InlineKeyboardButton(text="Подтвердить", callback_data="edit cancel"),
                         )
                         return keyboard
-                elif _property == "Нежилая недвижимость":
+                elif _property == "Коммерческая недвижимость":
                         keyboard.add(
                                 InlineKeyboardButton(text="Недвижимость", callback_data="edit property"),
                         ).row(
@@ -620,8 +626,7 @@ def EditMarkup(data, user):
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
                                 InlineKeyboardButton(text="Информация", callback_data="edit add_info")
-                        ).row(
-                                InlineKeyboardButton(text="Состояние", callback_data="edit state"),
+                        ).add(
                                 InlineKeyboardButton(text="Количество соток", callback_data="edit area")
                         ).row(
                                 InlineKeyboardButton(text="Цена", callback_data="edit ammount"),
@@ -641,11 +646,11 @@ def EditMarkup(data, user):
                                 InlineKeyboardButton(text="Туман", callback_data="edit region")
                         ).row(
                                 InlineKeyboardButton(text="Mўлжал", callback_data="edit reference"),
-                                InlineKeyboardButton(text="Количество комнат", callback_data="edit room_count")
+                                InlineKeyboardButton(text="Ҳоналар сони", callback_data="edit room_count")
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
                         ).row(
                                 InlineKeyboardButton(text="Умумий майдон", callback_data="edit square"),
                                 InlineKeyboardButton(text="Соток", callback_data="edit area")
@@ -655,7 +660,7 @@ def EditMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
 
@@ -667,20 +672,23 @@ def EditMarkup(data, user):
                                 InlineKeyboardButton(text="Туман", callback_data="edit region")
                         ).row(
                                 InlineKeyboardButton(text="Mўлжал", callback_data="edit reference"),
-                                InlineKeyboardButton(text="Количество комнат", callback_data="edit room_count")
+                                InlineKeyboardButton(text="Ҳоналар сони", callback_data="edit room_count")
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
                         ).add(
                                 InlineKeyboardButton(text="Умумий майдон", callback_data="edit square")
+                        ).row(
+                                InlineKeyboardButton(text="Каватлар", callback_data="edit main_floor"),
+                                InlineKeyboardButton(text="Квартиранинг кавати", callback_data="edit floor")
                         ).row(
                                 InlineKeyboardButton(text="Нарх", callback_data="edit ammount"),
                                 InlineKeyboardButton(text="Телефон", callback_data="edit phone")
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
                 elif _property == "Участок земли":
@@ -694,9 +702,8 @@ def EditMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
-                        ).row(
-                                InlineKeyboardButton(text="Умумий майдон", callback_data="edit square"),
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
+                        ).add(
                                 InlineKeyboardButton(text="Соток", callback_data="edit area")
                         ).row(
                                 InlineKeyboardButton(text="Нарх", callback_data="edit ammount"),
@@ -704,10 +711,10 @@ def EditMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
-                elif _property == "Нежилая недвижимость":
+                elif _property == "Коммерческая недвижимость":
                         keyboard.add(
                                 InlineKeyboardButton(text="Кўчмас мулк", callback_data="edit property"),
                         ).row(
@@ -718,9 +725,8 @@ def EditMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Локация", callback_data="edit location")
                         ).add(
-                                InlineKeyboardButton(text="Малумот", callback_data="edit add_info")
-                        ).row(
-                                InlineKeyboardButton(text="Даража", callback_data="edit state"),
+                                InlineKeyboardButton(text="Қўшимча  маълумот", callback_data="edit add_info")
+                        ).add(
                                 InlineKeyboardButton(text="Соток", callback_data="edit area")
                         ).row(
                                 InlineKeyboardButton(text="Нарх", callback_data="edit ammount"),
@@ -728,7 +734,7 @@ def EditMarkup(data, user):
                         ).add(
                                 InlineKeyboardButton(text="Фото", callback_data="edit photo"),
                         ).add(
-                                InlineKeyboardButton(text="Тасдикланг", callback_data="edit cancel"),
+                                InlineKeyboardButton(text="Тасдиқланг", callback_data="edit cancel"),
                         )
                         return keyboard
 
@@ -738,7 +744,7 @@ def BackKeyboard(user):
         if client.getUserLanguage(user)=="RU":
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('⏮ Назад'))
         else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('⏮ Оркага'))
+                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('⏮ Ортга'))
 
 
 def RegionKeyboard(user):
@@ -751,7 +757,7 @@ def RegionKeyboard(user):
                 buttons = []
                 for region in client.getRegions():
                         buttons.append(KeyboardButton("#{}".format(region.title)))
-                return ReplyKeyboardMarkup(keyboard=build_menu(buttons, 2, footer_buttons=KeyboardButton('⏮ Оркага')),one_time_keyboard=True, resize_keyboard=True)
+                return ReplyKeyboardMarkup(keyboard=build_menu(buttons, 2, footer_buttons=KeyboardButton('⏮ Ортга')),one_time_keyboard=True, resize_keyboard=True)
         
 
 
@@ -763,7 +769,7 @@ def LocationKeyboard(user):
         else:
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('📍 Геолокация юбориш', request_location=True)).add(
                         KeyboardButton('Ўтказиб юбориш')).add(
-                        KeyboardButton('⏮ Оркага'))
+                        KeyboardButton('⏮ Ортга'))
 
 def LocationKeyboardBack(user):
         if client.getUserLanguage(user)=="RU":
@@ -771,7 +777,7 @@ def LocationKeyboardBack(user):
                         KeyboardButton('⏮ Назад'))
         else:
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('📍 Геолокация юбориш', request_location=True)).add(
-                        KeyboardButton('⏮ Оркага'))
+                        KeyboardButton('⏮ Ортга'))
 
     
 
@@ -781,7 +787,7 @@ def ContactKeyboard(user):
                     KeyboardButton('⏮ Назад'))
         else:
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('Телефон рақамингизни юбориш', request_contact=True)).add(
-                    KeyboardButton('⏮ Оркага'))
+                    KeyboardButton('⏮ Ортга'))
     
 
 def YesOrNoKeyboard(user):
@@ -807,7 +813,7 @@ def RoomCountKeyboard(user):
         if client.getUserLanguage(user)=="RU":
                 return ReplyKeyboardMarkup(keyboard=build_menu(room_count, 4, footer_buttons=KeyboardButton('⏮ Назад')),one_time_keyboard=True, resize_keyboard=True)
         else:
-                return ReplyKeyboardMarkup(keyboard=build_menu(room_count, 4, footer_buttons=KeyboardButton('⏮ Оркага')),one_time_keyboard=True, resize_keyboard=True)
+                return ReplyKeyboardMarkup(keyboard=build_menu(room_count, 4, footer_buttons=KeyboardButton('⏮ Ортга')),one_time_keyboard=True, resize_keyboard=True)
         
 
 
@@ -835,7 +841,7 @@ def BackNextKeyboard(user):
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(
                         KeyboardButton('Ўтказиб юбориш')
                 ).add(
-                        KeyboardButton('⏮ Оркага'))
+                        KeyboardButton('⏮ Ортга'))
         
 
 
@@ -856,7 +862,7 @@ def build_menu(buttons,
 
     
 
-SaleSearchAndannouncementKeyboardList = ['🏠 Участок', '🏬 Квартира', '🏡 Участок земли', '🏗 Нежилая недвижимость', '🏠 Ховли', '🏡 Ер', '🏗 Уй-жойсиз қурилиш']
+SaleSearchAndannouncementKeyboardList = ['🏠 Участок', '🏬 Квартира', '🏡 Участок земли', '🏗 Коммерческая недвижимость', '🏠 Ховли', '🏡 Ер', '🏗 Тижорат кўчмас мулки']
 
 
 

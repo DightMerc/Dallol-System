@@ -84,6 +84,9 @@ def Messages(user):
             "filters_clear": client.getMessage(65).text,
             "prop_state": client.getMessage(66).text,
             "no_ann": client.getMessage(67).text,
+            "main_floor": client.getMessage(71).text,
+            "floor": client.getMessage(72).text,
+
 
             
 
@@ -151,6 +154,9 @@ def Messages(user):
             "filters_clear": client.getMessage(68).text,
             "prop_state": client.getMessage(69).text,
             "no_ann": client.getMessage(70).text,
+
+            "main_floor": client.getMessage(73).text,
+            "floor": client.getMessage(74).text,
 
 
 

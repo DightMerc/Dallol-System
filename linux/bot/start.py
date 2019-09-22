@@ -31,7 +31,7 @@ logging.basicConfig(format=u'%(filename)+13s [ LINE:%(lineno)-4s] %(levelname)-8
 
 
 
-bot = Bot(token=client.GetToken())
+bot = Bot(token=client.GetToken(), parse_mode=types.ParseMode.HTML)
 storage = RedisStorage2(db=6)
 dp = Dispatcher(bot, storage=storage)
 
@@ -188,7 +188,7 @@ async def back_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     current_state = await dp.current_state(user=message.from_user.id).get_state()
 
-    if current_state in ["Sale:started", "Rent:started"]:
+    if current_state in ["Sale:started", "Rent:started", "OnlineSearch:type_choosen", "OnlineSearch:title_added", "OnlineSearch:region_added", "OnlineSearch:region_added"]:
 
         await User.language_set.set()
 
@@ -196,7 +196,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -212,7 +212,7 @@ async def back_handler(message: types.Message, state: FSMContext):
 
         await Sale.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_sale']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif current_state in "Rent:announcement":
@@ -222,12 +222,19 @@ async def back_handler(message: types.Message, state: FSMContext):
         text = Messages(user)['choose_action']
         markup = keyboards.SaleAndRentKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
+    elif current_state in "OnlineSearch:announcement":
+
+        await Search.started.set()
+
+        text = Messages(user)['choose_action_after_language']
+        markup = keyboards.MenuKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
 
     elif current_state == "Rent:type_choosen":
 
         await Rent.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_rent']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -235,10 +242,11 @@ async def back_handler(message: types.Message, state: FSMContext):
 
         if "Rent" in current_state:
             await Rent.announcement.set()
+            text = Messages(user)['choose_action_rent']
         elif "Sale" in current_state:
             await Sale.announcement.set()
+            text = Messages(user)['choose_action_sale']
 
-        text = Messages(user)['choose_action']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -249,7 +257,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif "Flat" in current_state:
@@ -259,7 +267,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif "Land" in current_state:
@@ -269,7 +277,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif "Free_area" in current_state:
@@ -279,7 +287,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif current_state == "Search:started":
@@ -314,7 +322,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         await state.set_data({})
 
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -328,7 +336,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         await state.set_data({})
 
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     
@@ -438,7 +446,10 @@ async def back_handler(message: types.Message, state: FSMContext):
 
 
                 text = OnlineGenerateEndText(user_data, user)
-                markup = keyboards.EditOnlineMarkup(user_data, user)
+                if _type!="search":
+                    markup = keyboards.EditOnlineMarkup(user_data, user)
+                else:
+                    markup = keyboards.EditOnlineSearchMarkup(user_data, user)
 
             except Exception as e:
                 print("\n\n{}\n\n".format(e))
@@ -457,17 +468,18 @@ async def back_handler(message: types.Message, state: FSMContext):
             await bot.send_location(user, latitude=X, longitude=Y)
         
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        if len(photoes)!=0:
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
-            # await bot.send_photo(user, photoes[0].replace(".jpg",""))
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+                # await bot.send_photo(user, photoes[0].replace(".jpg",""))
 
     
 
@@ -482,7 +494,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     current_state = await dp.current_state(user=message.from_user.id).get_state()
 
-    if current_state in ["Sale:started", "Rent:started"]:
+    if current_state in ["Sale:started", "Rent:started", "OnlineSearch:type_choosen"]:
 
         await User.language_set.set()
 
@@ -490,7 +502,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -501,12 +513,20 @@ async def back1_handler(message: types.Message, state: FSMContext):
         text = Messages(user)['choose_action']
         markup = keyboards.SaleAndRentKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
+
+    elif current_state in "OnlineSearch:announcement":
+
+        await Search.started.set()
+
+        text = Messages(user)['choose_action_after_language']
+        markup = keyboards.MenuKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
     
     elif current_state == "Sale:type_choosen":
 
         await Sale.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_sale']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif current_state in "Rent:announcement":
@@ -521,7 +541,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
 
         await Rent.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_rent']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -529,8 +549,10 @@ async def back1_handler(message: types.Message, state: FSMContext):
 
         if "Rent" in current_state:
             await Rent.announcement.set()
+            text = Messages(user)['choose_action_rent']
         elif "Sale" in current_state:
             await Sale.announcement.set()
+            text = Messages(user)['choose_action_sale']
 
         text = Messages(user)['choose_action']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
@@ -543,7 +565,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif "Flat" in current_state:
@@ -553,7 +575,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif "Land" in current_state:
@@ -563,7 +585,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif "Free_area" in current_state:
@@ -573,7 +595,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         for a in photoes:
             os.remove(os.getcwd()+"/Users/"+str(user)+"/" + a)
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif current_state == "Search:started":
@@ -608,7 +630,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         await state.set_data({})
 
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -622,7 +644,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         await state.set_data({})
 
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     
@@ -729,7 +751,10 @@ async def back1_handler(message: types.Message, state: FSMContext):
                     user_data.append("")
 
                 text = OnlineGenerateEndText(user_data, user)
-                markup = keyboards.EditOnlineMarkup(user_data, user)
+                if _type!="search":
+                    markup = keyboards.EditOnlineMarkup(user_data, user)
+                else:
+                    markup = keyboards.EditOnlineSearchMarkup(user_data, user)
 
             except Exception as e:
                 print("\n\n{}\n\n".format(e))
@@ -746,16 +771,18 @@ async def back1_handler(message: types.Message, state: FSMContext):
             await bot.send_location(user, latitude=X, longitude=Y)
         
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        if len(photoes)!=0:
 
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
     
 
         await Edit.started.set()
@@ -772,6 +799,10 @@ async def user_ammount_handler(message: types.Message, state: FSMContext):
     
     user = message.from_user.id
     recieved_text = message.text
+    
+    async with state.proxy() as data:
+        _type = data["type"]
+
     data = recieved_text.replace(".","")
     data = data.replace(",","")
     data = data.replace(" ","")
@@ -780,8 +811,23 @@ async def user_ammount_handler(message: types.Message, state: FSMContext):
     data = data.replace("y","")
     data = data.replace("e","")
     data = data.replace("-","")
+    
+    if _type!="search":
 
-    if data.isdigit():
+        if data.isdigit():
+            await User.add_info.set()
+            async with state.proxy() as data1:
+                data1['ammount'] = data
+
+            text = Messages(user)["ammount_set"]
+            markup = keyboards.BackNextKeyboard(user)
+
+            await bot.send_message(user, text, reply_markup=markup)
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
         await User.add_info.set()
         async with state.proxy() as data1:
             data1['ammount'] = recieved_text
@@ -789,10 +835,6 @@ async def user_ammount_handler(message: types.Message, state: FSMContext):
         text = Messages(user)["ammount_set"]
         markup = keyboards.BackNextKeyboard(user)
 
-        await bot.send_message(user, text, reply_markup=markup)
-    else:
-        text = Messages(user)["digits_only"]
-        markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
 @dp.message_handler(state=User.add_info)
@@ -907,11 +949,17 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
             except Exception as e:
                 user_data.append("")
 
+            print("\n\nONLINE TEXT\n\n")
             text = OnlineGenerateEndText(user_data, user)
         except Exception as e:
             print("\n\n{}\n\n".format(e))
 
-            text = GenerateEndText(user_data, False, user)
+            try:
+                print("\n\nTEXT\n\n")
+                text = GenerateEndText(user_data, False, user)
+            except Exception as e:
+                print("\n\n{}\n\n".format(e))
+
 
     await User.edit.set()
 
@@ -921,20 +969,21 @@ async def user_contact_handler(message: types.Message, state: FSMContext):
         await bot.send_chat_action(user, action="find_location")
 
         await bot.send_location(user, latitude=X, longitude=Y)
-
-    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-    media = []
-    for photo in photoes:
-        media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
-    
-
     markup = keyboards.EditApplyKeyboard(user)
-    if len(media)!=1:
-        await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_media_group(user, media)
-    else:
-        await bot.send_chat_action(user, action="upload_photo")
-        await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+    photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
+    if len(photoes)!=0:
+        media = []
+        for photo in photoes:
+            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        
+
+        
+        if len(media)!=1:
+            await bot.send_chat_action(user, action="upload_photo")
+            await bot.send_media_group(user, media)
+        else:
+            await bot.send_chat_action(user, action="upload_photo")
+            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
         
     await bot.send_message(user, text, reply_markup=markup)
 
@@ -1034,18 +1083,23 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                     await bot.send_location(user, latitude=X, longitude=Y)
 
                 photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-                media = []
-                for photo in photoes:
-                    media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+                if len(photoes)!=0:
+                    media = []
+                    for photo in photoes:
+                        media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
-                if len(media)!=1:
-                    await bot.send_chat_action(user, action="upload_photo")
-                    await bot.send_media_group(user, media)
+                    if len(media)!=1:
+                        await bot.send_chat_action(user, action="upload_photo")
+                        await bot.send_media_group(user, media)
+                    else:
+                        await bot.send_chat_action(user, action="upload_photo")
+                        await bot.send_photo(user, str(photoes[0]).replace(".jpg", ""))
+
+                if _type!="search":
+                    markup = keyboards.EditOnlineMarkup(user_data, user)
                 else:
-                    await bot.send_chat_action(user, action="upload_photo")
-                    await bot.send_photo(user, str(photoes[0]).replace(".jpg", ""))
+                    markup = keyboards.EditOnlineSearchMarkup(user_data, user)
 
-                markup = keyboards.EditOnlineMarkup(user_data, user)
                 
                 await bot.send_message(user, text, reply_markup=markup)
 
@@ -1080,9 +1134,12 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
     elif recieved_text in ["Отправить", "Юбориш"]:
 
+        text = Messages(user)['moderator_message']
+        await bot.send_message(user, text, reply_markup=None)
+
         await User.language_set.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -1164,27 +1221,30 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
                 text = OnlineGenerateEndText(user_data, user)
 
+                admin = await client.getAdmin()
                 
                 media = []
+
                 photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-                for photo in photoes:
-                    media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
-                #заменить user на admin
-                admin = await client.getAdmin()
+                if len(photoes)!=0:
 
-                if _location != "0 0":
-                    X = _location.split(" ")[0]
-                    Y = _location.split(" ")[1]
+                    for photo in photoes:
+                        media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+                    #заменить user на admin
 
-                    await bot.send_location(-1001450628461, latitude=X, longitude=Y)
+                    if _location != "0 0":
+                        X = _location.split(" ")[0]
+                        Y = _location.split(" ")[1]
 
-                
-                if len(media)!=1:
+                        await bot.send_location(-1001450628461, latitude=X, longitude=Y)
 
-                    await bot.send_media_group(-1001450628461, media)
-                else:
+                    
+                    if len(media)!=1:
 
-                    await bot.send_photo(-1001450628461, str(photoes[0]).replace(".jpg", ""))
+                        await bot.send_media_group(-1001450628461, media)
+                    else:
+
+                        await bot.send_photo(-1001450628461, str(photoes[0]).replace(".jpg", ""))
                     
                 num = client.createOnlineTemporaryOrder(user, user_data)
 
@@ -1309,6 +1369,7 @@ async def callback_search_handler(callback_query: types.CallbackQuery, state: FS
             user_data.append(_contact)
             user_data.append(_main_floor)
             user_data.append(_floor)
+            user_data.append(_ann_number)
 
             text = GenerateEndText(user_data, True, user)
             print(_location)
@@ -1343,7 +1404,7 @@ async def callback_search_handler(callback_query: types.CallbackQuery, state: FS
             
             # await bot.send_media_group(user, media)
 
-            if a==5:
+            if a==2:
                 await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, num+1))
             else:
                 await bot.send_message(user, text, reply_markup=None)
@@ -1527,7 +1588,10 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
                     user_data.append("")
 
                 text = OnlineGenerateEndText(user_data, user)
-                markup = keyboards.EditOnlineMarkup(user_data, user)
+                if _type!="search":
+                    markup = keyboards.EditOnlineMarkup(user_data, user)
+                else:
+                    markup = keyboards.EditOnlineSearchMarkup(user_data, user)
 
             except Exception as e:
                 print("\n\n{}\n\n".format(e))
@@ -1544,16 +1608,18 @@ async def callback_pagination_handler(callback_query: types.CallbackQuery, state
             await bot.send_location(user, latitude=X, longitude=Y)
         
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        if len(photoes)!=0:
 
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
     
 
         await Edit.started.set()
@@ -1794,19 +1860,21 @@ async def callback_edit_handler(callback_query: types.CallbackQuery, state: FSMC
             await bot.send_chat_action(user, action="find_location")
 
             await bot.send_location(user, latitude=X, longitude=Y)
+        markup = keyboards.EditApplyKeyboard(user)
 
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        if len(photoes)!=0:
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
 
-        markup = keyboards.EditApplyKeyboard(user)
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+
         await bot.send_message(user, text, reply_markup=markup)
 
     
@@ -1867,13 +1935,14 @@ async def text_edit_handler(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
 
             if data["edit"].replace(data['type']+" ", "") in ["room_count", "square", "area", "ammount"]:
+                _type = data['type']
+                if _type!="search":
+                    if  not recieved_text.isdigit():
+                        text = Messages(user)["digits_only"]
+                        markup = keyboards.BackKeyboard(user)
+                        await bot.send_message(user, text, reply_markup=markup)
 
-                if  not recieved_text.isdigit():
-                    text = Messages(user)["digits_only"]
-                    markup = keyboards.BackKeyboard(user)
-                    await bot.send_message(user, text, reply_markup=markup)
-
-                    return
+                        return
             data[data["edit"]] = recieved_text
 
         async with state.proxy() as data:
@@ -1952,7 +2021,10 @@ async def text_edit_handler(message: types.Message, state: FSMContext):
                     user_data.append("")
 
                 text = OnlineGenerateEndText(user_data, user)
-                markup = keyboards.EditOnlineMarkup(user_data, user)
+                if _type!="search":
+                    markup = keyboards.EditOnlineMarkup(user_data, user)
+                else:
+                    markup = keyboards.EditOnlineSearchMarkup(user_data, user)
 
             except Exception as e:
                 print("\n\n{}\n\n".format(e))
@@ -1969,16 +2041,18 @@ async def text_edit_handler(message: types.Message, state: FSMContext):
             await bot.send_location(user, latitude=X, longitude=Y)
         
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+        if len(photoes)!=0:
 
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
     
 
         await Edit.started.set()
@@ -2096,7 +2170,7 @@ async def edit_property_handler(message: types.Message, state: FSMContext):
     if recieved_text in ["Продолжить","Давом еттириш"]:
         await Sale.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_sale']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     else:
@@ -2231,7 +2305,7 @@ async def next_button_handler(message: types.Message, state: FSMContext):
 
         if _type == "Участок земли":
             await Land.square.set()
-            text = Messages(user)["land_square_added"]
+            text = Messages(user)["land_started"]
             markup = keyboards.BackKeyboard(user)
 
         if _type == "Коммерческая недвижимость":
@@ -2266,7 +2340,7 @@ async def next_button_handler(message: types.Message, state: FSMContext):
 
         if _type == "Участок земли":
             await Land.square.set()
-            text = Messages(user)["land_square_added"]
+            text = Messages(user)["land_started"]
             markup = keyboards.BackKeyboard(user)
 
         if _type == "Коммерческая недвижимость":
@@ -2381,18 +2455,21 @@ async def next_button_handler(message: types.Message, state: FSMContext):
             await bot.send_location(user, latitude=X, longitude=Y)
 
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
-        
-
         markup = keyboards.EditApplyKeyboard(user)
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+
+        if len(photoes)!=0:
+
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+            
+
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
         await bot.send_message(user, text, reply_markup=markup)
 
         
@@ -2450,7 +2527,7 @@ async def next1_button_handler(message: types.Message, state: FSMContext):
 
         if _type == "Участок земли":
             await Land.square.set()
-            text = Messages(user)["land_square_added"]
+            text = Messages(user)["land_started"]
             markup = keyboards.BackKeyboard(user)
 
         if _type == "Коммерческая недвижимость":
@@ -2484,7 +2561,7 @@ async def next1_button_handler(message: types.Message, state: FSMContext):
 
         if _type == "Участок земли":
             await Land.square.set()
-            text = Messages(user)["land_square_added"]
+            text = Messages(user)["land_started"]
             markup = keyboards.BackKeyboard(user)
 
         if _type == "Коммерческая недвижимость":
@@ -2598,18 +2675,19 @@ async def next1_button_handler(message: types.Message, state: FSMContext):
             await bot.send_location(user, latitude=X, longitude=Y)
 
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
-        
-
         markup = keyboards.EditApplyKeyboard(user)
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+
+        if len(photoes)!=0:
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+            
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
         await bot.send_message(user, text, reply_markup=markup)
 
         
@@ -2668,7 +2746,7 @@ async def language_handler(message: types.Message, state: FSMContext):
         await state.set_data({})
 
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_after_language']
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -2781,14 +2859,20 @@ async def online_order_handler(message: types.Message, state: FSMContext):
     if recieved_text in ["Сделать заказ", "Буюртма бериш"]:
         async with state.proxy() as data:
             sub_type = data['type']
+            
         if sub_type == "rent":
             await Rent.announcement.set()
+            text = Messages(user)['choose_action_rent']
+
         elif sub_type == "sale":
             await Sale.announcement.set()
+            text = Messages(user)['choose_action_sale']
+
         elif sub_type == "search":
             await OnlineSearch.announcement.set()
+            text = Messages(user)['choose_action_search']
 
-        text = Messages(user)['choose_action']
+
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -2801,8 +2885,8 @@ async def Search_type_choosen_handler(message: types.Message, state: FSMContext)
 
     if recieved_text in keyboards.SaleSearchAndannouncementKeyboardList:
 
-        MessageDict = {'🏠 Участок': Messages(user)['area'], '🏬 Квартира': Messages(user)['flat'], '🏡 Участок земли': Messages(user)['land'], '🏗 Коммерческая недвижимость': Messages(user)['free_area'],
-                        '🏠 Ховли': Messages(user)['area'], '🏡 Ер': Messages(user)['land'], '🏗 Тижорат кўчмас мулки': Messages(user)['free_area'] }
+        MessageDict = {'🏠 Участок': Messages(user)['area_search'], '🏬 Квартира': Messages(user)['flat_search'], '🏡 Участок земли': Messages(user)['land_search'], '🏗 Коммерческая недвижимость': Messages(user)['free_area_search'],
+                        '🏠 Ховли': Messages(user)['area_search'], '🏡 Ер': Messages(user)['land_search'], '🏗 Тижорат кўчмас мулки': Messages(user)['free_area_search'] }
 
         await OnlineSearch.type_choosen.set()
 
@@ -2882,7 +2966,7 @@ async def Search_reference_handler(message: types.Message, state: FSMContext):
 
     if _type == "Участок земли":
         await Land.square.set()
-        text = Messages(user)["land_square_added"]
+        text = Messages(user)["land_started"]
         markup = keyboards.BackKeyboard(user)
 
     if _type == "Коммерческая недвижимость":
@@ -2941,7 +3025,7 @@ async def rent_handler(message: types.Message):
     if recieved_text in ["Подать объявление", "Эълон бериш"]:
         await Rent.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_rent']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
@@ -3061,7 +3145,7 @@ async def rent_location_added_handler(message: types.Message, state: FSMContext)
 
     if _type == "Участок земли":
         await Land.square.set()
-        text = Messages(user)["land_square_added"]
+        text = Messages(user)["land_started"]
         markup = keyboards.BackKeyboard(user)
 
     if _type == "Коммерческая недвижимость":
@@ -3081,7 +3165,7 @@ async def sale_handler(message: types.Message):
     if recieved_text in ["Подать объявление", "Эълон бериш"]:
         await Sale.announcement.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_action_sale']
         markup = keyboards.SaleSearchAndannouncementKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -3271,6 +3355,8 @@ async def data_search_handler(message: types.Message, state: FSMContext):
                 user_data.append(_contact)
                 user_data.append(_main_floor)
                 user_data.append(_floor)
+                user_data.append(_ann_number)
+
 
                 text = GenerateEndText(user_data, True, user)
                 print(_location)
@@ -3305,7 +3391,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
                 
                 # await bot.send_media_group(user, media)
 
-                if a==5:
+                if a==2:
                     await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, 2))
                 else:
                     await bot.send_message(user, text, reply_markup=None)
@@ -3336,7 +3422,10 @@ async def search_price_handler(message: types.Message, state: FSMContext):
         elif recieved_text=="3":
             price = "50000 75000"
         elif recieved_text=="4":
+            price = "75000 100000"
+        elif recieved_text=="5":
             price = "100000"
+
     elif _type == "rent":
         if recieved_text=="1":
             price = "200"
@@ -3345,6 +3434,8 @@ async def search_price_handler(message: types.Message, state: FSMContext):
         elif recieved_text=="3":
             price = "500 700"
         elif recieved_text=="4":
+            price = "700 900"
+        elif recieved_text=="5":
             price = "900"
 
     async with state.proxy() as data:
@@ -3529,7 +3620,7 @@ async def sale_location_added_handler(message: types.Message, state: FSMContext)
 
     if _type == "Участок земли":
         await Land.square.set()
-        text = Messages(user)["land_square_added"]
+        text = Messages(user)["land_started"]
         markup = keyboards.BackKeyboard(user)
 
     if _type == "Коммерческая недвижимость":
@@ -3607,40 +3698,58 @@ async def sale_area_room_count_handler(message: types.Message, state: FSMContext
     
     user = message.from_user.id
     recieved_text = message.text
-
+    async with state.proxy() as data:
+        _type = data["type"]
     
-    if recieved_text.isdigit():
-        try:
-            async with state.proxy() as data:
-                _type = data["online"]
+    if _type!="search":
+    
+        if recieved_text.isdigit():
+            try:
+                async with state.proxy() as data:
+                    _type = data["online"]
 
-            await Area.state.set()
+                await Area.state.set()
 
-            async with state.proxy() as data:
-                _type = data["type"]
-                data["{} room_count".format(_type)] = recieved_text
+                async with state.proxy() as data:
+                    _type = data["type"]
+                    data["{} room_count".format(_type)] = recieved_text
 
-            # text = Messages(user)["area_rooms_added"]
-            text = Messages(user)["prop_state"]
-            # "Состояние ремонта недвижимости (например: Евро ремонт)"
+                # text = Messages(user)["area_rooms_added"]
+                text = Messages(user)["prop_state"]
+                # "Состояние ремонта недвижимости (например: Евро ремонт)"
+                markup = keyboards.BackKeyboard(user)
+                await bot.send_message(user, text, reply_markup=markup)
+
+            except Exception as e:
+
+
+                await Area.square.set()
+
+                async with state.proxy() as data:
+                    _type = data["type"]
+                    data["{} room_count".format(_type)] = recieved_text
+
+                text = Messages(user)["area_rooms_added"]
+                markup = keyboards.BackKeyboard(user)
+                await bot.send_message(user, text, reply_markup=markup)
+
+        else:
+            text = Messages(user)["digits_only"]
             markup = keyboards.BackKeyboard(user)
             await bot.send_message(user, text, reply_markup=markup)
-
-        except Exception as e:
-
-
-            await Area.square.set()
-
-            async with state.proxy() as data:
-                _type = data["type"]
-                data["{} room_count".format(_type)] = recieved_text
-
-            text = Messages(user)["area_rooms_added"]
-            markup = keyboards.BackKeyboard(user)
-            await bot.send_message(user, text, reply_markup=markup)
-
     else:
-        text = Messages(user)["digits_only"]
+        async with state.proxy() as data:
+            _type = data["online"]
+
+        await Area.state.set()
+
+        async with state.proxy() as data:
+            _type = data["type"]
+            data["{} room_count".format(_type)] = recieved_text
+
+        # text = Messages(user)["area_rooms_added"]
+        text = Messages(user)["prop_state"]
+        # "Состояние ремонта недвижимости (например: Евро ремонт)"
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -3650,10 +3759,35 @@ async def sale_area_square_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     recieved_text = message.text
 
+    
+
+    async with state.proxy() as data:
+        _type = data["type"]
+    
     data = recieved_text.replace(",","")
     data = data.replace(".","")
 
-    if data.isdigit():
+    if _type!="search":
+
+        if data.isdigit():
+            recieved_text = recieved_text.replace(",",".")
+
+
+            await Area.area.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} square".format(_type)] = recieved_text
+                
+
+            text = Messages(user)["area_square_added"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
         recieved_text = recieved_text.replace(",",".")
 
 
@@ -3665,10 +3799,6 @@ async def sale_area_square_handler(message: types.Message, state: FSMContext):
             
 
         text = Messages(user)["area_square_added"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-    else:
-        text = Messages(user)["digits_only"]
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -3781,18 +3911,21 @@ async def text_phone_handler(message: types.Message, state: FSMContext):
             await bot.send_location(user, latitude=X, longitude=Y)
 
         photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
-        media = []
-        for photo in photoes:
-            media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
-        
-
         markup = keyboards.EditApplyKeyboard(user)
-        if len(media)!=1:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_media_group(user, media)
-        else:
-            await bot.send_chat_action(user, action="upload_photo")
-            await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
+
+        if len(photoes)!=0:
+
+            media = []
+            for photo in photoes:
+                media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
+            
+
+            if len(media)!=1:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_media_group(user, media)
+            else:
+                await bot.send_chat_action(user, action="upload_photo")
+                await bot.send_photo(user, str(photoes[0]).replace(".jpg",""))
             
         await bot.send_message(user, text, reply_markup=markup)
     else:
@@ -3806,27 +3939,47 @@ async def sale_area_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     recieved_text = message.text
 
+    
+
+    async with state.proxy() as data:
+        _type = data["type"]
+
     data = recieved_text.replace(",","")
     data = data.replace(".","")
+    
+    if _type!="search":
 
-    if data.isdigit():
+        if data.isdigit():
+            recieved_text = recieved_text.replace(",",".")
+
+
+            await User.photo.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} area".format(_type)] = recieved_text
+
+            text = Messages(user)["photo1"]
+            await bot.send_message(user, text, reply_markup=None)
+
+            text = Messages(user)["photo2"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
         recieved_text = recieved_text.replace(",",".")
-
-
-        await User.photo.set()
 
         async with state.proxy() as data:
             _type = data["type"]
             data["{} area".format(_type)] = recieved_text
 
-        text = Messages(user)["photo1"]
-        await bot.send_message(user, text, reply_markup=None)
+        text = Messages(user)["ammount"]
+        await User.ammount_set.set()
+        
 
-        text = Messages(user)["photo2"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-    else:
-        text = Messages(user)["digits_only"]
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -3868,35 +4021,53 @@ async def sale_flat_room_count_handler(message: types.Message, state: FSMContext
     
     user = message.from_user.id
     recieved_text = message.text
-    if recieved_text.isdigit():
-        try:
-            async with state.proxy() as data:
-                _type = data["online"]
+    async with state.proxy() as data:
+        _type = data["type"]
+    
+    if _type!="search":
+        if recieved_text.isdigit():
+            try:
+                async with state.proxy() as data:
+                    _type = data["online"]
 
-            await Flat.state.set()
+                await Flat.state.set()
 
-            async with state.proxy() as data:
-                _type = data["type"]
-                data["{} room_count".format(_type)] = recieved_text
+                async with state.proxy() as data:
+                    _type = data["type"]
+                    data["{} room_count".format(_type)] = recieved_text
 
-            # text = Messages(user)["area_rooms_added"]
-            text = Messages(user)["prop_state"]
-            markup = keyboards.BackKeyboard(user)
-            await bot.send_message(user, text, reply_markup=markup)
+                # text = Messages(user)["area_rooms_added"]
+                text = Messages(user)["prop_state"]
+                markup = keyboards.BackKeyboard(user)
+                await bot.send_message(user, text, reply_markup=markup)
 
-        except Exception as e:
+            except Exception as e:
 
-            await Flat.square.set()
+                await Flat.square.set()
 
-            async with state.proxy() as data:
-                _type = data["type"]
-                data["{} room_count".format(_type)] = recieved_text
+                async with state.proxy() as data:
+                    _type = data["type"]
+                    data["{} room_count".format(_type)] = recieved_text
 
-            text = Messages(user)["flat_rooms_added"]
+                text = Messages(user)["flat_rooms_added"]
+                markup = keyboards.BackKeyboard(user)
+                await bot.send_message(user, text, reply_markup=markup)
+        else:
+            text = Messages(user)["digits_only"]
             markup = keyboards.BackKeyboard(user)
             await bot.send_message(user, text, reply_markup=markup)
     else:
-        text = Messages(user)["digits_only"]
+        async with state.proxy() as data:
+            _type = data["online"]
+
+        await Flat.state.set()
+
+        async with state.proxy() as data:
+            _type = data["type"]
+            data["{} room_count".format(_type)] = recieved_text
+
+        # text = Messages(user)["area_rooms_added"]
+        text = Messages(user)["prop_state"]
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -3906,14 +4077,41 @@ async def sale_flat_square_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     recieved_text = message.text
 
+    
+    
+    async with state.proxy() as data:
+        _type = data["type"]
+
     data = recieved_text.replace(",","")
     data = data.replace(".","")
+    
+    if _type!="search":
+        if data.isdigit():
+            recieved_text = recieved_text.replace(",",".")
 
-    if data.isdigit():
+
+            
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} square".format(_type)] = recieved_text
+
+            await Flat.main_floor.set()
+
+            text = Messages(user)["main_floor"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=None)
+
+            
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
         recieved_text = recieved_text.replace(",",".")
 
 
-        await User.photo.set()
+        
 
         async with state.proxy() as data:
             _type = data["type"]
@@ -3925,21 +4123,35 @@ async def sale_flat_square_handler(message: types.Message, state: FSMContext):
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=None)
 
-        
-    else:
-        text = Messages(user)["digits_only"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-
 @dp.message_handler(state=Flat.main_floor)
 async def sale_flat_main_floor_handler(message: types.Message, state: FSMContext):
     
     user = message.from_user.id
     recieved_text = message.text
+    async with state.proxy() as data:
+        _type = data["type"]
+    
+    if _type!="search":
+        if recieved_text.isdigit():
 
-    if recieved_text.isdigit():
+
+            await Flat.floor.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} main_floor".format(_type)] = recieved_text
 
 
+            text = Messages(user)["floor"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=None)
+
+            
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
         await Flat.floor.set()
 
         async with state.proxy() as data:
@@ -3951,37 +4163,46 @@ async def sale_flat_main_floor_handler(message: types.Message, state: FSMContext
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=None)
 
-        
-    else:
-        text = Messages(user)["digits_only"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-
 @dp.message_handler(state=Flat.floor)
 async def sale_flat_floor_handler(message: types.Message, state: FSMContext):
     
     user = message.from_user.id
     recieved_text = message.text
+    async with state.proxy() as data:
+        _type = data["type"]
+    
+    if _type!="search":
+        if recieved_text.isdigit():
 
-    if recieved_text.isdigit():
 
+            await User.photo.set()
 
-        await User.photo.set()
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} floor".format(_type)] = recieved_text
+
+            text = Messages(user)["photo1"]
+            await bot.send_message(user, text, reply_markup=None)
+
+            text = Messages(user)["photo2"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+
+            
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
 
         async with state.proxy() as data:
             _type = data["type"]
             data["{} floor".format(_type)] = recieved_text
 
-        text = Messages(user)["photo1"]
-        await bot.send_message(user, text, reply_markup=None)
-
-        text = Messages(user)["photo2"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-
+        text = Messages(user)["ammount"]
+        await User.ammount_set.set()
         
-    else:
-        text = Messages(user)["digits_only"]
+
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -4038,45 +4259,64 @@ async def sale_land_area_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
     recieved_text = message.text
 
+    
+
+    async with state.proxy() as data:
+        _type = data["type"]
+
     data = recieved_text.replace(",","")
     data = data.replace(".","")
+    
+    if _type!="search":
+        if data.isdigit():
+            try:
+                async with state.proxy() as data:
+                    _type = data["online"]
 
-    if data.isdigit():
-        try:
-            async with state.proxy() as data:
-                _type = data["online"]
+                await Land.state.set()
 
-            await Land.state.set()
+                async with state.proxy() as data:
+                    _type = data["type"]
+                    data["{} area".format(_type)] = recieved_text
 
-            async with state.proxy() as data:
-                _type = data["type"]
-                data["{} area".format(_type)] = recieved_text
-
-            # text = Messages(user)["area_rooms_added"]
-            text = Messages(user)["prop_state"]
-            markup = keyboards.BackKeyboard(user)
-            await bot.send_message(user, text, reply_markup=markup)
-        except Exception as e:
-            recieved_text = recieved_text.replace(",",".")
+                # text = Messages(user)["area_rooms_added"]
+                text = Messages(user)["prop_state"]
+                markup = keyboards.BackKeyboard(user)
+                await bot.send_message(user, text, reply_markup=markup)
+            except Exception as e:
+                recieved_text = recieved_text.replace(",",".")
 
 
-            await User.photo.set()
+                await User.photo.set()
 
-            async with state.proxy() as data:
-                _type = data["type"]
-                data["{} area".format(_type)] = recieved_text
+                async with state.proxy() as data:
+                    _type = data["type"]
+                    data["{} area".format(_type)] = recieved_text
 
-            text = Messages(user)["photo1"]
-            await bot.send_message(user, text, reply_markup=None)
+                text = Messages(user)["photo1"]
+                await bot.send_message(user, text, reply_markup=None)
 
-            text = Messages(user)["photo2"]
+                text = Messages(user)["photo2"]
+                markup = keyboards.BackKeyboard(user)
+                await bot.send_message(user, text, reply_markup=markup)
+        else:
+            text = Messages(user)["digits_only"]
             markup = keyboards.BackKeyboard(user)
             await bot.send_message(user, text, reply_markup=markup)
     else:
-        text = Messages(user)["digits_only"]
+        async with state.proxy() as data:
+            _type = data["online"]
+
+        await Land.state.set()
+
+        async with state.proxy() as data:
+            _type = data["type"]
+            data["{} area".format(_type)] = recieved_text
+
+        # text = Messages(user)["area_rooms_added"]
+        text = Messages(user)["prop_state"]
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
-
 # @dp.message_handler(state=Free_area.started)
 # async def sale_free_area_room_count_handler(message: types.Message, state: FSMContext):
     
@@ -4114,15 +4354,41 @@ async def sale_free_area_square_handler(message: types.Message, state: FSMContex
     user = message.from_user.id
     recieved_text = message.text
 
-    await Free_area.square.set()
+    
 
     async with state.proxy() as data:
         _type = data["type"]
-        data["{} square".format(_type)] = recieved_text
 
-    text = Messages(user)["free_area_square_added"]
-    markup = keyboards.BackNextKeyboard(user)
-    await bot.send_message(user, text, reply_markup=markup)
+    data = recieved_text.replace(",","")
+    data = data.replace(".","")
+    
+    if _type!="search":
+
+        if data.isdigit():
+
+            await Free_area.square.set()
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} square".format(_type)] = recieved_text
+
+            text = Messages(user)["free_area_square_added"]
+            markup = keyboards.BackNextKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
+        await Free_area.square.set()
+
+        async with state.proxy() as data:
+            _type = data["type"]
+            data["{} square".format(_type)] = recieved_text
+
+        text = Messages(user)["free_area_square_added"]
+        markup = keyboards.BackNextKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
 
 @dp.message_handler(state=Free_area.square)
 async def sale_free_area_area_handler(message: types.Message, state: FSMContext):
@@ -4130,27 +4396,48 @@ async def sale_free_area_area_handler(message: types.Message, state: FSMContext)
     user = message.from_user.id
     recieved_text = message.text
 
+    
+    async with state.proxy() as data:
+        _type = data["type"]
+
     data = recieved_text.replace(",","")
     data = data.replace(".","")
+    
+    if _type!="search":
 
-    if data.isdigit():
+        if data.isdigit():
+            recieved_text = recieved_text.replace(",",".")
+
+            await User.photo.set() 
+
+            async with state.proxy() as data:
+                _type = data["type"]
+                data["{} area".format(_type)] = recieved_text
+
+            text = Messages(user)["photo1"]
+            await bot.send_message(user, text, reply_markup=None)
+
+            text = Messages(user)["photo2"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+
+        else:
+            text = Messages(user)["digits_only"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+    else:
         recieved_text = recieved_text.replace(",",".")
 
-        await User.photo.set() 
+        
 
         async with state.proxy() as data:
             _type = data["type"]
             data["{} area".format(_type)] = recieved_text
 
-        text = Messages(user)["photo1"]
-        await bot.send_message(user, text, reply_markup=None)
+        text = Messages(user)["ammount"]
+        await User.ammount_set.set()
+        
 
-        text = Messages(user)["photo2"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-
-    else:
-        text = Messages(user)["digits_only"]
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 

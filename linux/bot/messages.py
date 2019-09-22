@@ -87,6 +87,19 @@ def Messages(user):
             "main_floor": client.getMessage(71).text,
             "floor": client.getMessage(72).text,
 
+            'area_search': client.getMessage(75).text,
+            'flat_search': client.getMessage(76).text,
+            'land_search': client.getMessage(77).text,
+            'free_area_search': client.getMessage(78).text,
+
+            'choose_action_after_language': client.getMessage(83).text,
+            'choose_action_rent': client.getMessage(84).text,
+            'choose_action_sale': client.getMessage(85).text,
+            'choose_action_search': client.getMessage(86).text,
+
+            'moderator_message': client.getMessage(87).text,
+
+
 
             
 
@@ -157,6 +170,18 @@ def Messages(user):
 
             "main_floor": client.getMessage(73).text,
             "floor": client.getMessage(74).text,
+
+            'area_search': client.getMessage(79).text,
+            'flat_search': client.getMessage(80).text,
+            'land_search': client.getMessage(81).text,
+            'free_area_search': client.getMessage(82).text,
+
+            'choose_action_after_language': client.getMessage(88).text,
+            'choose_action_rent': client.getMessage(89).text,
+            'choose_action_sale': client.getMessage(90).text,
+            'choose_action_search': client.getMessage(91).text,
+
+            'moderator_message': client.getMessage(92).text,
 
 
 

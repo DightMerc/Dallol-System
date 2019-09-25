@@ -162,7 +162,7 @@ async def process_start_command(message: types.Message, state: FSMContext):
     
     await bot.send_chat_action(user, action="typing")
 
-    await bot.send_message(user, Messages(user)['start'].format(message.from_user.first_name))
+    await bot.send_message(user, Messages(user)['start'].replace("{}", message.from_user.first_name))
     await bot.send_message(user, Messages(user)['language'], reply_markup=keyboards.LanguageKeyboard(user))
 
 
@@ -305,7 +305,7 @@ async def back_handler(message: types.Message, state: FSMContext):
     elif current_state == "Online:order":
         await Online.mode.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_rieltor']
         markup = keyboards.OnlineKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -613,7 +613,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
     elif current_state == "Online:order":
         await Online.mode.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_rieltor']
         markup = keyboards.OnlineKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -1134,8 +1134,7 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
     elif recieved_text in ["Отправить", "Юбориш"]:
 
-        text = Messages(user)['moderator_message']
-        await bot.send_message(user, text, reply_markup=None)
+        
 
         await User.language_set.set()
 
@@ -1214,6 +1213,10 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 _type = data['type']
                 _online_status = data["online"]
                 user_data.append(data['master'])
+
+                text = Messages(user)['moderator_message_online']
+                await bot.send_message(user, text, reply_markup=None)
+
                 try:
                     user_data.append(data['{} prop_state'.format(_type)])
                 except Exception as e:
@@ -1254,6 +1257,9 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
 
             except Exception as e:
                 print("\n\n{}\n\n".format(e))
+
+                text = Messages(user)['moderator_message']
+                await bot.send_message(user, text, reply_markup=None)
 
                 text = GenerateEndText(user_data, False, user)
 
@@ -1328,6 +1334,7 @@ async def callback_search_handler(callback_query: types.CallbackQuery, state: FS
 
     orders = await SearchAnnouncement(search_data)
     if orders.count!=0:
+        
         a = 1
         for order in orders.get_page(num):
             _ann_number = order.id
@@ -1403,12 +1410,17 @@ async def callback_search_handler(callback_query: types.CallbackQuery, state: FS
             #     media.append(InputMediaPhoto(str(photo).replace(".jpg", "")))
             
             # await bot.send_media_group(user, media)
+            if num<orders.num_pages:
+                if a==2:
+                    await bot.send_message(user, text, reply_markup=None)
+                    text = Messages(user)['search_message'].format(num * 2, orders.count)
+                    await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, num+1))
+                else:
+                    await bot.send_message(user, text, reply_markup=None)
+                a+=1
 
-            if a==2:
-                await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, num+1))
             else:
                 await bot.send_message(user, text, reply_markup=None)
-            a+=1
 
 @dp.callback_query_handler(state=Edit.photo)
 async def callback_pagination_handler(callback_query: types.CallbackQuery, state: FSMContext):   
@@ -2490,14 +2502,28 @@ async def next_button_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
 
     elif my_state in "Free_area:square":
-        await User.photo.set() 
+        async with state.proxy() as data:
+            _type = data['type']
 
-        text = Messages(user)["photo1"]
-        await bot.send_message(user, text, reply_markup=None)
+        if _type!="search":
+            await User.photo.set() 
 
-        text = Messages(user)["photo2"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
+            text = Messages(user)["photo1"]
+            await bot.send_message(user, text, reply_markup=None)
+
+            text = Messages(user)["photo2"]
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+        
+        else:
+
+            text = Messages(user)["ammount"]
+            await User.ammount_set.set()
+            
+
+            markup = keyboards.BackKeyboard(user)
+            await bot.send_message(user, text, reply_markup=markup)
+            
 
 @dp.message_handler(text="Ўтказиб юбориш", state="*")
 async def next1_button_handler(message: types.Message, state: FSMContext):
@@ -2731,7 +2757,7 @@ async def language_handler(message: types.Message, state: FSMContext):
     recieved_text = message.text
 
 
-    if recieved_text == "Русский язык" or recieved_text== "O`zbek tili":
+    if recieved_text == "Русский язык" or recieved_text == "Ўзбек тили":
         if recieved_text == "Русский язык":
             client.userSetLanguage(user, "RU")
         else:
@@ -2797,7 +2823,7 @@ async def online_started_handler(message: types.Message, state: FSMContext):
 
         await Online.mode.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_rieltor']
         markup = keyboards.OnlineKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
         
@@ -2808,7 +2834,7 @@ async def online_started_handler(message: types.Message, state: FSMContext):
 
         await Online.mode.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_rieltor']
         markup = keyboards.OnlineKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
     elif recieved_text in ["Поиск 🔍", "Қидирув 🔍"]:
@@ -2818,7 +2844,7 @@ async def online_started_handler(message: types.Message, state: FSMContext):
 
         await Online.mode.set()
 
-        text = Messages(user)['choose_action']
+        text = Messages(user)['choose_rieltor']
         markup = keyboards.OnlineKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
@@ -3315,6 +3341,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
         orders = await SearchAnnouncement(search_data)
         if orders.count!=0:
             a = 1
+            num = 1
             for order in orders.get_page(1):
                 
                 _ann_number = order.id
@@ -3391,11 +3418,17 @@ async def data_search_handler(message: types.Message, state: FSMContext):
                 
                 # await bot.send_media_group(user, media)
 
-                if a==2:
-                    await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, 2))
+                if num<orders.num_pages:
+                    if a==2:
+                        await bot.send_message(user, text, reply_markup=None)
+                        text = Messages(user)['search_message'].format(num * 2, orders.count)
+                        await bot.send_message(user, text, reply_markup=keyboards.MoreKeyboard(user, num+1))
+                    else:
+                        await bot.send_message(user, text, reply_markup=None)
+                    a+=1
+
                 else:
                     await bot.send_message(user, text, reply_markup=None)
-                a+=1
         else:
             text = Messages(user)["no_ann"]
             await bot.send_message(user, text, reply_markup=None)
@@ -3677,17 +3710,25 @@ async def sale_land_state_handler(message: types.Message, state: FSMContext):
         _type = data["type"]
         data["{} prop_state".format(_type)] = recieved_text
         
+    if _type!="search":
 
+        await User.photo.set()
 
-    await User.photo.set()
+        text = Messages(user)["photo1"]
+        await bot.send_message(user, text, reply_markup=None)
 
-    text = Messages(user)["photo1"]
-    await bot.send_message(user, text, reply_markup=None)
+        text = Messages(user)["photo2"]
+        markup = keyboards.BackKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
+    
+    else:
 
-    text = Messages(user)["photo2"]
-    markup = keyboards.BackKeyboard(user)
-    await bot.send_message(user, text, reply_markup=markup)
+        text = Messages(user)["ammount"]
+        await User.ammount_set.set()
+        
 
+        markup = keyboards.BackKeyboard(user)
+        await bot.send_message(user, text, reply_markup=markup)
     
 
 

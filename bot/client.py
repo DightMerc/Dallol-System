@@ -38,44 +38,36 @@ async def Search(_type, _property, price, region, room_count, area):
             if price!="":
                 if " " in price:
                     prices = price.split(" ")
-                    filtered = order_list.filter(ammount__lte=int(prices[1]))
-                    order_list = filtered
-                    filtered = order_list.filter(ammount__gte=int(prices[0]))
-                    order_list = filtered
-                    
+                    order_list = order_list.filter(ammount__lte=int(prices[1]))
+                    order_list = order_list.filter(ammount__gte=int(prices[0]))
                 else:
 
                     if int(price)!=100000:
+                        print(f"\n\n{price}\n\n")
 
-                        filtered = order_list.filter(ammount__lte=int(price))
-                        order_list = filtered
+                        order_list = order_list.filter(ammount__lte=int(price))
 
                     else:
 
-                        filtered = order_list.filter(ammount__gte=int(price))
-                        order_list = filtered
+                        order_list = order_list.filter(ammount__gte=int(price))
                 
               
 
             if region!="":
-                filtered = order_list.filter(region=region)
-                order_list = filtered
-            
+                order_list = order_list.filter(region=region)
 
             if room_count!="":
-                filtered = order_list.filter(room_count=room_count)
-                order_list = filtered
+                order_list = order_list.filter(room_count=room_count)
 
 
             if area!="":
-                filtered = order_list.filter(area=area)
-                order_list = filtered
+                order_list = order_list.filter(area=area)
             
         else:
             pass
 
 
-        return Paginator(order_list.filter(active=True), 5)
+        return Paginator(order_list.filter(active=True).order_by("-id"), 2)
 
 def getUserLanguage(user):
     return str(api_models.TelegramUser.objects.get(telegram_id=int(user)).language)
@@ -96,21 +88,22 @@ def createOnlineTemporaryOrder(user, data):
     order.user = get_object_or_404(api_models.TelegramUser, telegram_id=user)
     order._type = data[0]
     order._property = data[1]
-    order.title = data[2]
+    order.title = data[2] 
     order.region = data[3]
     order.reference = data[4]
     order.location_X = data[5].split(" ")[0]
     order.location_Y = data[5].split(" ")[1]
-    order.room_count = data[6]
-    order.square = data[7]
-    order.area = data[8]
+    order.room_count = str(data[6])
+    order.square = str(data[7])
+    order.area = str(data[8])
     order.state = data[9]
-    order.ammount = data[10]
+    order.ammount = str(data[10])
     order.add_info = data[11]
     order.contact = data[12]
-    order.main_floor = data[13]
-    order.floor = data[14]
-    order.rieltor = get_object_or_404(api_models.OnlineRieltor, name=data[13])
+    order.main_floor = str(data[13])
+    order.floor = str(data[14])
+    order.rieltor = get_object_or_404(api_models.OnlineRieltor, name=data[15])
+    order.main_state = data[16]
     order.save()
 
     photoes = os.listdir(os.getcwd()+"/Users/" + str(user)+"/")
@@ -200,6 +193,7 @@ async def CreateRealOnlineOrder(num):
     order = api_models.OnlineRieltorOrder()
 
     order.rieltor = temp.rieltor
+    order.main_state = temp.main_state
     order.user = temp.user
     order._type = temp._type
     order._property = temp._property
@@ -239,7 +233,7 @@ async def getAdmin():
 
 
 def getMessage(number):
-    return bot_models.Message.objects.get(number=number)
+    return bot_models.Message.objects.get(number=number).text
 
 def getRegions():
     return bot_models.Region.objects.all()

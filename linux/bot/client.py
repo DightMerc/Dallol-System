@@ -233,7 +233,7 @@ async def getAdmin():
 
 
 def getMessage(number):
-    return bot_models.Message.objects.get(number=number)
+    return bot_models.Message.objects.get(number=number).text
 
 def getRegions():
     return bot_models.Region.objects.all()

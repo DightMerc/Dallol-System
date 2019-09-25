@@ -1,103 +1,105 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils import TestStates
 import client
-
-
-
-help_message = 'Для того, чтобы изменить текущее состояние пользователя, ' \
-               f'отправь команду "/setstate x", где x - число от 0 до {len(TestStates.all()) - 1}.\n' \
-               'Чтобы сбросить текущее состояние, отправь "/setstate" без аргументов.'
-
-start_message = 'Привет! Это демонстрация работы FSM.\n' + help_message
-invalid_key_message = 'Ключ "{key}" не подходит.\n' + help_message
-state_change_success_message = 'Текущее состояние успешно изменено'
-state_reset_message = 'Состояние успешно сброшено'
-current_state_message = 'Текущее состояние - "{current_state}", что удовлетворяет условию "один из {states}"'
-
-
-
 
 def Messages(user):
 
     if client.getUserLanguage(user)=="RU":
     
         MESSAGES = {
-            'start': client.getMessage(1).text,
+            'start': client.getMessage(1),
             
-            'language': client.getMessage(2).text,
+            'language': client.getMessage(2),
 
-            'area': client.getMessage(3).text,
-            'flat': client.getMessage(4).text,
-            'land': client.getMessage(5).text,
-            'free_area': client.getMessage(6).text,
+            'area': client.getMessage(3),
+            'flat': client.getMessage(4),
+            'land': client.getMessage(5),
+            'free_area': client.getMessage(6),
 
-            'title_added': client.getMessage(7).text,
+            'title_added': client.getMessage(7),
 
-            'region_added': client.getMessage(8).text,
+            'region_added': client.getMessage(8),
 
-            'geo1': client.getMessage(9).text,
-            'geo2': client.getMessage(10).text,
-            'geo3': client.getMessage(11).text,
+            'geo1': client.getMessage(9),
+            'geo2': client.getMessage(10),
+            'geo3': client.getMessage(11),
 
-            'area_started': client.getMessage(12).text,
-            'flat_started': client.getMessage(13).text,
-            'land_started': client.getMessage(14).text,
-            'free_area_started': client.getMessage(15).text,
+            'area_started': client.getMessage(12),
+            'flat_started': client.getMessage(13),
+            'land_started': client.getMessage(14),
+            'free_area_started': client.getMessage(15),
 
-            'area_rooms_added': client.getMessage(16).text,
-            'area_square_added': client.getMessage(17).text,
+            'area_rooms_added': client.getMessage(16),
+            'area_square_added': client.getMessage(17),
             
-            'flat_rooms_added': client.getMessage(16).text,
-            'flat_square_added': client.getMessage(17).text,
+            'flat_rooms_added': client.getMessage(16),
+            'flat_square_added': client.getMessage(17),
 
-            'land_square_added': client.getMessage(17).text,
+            'land_square_added': client.getMessage(17),
 
-            'free_area_square_added': client.getMessage(17).text,
-            'free_area_state_added': client.getMessage(14).text,
+            'free_area_square_added': client.getMessage(17),
+            'free_area_state_added': client.getMessage(14),
 
-            'photo1': client.getMessage(18).text,
-            'photo2': client.getMessage(19).text,
-            'photo3': client.getMessage(20).text,
+            'photo1': client.getMessage(18),
+            'photo2': client.getMessage(19),
+            'photo3': client.getMessage(20),
 
-            'ammount': client.getMessage(21).text,
-            'ammount_set': client.getMessage(22).text,
+            'ammount': client.getMessage(21),
+            'ammount_set': client.getMessage(22),
 
-            'contacts': client.getMessage(23).text,
+            'contacts': client.getMessage(23),
 
-            'price_list': client.getMessage(24).text,
+            'price_list': client.getMessage(24),
 
-            'choose_action': client.getMessage(25).text,
-            'filter': client.getMessage(26).text,
-            'send_text': client.getMessage(27).text,
+            'choose_action': client.getMessage(25),
+            'filter': client.getMessage(26),
+            'send_text': client.getMessage(27),
 
-            'choose_photo_edit': client.getMessage(28).text,
+            'choose_photo_edit': client.getMessage(28),
 
-            'edit_text_now': client.getMessage(29).text,
+            'edit_text_now': client.getMessage(29),
 
-            'data_clear': client.getMessage(30).text,
+            'data_clear': client.getMessage(30),
 
-            "digits_only": client.getMessage(31).text,
+            "digits_only": client.getMessage(31),
 
-            "price_list2": client.getMessage(32).text,
+            "price_list2": client.getMessage(32),
 
-            "filters_clear": client.getMessage(65).text,
-            "prop_state": client.getMessage(66).text,
-            "no_ann": client.getMessage(67).text,
-            "main_floor": client.getMessage(71).text,
-            "floor": client.getMessage(72).text,
+            "filters_clear": client.getMessage(65),
+            "prop_state": client.getMessage(66),
+            "no_ann": client.getMessage(67),
+            "main_floor": client.getMessage(71),
+            "floor": client.getMessage(72),
 
-            'area_search': client.getMessage(75).text,
-            'flat_search': client.getMessage(76).text,
-            'land_search': client.getMessage(77).text,
-            'free_area_search': client.getMessage(78).text,
+            'area_search': client.getMessage(75),
+            'flat_search': client.getMessage(76),
+            'land_search': client.getMessage(77),
+            'free_area_search': client.getMessage(78),
 
-            'choose_action_after_language': client.getMessage(83).text,
-            'choose_action_rent': client.getMessage(84).text,
-            'choose_action_sale': client.getMessage(85).text,
-            'choose_action_search': client.getMessage(86).text,
+            'choose_action_after_language': client.getMessage(83),
+            'choose_action_rent': client.getMessage(84),
+            'choose_action_sale': client.getMessage(85),
+            'choose_action_search': client.getMessage(86),
 
-            'moderator_message': client.getMessage(87).text,
+            'moderator_message': client.getMessage(87),
+
+            'moderator_message_online': client.getMessage(93),
+
+            'search_message': client.getMessage(95),
+
+            'choose_rieltor': client.getMessage(97),
+
+
+            'end_text_area': client.getMessage(99),
+            'end_text_flat': client.getMessage(100),
+            'end_text_land': client.getMessage(101),
+            'end_text_free_area': client.getMessage(102),
+
+            'end_text_rieltor_area': client.getMessage(107),
+            'end_text_rieltor_flat': client.getMessage(108),
+            'end_text_rieltor_land': client.getMessage(109),
+            'end_text_rieltor_free_area': client.getMessage(110),
+
 
 
 
@@ -107,81 +109,100 @@ def Messages(user):
         }
     else:
         MESSAGES = {
-            'start': client.getMessage(33).text,
+            'start': client.getMessage(33),
             
-            'language': client.getMessage(34).text,
+            'language': client.getMessage(34),
 
-            'area': client.getMessage(35).text,
-            'flat': client.getMessage(36).text,
-            'land': client.getMessage(37).text,
-            'free_area': client.getMessage(38).text,
+            'area': client.getMessage(35),
+            'flat': client.getMessage(36),
+            'land': client.getMessage(37),
+            'free_area': client.getMessage(38),
 
-            'title_added': client.getMessage(39).text,
+            'title_added': client.getMessage(39),
 
-            'region_added': client.getMessage(40).text,
+            'region_added': client.getMessage(40),
 
-            'geo1': client.getMessage(41).text,
-            'geo2': client.getMessage(42).text,
-            'geo3': client.getMessage(43).text,
+            'geo1': client.getMessage(41),
+            'geo2': client.getMessage(42),
+            'geo3': client.getMessage(43),
 
-            'area_started': client.getMessage(44).text,
-            'flat_started': client.getMessage(45).text,
-            'land_started': client.getMessage(46).text,
-            'free_area_started': client.getMessage(47).text,
+            'area_started': client.getMessage(44),
+            'flat_started': client.getMessage(45),
+            'land_started': client.getMessage(46),
+            'free_area_started': client.getMessage(47),
 
-            'area_rooms_added': client.getMessage(48).text,
-            'area_square_added': client.getMessage(49).text,
+            'area_rooms_added': client.getMessage(48),
+            'area_square_added': client.getMessage(49),
             
-            'flat_rooms_added': client.getMessage(48).text,
-            'flat_square_added': client.getMessage(49).text,
+            'flat_rooms_added': client.getMessage(48),
+            'flat_square_added': client.getMessage(49),
 
-            'land_square_added': client.getMessage(49).text,
+            'land_square_added': client.getMessage(49),
 
-            'free_area_square_added': client.getMessage(49).text,
-            'free_area_state_added': client.getMessage(46).text,
+            'free_area_square_added': client.getMessage(49),
+            'free_area_state_added': client.getMessage(46),
 
-            'photo1': client.getMessage(50).text,
-            'photo2': client.getMessage(51).text,
-            'photo3': client.getMessage(52).text,
+            'photo1': client.getMessage(50),
+            'photo2': client.getMessage(51),
+            'photo3': client.getMessage(52),
 
-            'ammount': client.getMessage(53).text,
-            'ammount_set': client.getMessage(54).text,
+            'ammount': client.getMessage(53),
+            'ammount_set': client.getMessage(54),
 
-            'contacts': client.getMessage(55).text,
+            'contacts': client.getMessage(55),
 
-            'price_list': client.getMessage(56).text,
-            'choose_action': client.getMessage(57).text,
-            'filter': client.getMessage(58).text,
-            'send_text': client.getMessage(59).text,
+            'price_list': client.getMessage(56),
+            'choose_action': client.getMessage(57),
+            'filter': client.getMessage(58),
+            'send_text': client.getMessage(59),
 
-            'choose_photo_edit': client.getMessage(60).text,
+            'choose_photo_edit': client.getMessage(60),
 
-            'edit_text_now': client.getMessage(61).text,
+            'edit_text_now': client.getMessage(61),
 
-            'data_clear': client.getMessage(62).text,
+            'data_clear': client.getMessage(62),
 
-            "digits_only": client.getMessage(63).text,
+            "digits_only": client.getMessage(63),
 
-            "price_list2": client.getMessage(64).text,
+            "price_list2": client.getMessage(64),
 
-            "filters_clear": client.getMessage(68).text,
-            "prop_state": client.getMessage(69).text,
-            "no_ann": client.getMessage(70).text,
+            "filters_clear": client.getMessage(68),
+            "prop_state": client.getMessage(69),
+            "no_ann": client.getMessage(70),
 
-            "main_floor": client.getMessage(73).text,
-            "floor": client.getMessage(74).text,
+            "main_floor": client.getMessage(73),
+            "floor": client.getMessage(74),
 
-            'area_search': client.getMessage(79).text,
-            'flat_search': client.getMessage(80).text,
-            'land_search': client.getMessage(81).text,
-            'free_area_search': client.getMessage(82).text,
+            'area_search': client.getMessage(79),
+            'flat_search': client.getMessage(80),
+            'land_search': client.getMessage(81),
+            'free_area_search': client.getMessage(82),
 
-            'choose_action_after_language': client.getMessage(88).text,
-            'choose_action_rent': client.getMessage(89).text,
-            'choose_action_sale': client.getMessage(90).text,
-            'choose_action_search': client.getMessage(91).text,
+            'choose_action_after_language': client.getMessage(88),
+            'choose_action_rent': client.getMessage(89),
+            'choose_action_sale': client.getMessage(90),
+            'choose_action_search': client.getMessage(91),
 
-            'moderator_message': client.getMessage(92).text,
+            'moderator_message': client.getMessage(92),
+
+            'moderator_message_online': client.getMessage(94),
+
+            'search_message': client.getMessage(96),
+
+            'choose_rieltor': client.getMessage(98),
+
+            'end_text_area': client.getMessage(103),
+            'end_text_flat': client.getMessage(104),
+            'end_text_land': client.getMessage(105),
+            'end_text_free_area': client.getMessage(106),
+
+            'end_text_rieltor_area': client.getMessage(111),
+            'end_text_rieltor_flat': client.getMessage(112),
+            'end_text_rieltor_land': client.getMessage(113),
+            'end_text_rieltor_free_area': client.getMessage(114),
+
+
+
 
 
 

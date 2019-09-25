@@ -7,7 +7,7 @@ import client
 def LanguageKeyboard(user):
 
     return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-        KeyboardButton('O`zbek tili'),
+        KeyboardButton('Ўзбек тили'),
         KeyboardButton('Русский язык')
 )
 

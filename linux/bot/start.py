@@ -191,6 +191,7 @@ async def back_handler(message: types.Message, state: FSMContext):
     if current_state in ["Sale:started", "Rent:started", "OnlineSearch:type_choosen", "OnlineSearch:title_added", "OnlineSearch:region_added", "OnlineSearch:region_added"]:
 
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -252,6 +253,7 @@ async def back_handler(message: types.Message, state: FSMContext):
 
     elif "Area" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -262,6 +264,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
     elif "Flat" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -272,6 +275,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
     elif "Land" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -282,6 +286,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
     elif "Free_area" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -328,6 +333,7 @@ async def back_handler(message: types.Message, state: FSMContext):
 
     elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo"]:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -497,6 +503,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
     if current_state in ["Sale:started", "Rent:started", "OnlineSearch:type_choosen"]:
 
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -560,6 +567,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
 
     elif "Area" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -570,6 +578,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
     elif "Flat" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -580,6 +589,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
     elif "Land" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -590,6 +600,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         await bot.send_message(user, text, reply_markup=markup)
     elif "Free_area" in current_state:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -636,6 +647,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
 
     elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo"]:
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:
@@ -1254,6 +1266,7 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 markup = keyboards.AdminApplyKeyboard("online", num)
 
                 await bot.send_message(-1001450628461, text, reply_markup=markup)
+                await state.set_data({})
 
             except Exception as e:
                 print("\n\n{}\n\n".format(e))
@@ -1290,6 +1303,7 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 
 
                 await bot.send_message(-1001466052079, text, reply_markup=markup)
+                await state.set_data({})
 
 
 
@@ -2764,6 +2778,7 @@ async def language_handler(message: types.Message, state: FSMContext):
             client.userSetLanguage(user, "UZ")
 
         await User.language_set.set()
+        await state.set_data({})
 
         photoes = os.listdir(os.getcwd()+"/Users/"+str(user)+"/")
         for a in photoes:

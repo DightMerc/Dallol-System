@@ -16,7 +16,7 @@ class Message(models.Model):
     text = models.TextField()
 
     def __str__(self):
-        return self.title
+        return "{}) {}".format(self.number, self.title)
 
 class PaySystem(models.Model):
     title = models.CharField(max_length=200)

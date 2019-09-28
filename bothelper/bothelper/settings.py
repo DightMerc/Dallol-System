@@ -27,7 +27,7 @@ SECRET_KEY = 'j=s576ecv)8c$8xad&iz%$e0#l)hu^8tfa3t&%6_g=_mt2fx@x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["193.187.173.41", "lumencorp.net", "127.0.0.1"]
 
 
 # Application definition
@@ -89,7 +89,7 @@ ROOT_URLCONF = 'bothelper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
@@ -154,3 +154,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
+LOGIN_REDIRECT_URL = '/'
+
+

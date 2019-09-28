@@ -27,7 +27,7 @@ urlpatterns = [
     re_path('api/(?P<version>(v1|v2))/', include('api.urls')),
     re_path('bot/', include('bot.urls')),
     path('', include('api.urls')),
-    path('admin/dashboard/', controlcenter.urls),
+    path('accounts/', include('django.contrib.auth.urls')), # new
 ]
 
 if settings.DEBUG:

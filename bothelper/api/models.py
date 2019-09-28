@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from django.contrib.auth.models import User
+
 # Create your models here.
  
 class TelegramUser(models.Model):
@@ -10,6 +12,8 @@ class TelegramUser(models.Model):
     phone = models.PositiveIntegerField("Phone Number", null=True, blank=True)
 
     language = models.CharField("Язык", max_length=5, default="RU")
+
+    created_date = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return str(self.telegram_id)
 
@@ -33,8 +37,10 @@ class TemporaryOrder(models.Model):
     location_X = models.FloatField("Локация: широта")
     location_Y = models.FloatField("Локация: долгота")
     room_count = models.PositiveIntegerField("Количество комнат")
-    square = models.PositiveIntegerField("Общая площадь")
-    area = models.PositiveIntegerField("Количество соток")
+    square = models.FloatField("Общая площадь")
+    area = models.FloatField("Количество соток")
+    main_floor = models.PositiveIntegerField("Количество этажей в доме")
+    floor = models.PositiveIntegerField("Этаж квартиры")
     state = models.CharField("Состояние", max_length=30)
     ammount = models.CharField("Цена", max_length=255)
     add_info = models.TextField("Инфо")
@@ -75,10 +81,14 @@ class OnlineRieltorTemporaryOrder(models.Model):
     reference = models.CharField("Ориентир", max_length=30)
     location_X = models.FloatField("Локация: широта")
     location_Y = models.FloatField("Локация: долгота")
-    room_count = models.PositiveIntegerField("Количество комнат")
-    square = models.PositiveIntegerField("Общая площадь")
-    area = models.PositiveIntegerField("Количество соток")
+    room_count = models.CharField("Количество комнат", max_length=255)
+    square = models.CharField("Общая площадь", max_length=255)
+    area = models.CharField("Количество соток", max_length=255)
+    main_floor = models.CharField("Количество этажей в доме", max_length=255)
+    floor = models.CharField("Этаж квартиры", max_length=255)
     state = models.CharField("Состояние", max_length=30)
+    main_state = models.CharField("Состояние ремонта", max_length=30)
+
     ammount = models.CharField("Цена", max_length=255)
     add_info = models.TextField("Инфо")
     contact = models.PositiveIntegerField("Номер телефона")
@@ -93,7 +103,7 @@ class OnlineRieltorTemporaryOrder(models.Model):
 class OnlineRieltorOrder(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
 
-    pro_order = models.ForeignKey(TemporaryOrder, on_delete=models.CASCADE)
+    pro_order = models.ForeignKey(OnlineRieltorTemporaryOrder, on_delete=models.CASCADE)
 
     active = models.BooleanField("Актуально", default=True)
 
@@ -106,10 +116,14 @@ class OnlineRieltorOrder(models.Model):
     reference = models.CharField("Ориентир", max_length=30)
     location_X = models.FloatField("Локация: широта")
     location_Y = models.FloatField("Локация: долгота")
-    room_count = models.PositiveIntegerField("Количество комнат")
-    square = models.PositiveIntegerField("Общая площадь")
-    area = models.PositiveIntegerField("Количество соток")
+    room_count = models.CharField("Количество комнат", max_length=255)
+    square = models.CharField("Общая площадь", max_length=255)
+    area = models.CharField("Количество соток", max_length=255)
+    main_floor = models.CharField("Количество этажей в доме", max_length=255)
+    floor = models.CharField("Этаж квартиры", max_length=255)
     state = models.CharField("Состояние", max_length=30)
+    main_state = models.CharField("Состояние ремонта", max_length=30)
+
     ammount = models.CharField("Цена", max_length=255)
     add_info = models.TextField("Инфо")
     contact = models.PositiveIntegerField("Номер телефона")
@@ -137,10 +151,12 @@ class Order(models.Model):
     location_X = models.FloatField("Локация: широта")
     location_Y = models.FloatField("Локация: долгота")
     room_count = models.PositiveIntegerField("Количество комнат")
-    square = models.PositiveIntegerField("Общая площадь")
-    area = models.PositiveIntegerField("Количество соток")
+    square = models.FloatField("Общая площадь")
+    area = models.FloatField("Количество соток")
+    main_floor = models.PositiveIntegerField("Количество этажей в доме")
+    floor = models.PositiveIntegerField("Этаж квартиры")
     state = models.CharField("Состояние", max_length=30)
-    ammount = models.CharField("Цена", max_length=255)
+    ammount = models.PositiveIntegerField("Цена")
     add_info = models.TextField("Инфо")
     contact = models.PositiveIntegerField("Номер телефона")
 
@@ -152,3 +168,12 @@ class Order(models.Model):
         return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
 
 
+class CommonRieltorUser(models.Model):
+
+    name = models.CharField("ФИО", max_length=255)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rieltor = models.ForeignKey(OnlineRieltor, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.name)

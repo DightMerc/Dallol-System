@@ -47,3 +47,8 @@
   });
 
 })(jQuery); // End of use strict
+
+
+function delete(e){
+  console.log(e)
+}

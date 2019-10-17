@@ -11,125 +11,137 @@ def LanguageKeyboard(user):
         KeyboardButton('Русский язык')
 )
 
-def PriceSetKeyboard(user):
-        keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-        KeyboardButton('1'),
-        KeyboardButton('2'),
-        KeyboardButton('3'),
-        KeyboardButton('4'),
-        KeyboardButton('5'),)
-        if client.getUserLanguage(user)=="RU":
-                keyboard.add(KeyboardButton('⏮ Назад'))
-        else:
-                keyboard.add(KeyboardButton('⏮ Ортга'))
-        return keyboard
+
+def PriceSetKeyboard(user, numbers, property):
+	button_list = []
+	for number in numbers:
+			button_list.append(InlineKeyboardButton(f'{number}', callback_data=f'{property} {number}'))
+	footer = []
+
+	if client.getUserLanguage(user)=="RU":
+			footer.append(InlineKeyboardButton('⏮ Назад',callback_data='back'))
+	else:
+			footer.append(InlineKeyboardButton('⏮ Ортга', callback_data='back'))
+	return InlineKeyboardMarkup(inline_keyboard=buildMenu(button_list, n_cols=4, footer_buttons=footer))
+
+def buildMenu(buttons,
+               n_cols,
+               header_buttons=None,
+               footer_buttons=None):
+    menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
+    if header_buttons:
+        menu.insert(0, header_buttons)
+    if footer_buttons:
+        for btn in footer_buttons:
+            menu.append([btn])
+    return menu
 
 def OnlineKeyboard(user):
-        online = client.getAllOnline()
-        keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+	online = client.getAllOnline()
+	keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 
-        for a in online:
-               keyboard.add(KeyboardButton(a.name))
+	for a in online:
+			keyboard.add(KeyboardButton(a.name))
 
-        if client.getUserLanguage(user)=="RU":
-                keyboard.add(KeyboardButton('⏮ Назад'))
-        else:
-                keyboard.add(KeyboardButton('⏮ Ортга'))
-        return keyboard
+	if client.getUserLanguage(user)=="RU":
+			keyboard.add(KeyboardButton('⏮ Назад'))
+	else:
+			keyboard.add(KeyboardButton('⏮ Ортга'))
+	return keyboard
 
 def OnlineKeyboardApply(user):
-        if client.getUserLanguage(user)=="RU":
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True
-                        ).add(KeyboardButton("Сделать заказ")
-                        ).add(KeyboardButton('⏮ Назад'))
-        else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True
-                        ).add(KeyboardButton("Буюртма бериш")
-                        ).add(KeyboardButton('⏮ Ортга'))
+	if client.getUserLanguage(user)=="RU":
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True
+					).add(KeyboardButton("Сделать заказ")
+					).add(KeyboardButton('⏮ Назад'))
+	else:
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True
+					).add(KeyboardButton("Буюртма бериш")
+					).add(KeyboardButton('⏮ Ортга'))
         
 
 def MenuKeyboard(user):
-        if client.getUserLanguage(user)=="RU":
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                                KeyboardButton('Продажа'),
-                                KeyboardButton('Аренда')
-                        ).add(KeyboardButton('Онлайн риелтор'))
-        else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                                KeyboardButton('Сотув'),
-                                KeyboardButton('Ижара')
-                        ).add(KeyboardButton('Онлайн риелтор'))
+	if client.getUserLanguage(user)=="RU":
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+							KeyboardButton('Продажа'),
+							KeyboardButton('Аренда')
+					).add(KeyboardButton('Онлайн риелтор'))
+	else:
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+							KeyboardButton('Сотув'),
+							KeyboardButton('Ижара')
+					).add(KeyboardButton('Онлайн риелтор'))
     
 def MoreKeyboard(user, num):
-        if client.getUserLanguage(user)=="RU":
-                return InlineKeyboardMarkup().add( 
-                        InlineKeyboardButton(text='Ещё', callback_data=num))
-        else:
-                return InlineKeyboardMarkup().add(
-                        InlineKeyboardButton(text='Яна', callback_data=num))
+	if client.getUserLanguage(user)=="RU":
+			return InlineKeyboardMarkup().add( 
+					InlineKeyboardButton(text='Ещё', callback_data=num))
+	else:
+			return InlineKeyboardMarkup().add(
+					InlineKeyboardButton(text='Яна', callback_data=num))
 
 def SaleAndRentKeyboard(user):
 # Эълон бериш
 
-        if client.getUserLanguage(user)=="RU":
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('Подать объявление'),
-                        KeyboardButton('Поиск 🔍')
-                ).add(KeyboardButton('⏮ Назад'))
-        else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('Эълон бериш'),
-                        KeyboardButton('Қидирув 🔍')
-                ).add(KeyboardButton('⏮ Ортга'))
+	if client.getUserLanguage(user)=="RU":
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+					KeyboardButton('Подать объявление'),
+					KeyboardButton('Поиск 🔍')
+			).add(KeyboardButton('⏮ Назад'))
+	else:
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+					KeyboardButton('Эълон бериш'),
+					KeyboardButton('Қидирув 🔍')
+			).add(KeyboardButton('⏮ Ортга'))
     
 
 def SaleSearchAndannouncementKeyboard(user):
 
-        if client.getUserLanguage(user)=="RU":
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('🏠 Участок'),
-                        KeyboardButton('🏬 Квартира')
-                ).row(
-                        KeyboardButton('🏡 Участок земли'),
-                        KeyboardButton('🏗 Коммерческая недвижимость')
-                ).add(KeyboardButton('⏮ Назад'))
-        else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('🏠 Ховли'),
-                        KeyboardButton('🏬 Квартира')
-                ).row(
-                        KeyboardButton('🏡 Ер'),
-                        KeyboardButton('🏗 Тижорат кўчмас мулки')
-                ).add(KeyboardButton('⏮ Ортга'))
+	if client.getUserLanguage(user)=="RU":
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+					KeyboardButton('🏠 Участок'),
+					KeyboardButton('🏬 Квартира')
+			).row(
+					KeyboardButton('🏡 Участок земли'),
+					KeyboardButton('🏗 Коммерческая недвижимость')
+			).add(KeyboardButton('⏮ Назад'))
+	else:
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+					KeyboardButton('🏠 Ховли'),
+					KeyboardButton('🏬 Квартира')
+			).row(
+					KeyboardButton('🏡 Ер'),
+					KeyboardButton('🏗 Тижорат кўчмас мулки')
+			).add(KeyboardButton('⏮ Ортга'))
 
     
 
 def OnlineSaleAndRentKeyboard(user):
-        if client.getUserLanguage(user)=="RU":
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                                KeyboardButton('Продажа'),
-                                KeyboardButton('Аренда')
-                        ).add(KeyboardButton('Поиск 🔍')
-                        ).add(KeyboardButton('⏮ Назад'))
-        else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                                KeyboardButton('Сотув'),
-                                KeyboardButton('Ижара')
-                        ).add(KeyboardButton('Қидирув 🔍')
-                        ).add(KeyboardButton('⏮ Ортга'))
+	if client.getUserLanguage(user)=="RU":
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+							KeyboardButton('Продажа'),
+							KeyboardButton('Аренда')
+					).add(KeyboardButton('Поиск 🔍')
+					).add(KeyboardButton('⏮ Назад'))
+	else:
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+							KeyboardButton('Сотув'),
+							KeyboardButton('Ижара')
+					).add(KeyboardButton('Қидирув 🔍')
+					).add(KeyboardButton('⏮ Ортга'))
         
 
 def EditApplyKeyboard(user):
-        if client.getUserLanguage(user)=="RU":
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('Изменить'),
-                        KeyboardButton('Отправить')
-                ).add(KeyboardButton('⏮ Назад'))
-        else:
-                return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
-                        KeyboardButton('Ўзгартириш'),
-                        KeyboardButton('Юбориш')
-                ).add(KeyboardButton('⏮ Ортга'))
+	if client.getUserLanguage(user)=="RU":
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+					KeyboardButton('Изменить'),
+					KeyboardButton('Отправить')
+			).add(KeyboardButton('⏮ Назад'))
+	else:
+			return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(
+					KeyboardButton('Ўзгартириш'),
+					KeyboardButton('Юбориш')
+			).add(KeyboardButton('⏮ Ортга'))
         
 
 def AdminApplyKeyboard(mode, num):

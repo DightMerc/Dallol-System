@@ -29,8 +29,8 @@ class TemporaryOrder(models.Model):
 
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
 
-    _type = models.CharField("Операция", max_length=10)
-    _property = models.CharField("Тип недвижимости", max_length=30)
+    type = models.CharField("Операция", max_length=10)
+    property = models.CharField("Тип недвижимости", max_length=30)
     title = models.TextField("Описание")
     region = models.CharField("Район", max_length=30)
     reference = models.CharField("Ориентир", max_length=30)
@@ -51,7 +51,7 @@ class TemporaryOrder(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
+        return "{} {} {}".format(str(self.id), str(self.type), str(self.property))
 
 
 
@@ -60,6 +60,9 @@ class OnlineRieltor(models.Model):
     name = models.CharField("ФИО", max_length=255)
 
     photo = models.ImageField("Фото", upload_to='media/')
+    active = models.BooleanField("Активно", default=False)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     description = models.TextField("Описание РУС")
 
     description_UZ = models.TextField("Описание УЗБ")
@@ -74,8 +77,8 @@ class OnlineRieltorTemporaryOrder(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
 
     rieltor = models.ForeignKey(OnlineRieltor, on_delete=models.CASCADE)
-    _type = models.CharField("Операция", max_length=10)
-    _property = models.CharField("Тип недвижимости", max_length=30)
+    type = models.CharField("Операция", max_length=10)
+    property = models.CharField("Тип недвижимости", max_length=30)
     title = models.TextField("Описание")
     region = models.CharField("Район", max_length=30)
     reference = models.CharField("Ориентир", max_length=30)
@@ -98,7 +101,7 @@ class OnlineRieltorTemporaryOrder(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
+        return "{} {} {}".format(str(self.id), str(self.type), str(self.property))
 
 class OnlineRieltorOrder(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
@@ -109,8 +112,8 @@ class OnlineRieltorOrder(models.Model):
 
     rieltor = models.ForeignKey(OnlineRieltor, on_delete=models.CASCADE)
 
-    _type = models.CharField("Операция", max_length=10)
-    _property = models.CharField("Тип недвижимости", max_length=30)
+    type = models.CharField("Операция", max_length=10)
+    property = models.CharField("Тип недвижимости", max_length=30)
     title = models.TextField("Описание")
     region = models.CharField("Район", max_length=30)
     reference = models.CharField("Ориентир", max_length=30)
@@ -132,8 +135,10 @@ class OnlineRieltorOrder(models.Model):
 
     created_date = models.DateTimeField(default=timezone.now)
 
+    
+
     def __str__(self):
-        return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
+        return "{} {} {}".format(str(self.id), str(self.type), str(self.property))
 
 class Order(models.Model):
 
@@ -143,8 +148,8 @@ class Order(models.Model):
 
     active = models.BooleanField("Актуально", default=True)
 
-    _type = models.CharField("Операция", max_length=10)
-    _property = models.CharField("Тип недвижимости", max_length=30)
+    type = models.CharField("Операция", max_length=10)
+    property = models.CharField("Тип недвижимости", max_length=30)
     title = models.TextField("Описание")
     region = models.CharField("Район", max_length=30)
     reference = models.CharField("Ориентир", max_length=30)
@@ -164,14 +169,17 @@ class Order(models.Model):
 
     created_date = models.DateTimeField(default=timezone.now)
 
+    show = models.PositiveIntegerField("Количество просмотров", default=0)
+
     def __str__(self):
-        return "{} {} {}".format(str(self.id), str(self._type), str(self._property))
+        return "{} {} {}".format(str(self.id), str(self.type), str(self.property))
 
 
 class CommonRieltorUser(models.Model):
 
     name = models.CharField("ФИО", max_length=255)
 
+    active = models.BooleanField("Актуально", default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rieltor = models.ForeignKey(OnlineRieltor, on_delete=models.CASCADE)
 

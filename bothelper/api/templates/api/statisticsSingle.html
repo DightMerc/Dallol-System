@@ -1,0 +1,82 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>Dallol24 | Статистика</title>
+        <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    </head>
+    <style>
+        span {
+            color: green;
+        }
+        .butn {
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #666666;
+  font-size: 16px;
+  padding: 6px;
+  background: #ffffff;
+  border: solid #cccccc 3px;
+  text-decoration: none;
+  outline: none;
+}
+button:focus {outline:0;}
+.butn:hover {
+  background: #ebebeb;
+  text-decoration: none;
+  outline: none;
+}
+@media (max-width:1100px) { .butn{font-size: 25pt;} .col-xl-3{ margin-left: -500px;} body {font-size:35pt; } img{ width: 900px; } .card-body{width: 600px;} h1 {font-size: 50pt;} h2{font-size: 40pt;} h3{font-size: 35pt;}}
+
+
+    </style>
+   
+    <body >
+        <div align="center" class="container-fluid">
+        <br/>
+        <br/>
+        <h1><b>Dallol24</b> | Статистика</h1>
+        
+        <div>
+        <h1>Объявления риелтора</h1>
+        <hr align="center" width="500" size="2" color="#ff0000" />
+        <div class="col-xl-3 col-md-6 mb-4">
+
+        <div class="card-body">
+                
+
+                    
+
+                {% if order.type == "sale" %}
+                    <h3><span>Продажа | {{ order.property }}</span> Просмотры: {{ order.show }}</h3>
+                    <button class="butn" onclick="deleteOrder('{{order.id}}')">Удалить</button>
+
+                {% else %}
+                    <h3><span>Аренда | {{ order.property }}</span> Просмотры: {{ order.show }}</h3>
+                    <button class="butn" onclick="deleteOrder('{{order.id}}')">Удалить</button>
+
+                {% endif %}
+                <div align=left class="card-body" >
+                <ul type="none">
+                    {% for item in text %}
+                        <li>{{item}}</li>
+                    {% endfor %}
+                    
+                </ul>
+                </div>
+                </div>
+        </div>
+
+    
+    </div>
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/ajax.js' %}"></script>
+    </body>
+
+</html>
+
+
+

@@ -1,0 +1,164 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>Dallol24 | Статистика</title>
+        <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    </head>
+    <style>
+        a {
+            text-decoration: None;
+            color: inherit;
+        }
+        .tel {
+            color: red;
+        }
+
+        .pagination {
+    margin-top: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.pagination li {
+    display: inline;
+}
+
+.pagination li a {
+    color: #515769;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    -webkit-transition: background-color .3s;
+    -o-transition: background-color .3s;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    border-right: none;
+}
+
+.pagination li:last-child a {
+    border-right: 1px solid #ddd;
+}
+
+.pagination li a.active {
+    background-color: #333;
+    border: 1px solid #333;
+    color: white;
+}
+
+.pagination li a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.butn {
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #666666;
+  font-size: 16px;
+  padding: 6px;
+  background: #ffffff;
+  border: solid #cccccc 3px;
+  text-decoration: none;
+  outline: none;
+}
+button:focus {outline:0;}
+.butn:hover {
+  background: #ebebeb;
+  text-decoration: none;
+  outline: none;
+}
+
+/* .pagination li a {
+        color: #515769;
+        float: left;
+        padding: 3px 10px;
+        text-decoration: none;
+        -webkit-transition: background-color .3s;
+        -o-transition: background-color .3s;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        border-right: none;
+    } */
+    @media (max-width:1100px) { .butn{font-size: 25pt;} .col-xl-3{ margin-left: -500px;} body {font-size:35pt; } img{ width: 900px; } .card-body{width: 600px;} h1 {font-size: 50pt;} h2{font-size: 40pt;} h3{font-size: 35pt;}}
+    
+
+    </style>
+   
+    <body >
+        <div align="center" class="container-fluid">
+        <br/>
+        <br/>
+        <h1><b><a href="/">Dallol24</a></b> | Статистика</h1>
+        
+        <div>
+        <h1>Объявления риелтора</h1>
+        <hr align="center" width="500" size="2" color="#ff0000" />
+
+        
+
+        <hr align="center" width="500" size="2" color="#ff0000" />
+
+        <ul type="">
+        {% for order in orders %}
+            <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card-body">
+                    {% if order.type == "sale" %}
+                        <li><h2>Продажа | {{ order.property }} </h2></li>
+                        
+                        <h3>Просмотры: {{ order.show }}</h3>
+                        <a href="/common/agency/{{order.id}}"><button class="butn">Просмотр</button></a>
+                        <button class="butn" onclick="deleteOrder('{{order.id}}')">Удалить</button>
+
+
+                    {% else %}
+                        <li><h3>Аренда | {{ order.property }} Просмотры: {{ order.show }}</h3></li>
+                        
+                        <a href="/common/agency/{{order.id}}"><button class="butn">Просмотр</button></a>
+                        <button class="butn" onclick="deleteOrder('{{order.id}}')">Удалить</button>
+                        
+
+
+
+                    {% endif %}
+                    <div align=left class="card-body" >
+                    <ul type="none">
+                        <li>Описание: {{ order.title }}</li>
+                        <li>Район: {{ order.region }}</li>
+                        <li>Цена: {{ order.ammount }}</li>
+                        <li>Контакт: <a class="tel" href="tel:998909625288">{{ order.contact }}</a></li>
+                    </ul>
+                    </div>
+                    </div>
+            </div>
+        {% endfor %}
+    </ul>
+    <ul class="pagination">
+            
+            <li><a href="/operation/common/agency/{{ orders.0.type }}/show/{{prev}}">«</a></li>
+            {% for a in page_count %}
+                {% if a == current_page %}
+                    <li><a class="active" href="/operation/common/agency/{{ orders.0.type }}/show/{{ a }}">{{ a }}</a></li>
+                {% else %}
+                    <li><a href="/operation/common/agency/{{ orders.0.type }}/show/{{ a }}">{{ a }}</a></li>
+                {% endif %}
+                
+
+            {% endfor %}
+            <li><a href="/operation/common/agency/{{ orders.0.type }}/show/{{ next }}">»</a></li>
+    </ul>
+    </div>
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/ajax.js' %}"></script>
+    
+    </body>
+
+
+</html>

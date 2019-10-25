@@ -83,6 +83,37 @@ img {
         
         <div>
         <hr align="center" width="500" size="2" color="#ff0000" />
+        <h2>Актуальные объявления</h2>
+        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card-body">
+        <h3><a class="header" href="/operation/common/sale/show/1">Продажа</a> | {{ saleOrders }}</h3>
+        <div align=left class="card-body">
+        <ul type="none">
+            <li><a href="/common/sale/Квартира/1">Квартира:</a> {{ saleFlat }}</li> 
+            <li><a href="/common/sale/Участок/1">Участок:</a> {{ saleArea }}</li>
+            <li><a href="/common/sale/Участок земли/1">Частный дом:</a> {{ saleLand }}</li>
+            <li><a href="/common/sale/Коммерческая недвижимость/1">Коммерческая недвижимость:</a> {{ saleFreeArea }}</li>
+        </ul>
+        </div>
+        </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card-body">
+            <!-- <hr align="center" width="300" size="2" color="#ff0000" /> -->
+
+        <h3><a class="header" href="/operation/common/rent/show/1">Аренда</a> | {{ rentOrders }}</h3>
+        <div align=left class="card-body">
+        <ul type="none">
+            <li><a href="/common/rent/Квартира/1">Квартира:</a> {{ rentFlat }}</li>
+            <li><a href="/common/rent/Участок/1">Участок:</a> {{ rentArea }}</li>
+            <li><a href="/common/rent/Участок земли/1">Частный дом:</a> {{ rentLand }}</li>
+            <li><a href="/common/rent/Коммерческая недвижимость/1">Коммерческая недвижимость:</a> {{ rentFreeArea }}</li>
+        </ul>
+        </div>
+        </div>
+        </div>
+
+        
         <ul type="">
         {% for online in onliners %}
             <div class="col-xl-3 col-md-6 mb-4">

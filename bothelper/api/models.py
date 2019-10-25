@@ -181,7 +181,20 @@ class CommonRieltorUser(models.Model):
 
     active = models.BooleanField("Актуально", default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rieltor = models.ForeignKey(OnlineRieltor, on_delete=models.CASCADE)
+    rieltor = models.ForeignKey(OnlineRieltor, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return str(self.name)
+
+
+class Agency(models.Model):
+
+    title = models.CharField("Название", max_length=255)
+
+    active = models.BooleanField("Актуально", default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    rieltors = models.ManyToManyField(OnlineRieltor)
+
+    def __str__(self):
+        return str(self.title)

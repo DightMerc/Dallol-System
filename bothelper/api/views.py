@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import TelegramUser, TemporaryOrder, OnlineRieltorTemporaryOrder, OnlineRieltorOrder, Order, Photo, OnlineRieltor, CommonRieltorUser
+from .models import TelegramUser, TemporaryOrder, OnlineRieltorTemporaryOrder, OnlineRieltorOrder, Order, Photo, OnlineRieltor, CommonRieltorUser, Agency
 
 
 from django.db import IntegrityError
@@ -63,7 +63,13 @@ def OnlineAccountView(request):
             form = PostForm(request.POST, request.FILES)
             if form.is_valid():
                 post = form.save()
+                post.user = request.user
+
+                agency = Agency.objects.get(user=request.user)
+                agency.rieltors.add(OnlineRieltor.objects.get(id=post.id))
+
                 return redirect('/')
+
 
             else:
                 return HttpResponse(form.errors)
@@ -316,36 +322,57 @@ def OnlineStatViewAgencySingle(request, pk):
         return redirect("/accounts/login/")
 
 
-def OnlineAccountView(request):
-
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            form = PostForm(request.POST, request.FILES)
-            if form.is_valid():
-                post = form.save()
-                post.user = request.user
-                post.save()
-
-                return redirect('/')
-
-            else:
-                return HttpResponse(form.errors)
-        else:
-
-            form = PostForm()
-            return render(request, 'api/account.html', {
-                    'form': form,
-                })
-    else:
-        return redirect("/accounts/login/")
-
-
 def OnlineMain(request):
     if request.user.is_authenticated:
-        
-        return render(request, 'api/common.html', {
-                'onliners': OnlineRieltor.objects.filter(user=request.user),
-            })
+        try:
+            onliners = Agency.objects.get(user=request.user).rieltors
+            saleOrders = 0
+            rentOrders = 0
+
+            saleFlat = 0
+            saleLand = 0
+            saleArea = 0
+            saleFreeArea = 0
+
+            rentFlat = 0
+            rentLand = 0
+            rentArea = 0
+            rentFreeArea = 0
+            for online in onliners.all():
+
+                saleOrders += Order.objects.filter(active=True).filter(type="sale").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                rentOrders += Order.objects.filter(active=True).filter(type="rent").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+
+                saleFlat += Order.objects.filter(active=True).filter(type="sale").filter(property="Квартира").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                saleLand += Order.objects.filter(active=True).filter(type="sale").filter(property="Участок земли").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                saleArea += Order.objects.filter(active=True).filter(type="sale").filter(property="Участок").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                saleFreeArea += Order.objects.filter(active=True).filter(type="sale").filter(property="Коммерческая недвижимость").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+
+                rentFlat += Order.objects.filter(active=True).filter(type="rent").filter(property="Квартира").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                rentLand += Order.objects.filter(active=True).filter(type="rent").filter(property="Участок земли").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                rentArea += Order.objects.filter(active=True).filter(type="rent").filter(property="Участок").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+                rentFreeArea += Order.objects.filter(active=True).filter(type="rent").filter(property="Коммерческая недвижимость").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
+
+            
+            return render(request, 'api/common.html', {
+                    'onliners': onliners.all(),
+                    'saleOrders': saleOrders,
+                    'rentOrders': rentOrders,
+
+                    "saleFlat": saleFlat,
+                    "saleLand": saleLand,
+                    "saleArea": saleArea,
+                    "saleFreeArea": saleFreeArea,
+
+                    "rentFlat": rentFlat,
+                    "rentLand": rentLand,
+                    "rentArea": rentArea,
+                    "rentFreeArea": rentFreeArea
+
+                })
+        except Exception as e:
+            return HttpResponse("Доступ разрешен только для агенств. Войдите в учетную запись агентства")
+            
     else:
         return redirect("/accounts/login/")
 

@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 from aiogram.utils.helper import Helper, HelperMode, ListItem
 import client
+from messages import Messages
+
 
 
 class TestStates(Helper):
@@ -77,14 +79,19 @@ def OnlineGenerateEndText(data, user):
             else:
                 _area = "Соток: {}\n".format(_area)
 
+            if _square == 0:
+                _square = ""
+            else:
+                _square = "Общая площадь: {}\n".format(_square)
+
             if _property == "Участок":
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Ориентир: {}\n\nСостояние: {}\n\nКомнаты: {}\nПлощадь: {} кв.м\n{}\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_area'].format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Квартира":
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Ориентир: {}\n\nСостояние: {}\n\nКомнаты: {}\nПлощадь: {} кв.м\nЭтажей в доме: {}\nЭтаж квартиры: {}\n\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_flat'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Участок земли":
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Ориентир: {}\n\nСостояние: {}\n{}\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_land'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Коммерческая недвижимость":
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Ориентир: {}\n{}\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_free_area'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
         else:
             if _type == "sale":
                 first_phrase = "Сотув"
@@ -103,17 +110,22 @@ def OnlineGenerateEndText(data, user):
             else:
                 _area = "Соток: {}\n".format(_area)
 
+            if _square == 0:
+                _square = ""
+            else:
+                _square = "Умумий майдон: {}\n".format(_square)            
+
             if _property == "Участок":
                 _property = "Ховли"
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Мўлжал: {}\n\nҲолати: {}\n\nХоналар: {}\nУмумий майдони: {} кв.м\n{}\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_area'].format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Квартира":
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Мўлжал: {}\n\nnҲолати: {}\n\nХоналар: {}\nУмумий майдони: {} кв.м\nУйда каватлар: {}\nКават: {}\n\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_flat'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Участок земли":
                 _property = "Ер"
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Мўлжал: {}\n\nnҲолати: {}\n{}\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_land'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Коммерческая недвижимость":
                 _property = "Уй-жойсиз қурилиш"
-                return "Категория: {}\nРиелтор: {}\n\n#{}\n{}\n\n{}\n🔎 Мўлжал: {}\n\nnҲолати: {}\n{}\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(_property.lower(), _master, first_phrase, _region, _title,_reference, _state, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_free_area'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _state, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
     except Exception as e:
         print("\n\n{}\n\n".format(e))
 
@@ -162,14 +174,19 @@ def GenerateEndText(data, mode, user):
             else:
                 _area = "\nСоток: {}\n".format(_area)
 
+            if _square == 0:
+                _square = ""
+            else:
+                _square = "Общая площадь: {}\n".format(_square)
+
             if _property == "Участок":
-                return "№{} {} {}\n{}\n\n{}\n🔎 Ориентир: {}\n\nКомнаты: {}\nПлощадь: {} кв.м\n{}\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_area'].format(first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Квартира":
-                return "№{} {} {}\n{}\n\n{}\n🔎 Ориентир: {}\n\nКомнаты: {}\nПлощадь: {} кв.м\nЭтажей в доме: {}\nЭтаж квартиры: {}\n\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_flat'].format(first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Участок земли":
-                return "№{} {} {}\n{}\n\n{}\n🔎 Ориентир: {}\n{}\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_land'].format(first_phrase,_property.lower(), _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Коммерческая недвижимость":
-                return "№{} {} {}\n{}\n\n{}\n🔎 Ориентир: {}\n{}\n💵 Цена: {} у.е\n{}\n📱 Контакты: {}".format(ann_number, first_phrase,_property.lower(), _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_free_area'].format(first_phrase,_property.lower(), _region, _title,_reference, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
         else:
 
             first_phrase = "сотилади"
@@ -188,17 +205,22 @@ def GenerateEndText(data, mode, user):
             else:
                 _area = "\nСоток: {}\n".format(_area)
 
+            if _square == 0:
+                _square = ""
+            else:
+                _square = "Умумий майдон: {}\n".format(_square)
+
             if _property == "Участок":
                 _property = "Ховли"
-                return "№{} {} {}\n{}\n\n{}\n🔎 Мўлжал: {}\n\nХоналар: {}\nУмумий майдони: {} кв.м\n{}\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(ann_number, _property.lower(), first_phrase, _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_area'].format(_property.lower(), first_phrase, _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Квартира":
-                return "№{} {} {}\n{}\n\n{}\n🔎 Мўлжал: {}\n\nХоналар: {}\nУмумий майдони: {} кв.м\nУйда каватлар: {}\nКават: {}\n\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(ann_number, _property.lower(), first_phrase, _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_flat'].format(_property.lower(), first_phrase, _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Участок земли":
                 _property = "Ер"
-                return "№{} {} {}\n{}\n\n{}\n🔎 Мўлжал: {}\n{}\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(ann_number, _property.lower(), first_phrase, _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_land'].format(_property.lower(), first_phrase, _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Коммерческая недвижимость":
                 _property = "Уй-жойсиз қурилиш"
-                return "№{} {} {}\n{}\n\n{}\n🔎 Мўлжал: {}\n{}\n💵 Нарх: {} у.е\n{}\n📱 Телефон: {}".format(ann_number, _property.lower(), first_phrase, _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_free_area'].format(_property.lower(), first_phrase, _region, _title,_reference, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
     except Exception as e:
         print("\n\n{}\n\n".format(e))
 

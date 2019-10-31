@@ -21,18 +21,57 @@ django.setup()
 
 from api import models as api_models
 from bot import models as bot_models
+from django.contrib.auth.models import User
+
 
 def GetToken():
     return bot_models.Setting.objects.get(pk=1).token
+
+async def SetPhone(user, phone):
+    userUpdate = api_models.TelegramUser.objects.get(telegram_id=int(user))
+    userUpdate.phone = phone
+    userUpdate.save()
+
+    users = User.objects.all()
+    # if users.filter(username=str(phone).replace("+","").replace(" ","").replace("-","")).count!=0:
+    #     return False
+    # else:
+
+    try:
+        new_user = User.objects.create_user(username=str(phone).replace("+","").replace(" ","").replace("-",""),
+                                email='dightmerc@gmail.com',
+                                password='helloworld8')
+
+        comm_user = api_models.CommonRieltorUser()
+        comm_user.name = new_user.username
+        comm_user.user = new_user
+        comm_user.rieltor = api_models.OnlineRieltor.objects.get(pk=1)
+        comm_user.save()
+
+
+
+    except Exception as e:
+        print(f"\n\n{e}\n\n")
+
+        return False
+    
+    
+    return True
+
+async def TickAdd(pk):
+    order = api_models.Order.objects.get(pk=pk)
+    order.show = order.show + 1
+    order.save()
+    return True
 
 async def Search(_type, _property, price, region, room_count, area):
 
     order_list = api_models.Order.objects.all()
 
-    order_list = order_list.filter(_type=_type)
+    order_list = order_list.filter(type=_type)
 
     if _property!="":
-        order_list = order_list.filter(_property=_property)
+        order_list = order_list.filter(property=_property)
         if order_list.count()!=0:
 
             if price!="":
@@ -41,15 +80,24 @@ async def Search(_type, _property, price, region, room_count, area):
                     order_list = order_list.filter(ammount__lte=int(prices[1]))
                     order_list = order_list.filter(ammount__gte=int(prices[0]))
                 else:
+                    if _type == "sale":
+                        if int(price)!=200000:
+                            print(f"\n\n{price}\n\n")
 
-                    if int(price)!=100000:
-                        print(f"\n\n{price}\n\n")
+                            order_list = order_list.filter(ammount__lte=int(price))
 
-                        order_list = order_list.filter(ammount__lte=int(price))
+                        else:
 
-                    else:
+                            order_list = order_list.filter(ammount__gte=int(price))
+                    elif _type == "rent":
+                        if int(price)!=3500:
+                            print(f"\n\n{price}\n\n")
 
-                        order_list = order_list.filter(ammount__gte=int(price))
+                            order_list = order_list.filter(ammount__lte=int(price))
+
+                        else:
+
+                            order_list = order_list.filter(ammount__gte=int(price))
                 
               
 
@@ -86,8 +134,8 @@ def createOnlineTemporaryOrder(user, data):
     order = api_models.OnlineRieltorTemporaryOrder()
 
     order.user = get_object_or_404(api_models.TelegramUser, telegram_id=user)
-    order._type = data[0]
-    order._property = data[1]
+    order.type = data[0]
+    order.property = data[1]
     order.title = data[2] 
     order.region = data[3]
     order.reference = data[4]
@@ -125,8 +173,8 @@ def createTemporaryOrder(user, data):
     order = api_models.TemporaryOrder()
 
     order.user = get_object_or_404(api_models.TelegramUser, telegram_id=user)
-    order._type = data[0]
-    order._property = data[1]
+    order.type = data[0]
+    order.property = data[1]
     order.title = data[2]
     order.region = data[3]
     order.reference = data[4]
@@ -162,8 +210,8 @@ async def CreateRealOrder(num):
     order = api_models.Order()
 
     order.user = temp.user
-    order._type = temp._type
-    order._property = temp._property
+    order.type = temp.type
+    order.property = temp.property
     order.title = temp.title
     order.region = temp.region
     order.reference = temp.reference
@@ -195,8 +243,8 @@ async def CreateRealOnlineOrder(num):
     order.rieltor = temp.rieltor
     order.main_state = temp.main_state
     order.user = temp.user
-    order._type = temp._type
-    order._property = temp._property
+    order.type = temp.type
+    order.property = temp.property
     order.title = temp.title
     order.region = temp.region
     order.reference = temp.reference

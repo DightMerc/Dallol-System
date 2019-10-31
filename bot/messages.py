@@ -1,22 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from utils import TestStates
 import client
-
-
-
-help_message = 'Для того, чтобы изменить текущее состояние пользователя, ' \
-               f'отправь команду "/setstate x", где x - число от 0 до {len(TestStates.all()) - 1}.\n' \
-               'Чтобы сбросить текущее состояние, отправь "/setstate" без аргументов.'
-
-start_message = 'Привет! Это демонстрация работы FSM.\n' + help_message
-invalid_key_message = 'Ключ "{key}" не подходит.\n' + help_message
-state_change_success_message = 'Текущее состояние успешно изменено'
-state_reset_message = 'Состояние успешно сброшено'
-current_state_message = 'Текущее состояние - "{current_state}", что удовлетворяет условию "один из {states}"'
-
-
-
 
 def Messages(user):
 
@@ -102,6 +86,20 @@ def Messages(user):
             'moderator_message_online': client.getMessage(93),
 
             'search_message': client.getMessage(95),
+
+            'choose_rieltor': client.getMessage(97),
+
+
+            'end_text_area': client.getMessage(99),
+            'end_text_flat': client.getMessage(100),
+            'end_text_land': client.getMessage(101),
+            'end_text_free_area': client.getMessage(102),
+
+            'end_text_rieltor_area': client.getMessage(107),
+            'end_text_rieltor_flat': client.getMessage(108),
+            'end_text_rieltor_land': client.getMessage(109),
+            'end_text_rieltor_free_area': client.getMessage(110),
+
 
 
 
@@ -190,6 +188,19 @@ def Messages(user):
             'moderator_message_online': client.getMessage(94),
 
             'search_message': client.getMessage(96),
+
+            'choose_rieltor': client.getMessage(98),
+
+            'end_text_area': client.getMessage(103),
+            'end_text_flat': client.getMessage(104),
+            'end_text_land': client.getMessage(105),
+            'end_text_free_area': client.getMessage(106),
+
+            'end_text_rieltor_area': client.getMessage(111),
+            'end_text_rieltor_flat': client.getMessage(112),
+            'end_text_rieltor_land': client.getMessage(113),
+            'end_text_rieltor_free_area': client.getMessage(114),
+
 
 
 

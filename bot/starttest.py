@@ -32,7 +32,7 @@ logging.basicConfig(format=u'%(filename)+13s [ LINE:%(lineno)-4s] %(levelname)-8
 
 
 bot = Bot(token=client.GetToken(), parse_mode=types.ParseMode.HTML)
-storage = RedisStorage2(db=7)
+storage = RedisStorage2(db=6)
 dp = Dispatcher(bot, storage=storage)
 
 dp.middleware.setup(LoggingMiddleware())
@@ -51,7 +51,6 @@ class User(StatesGroup):
     contact = State()
     edit = State()
     setNumber = State()
-    help = State()
 
 class Admin(StatesGroup):
     started = State() 
@@ -375,7 +374,7 @@ async def back_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo", "User:help"]:
+    elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo"]:
         await User.language_set.set()
         await state.set_data({})
 
@@ -1350,115 +1349,7 @@ async def user_edit_handler(message: types.Message, state: FSMContext):
                 await state.set_data({})
 
 
-@dp.callback_query_handler(state=Search.price)
-async def search_price_callback_handler(callback_query: types.CallbackQuery, state: FSMContext):
-    user = callback_query.from_user.id
 
-    data = callback_query.data
-    num = data.split()[1]
-
-    print(f"\n\n{user}\n\n")
-
-
-    async with state.proxy() as data:
-        _type = data['type']
-    
-
-
-    if _type == "sale":
-        if num=="1":
-            price = "10000"
-        elif num=="2":
-            price = "10000 20000"
-        elif num=="3":
-            price = "30000 40000"
-        elif num=="4":
-            price = "40000 50000"
-        elif num=="5":
-            price = "50000 60000"
-        elif num=="6":
-            price = "60000 70000"
-        elif num=="7":
-            price = "70000 80000"
-        elif num=="8":
-            price = "80000 90000"
-        elif num=="9":
-            price = "90000 100000"
-        elif num=="10":
-            price = "100000 110000"
-        elif num=="11":
-            price = "110000 120000"
-        elif num=="12":
-            price = "120000 130000"
-        elif num=="13":
-            price = "130000 140000"
-        elif num=="14":
-            price = "140000 150000"
-        elif num=="15":
-            price = "150000 160000"
-        elif num=="16":
-            price = "160000 170000"
-        elif num=="17":
-            price = "170000 180000"
-        elif num=="18":
-            price = "180000 190000"
-        elif num=="19":
-            price = "190000 200000"
-        elif num=="20":
-            price = "200000"
-
-    elif _type == "rent":
-        if num=="1":
-            price = "200"
-        elif num=="2":
-            price = "200 500"
-        elif num=="3":
-            price = "500 700"
-        elif num=="4":
-            price = "700 900"
-        elif num=="5":
-            price = "900 1100"
-        elif num=="6":
-            price = "1100 1300"
-        elif num=="7":
-            price = "1300 1500 "
-        elif num=="8":
-            price = "1500 1700"
-        elif num=="9":
-            price = "1700 1900"
-        elif num=="10":
-            price = "1900 2000"
-        elif num=="11":
-            price = "2000 2100"
-        elif num=="12":
-            price = "2100 2200"
-        elif num=="13":
-            price = "2200 2300"
-        elif num=="14":
-            price = "2300 2500"
-        elif num=="15":
-            price = "2500 2700"
-        elif num=="16":
-            price = "2700 2900"
-        elif num=="17":
-            price = "2900 3100"
-        elif num=="18":
-            price = "3100 3300"
-        elif num=="19":
-            price = "3300 3500"
-        elif num=="20":
-            price = "3500"
-
-    async with state.proxy() as data:
-        data['search price'] = price
-        prop = data['property']
-
-
-    await Search.started.set()
-
-    text = Messages(user)['filter']
-    markup = keyboards.SearchKeyboard(prop, user)
-    await bot.send_message(user, text, reply_markup=markup)
 
 @dp.callback_query_handler(state=Search.started)
 async def callback_search_handler(callback_query: types.CallbackQuery, state: FSMContext): 
@@ -2979,42 +2870,6 @@ async def menu_handler(message: types.Message, state: FSMContext):
         markup = keyboards.OnlineSaleAndRentKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif recieved_text in ["Помощь", "Йордам"]:
-        
-        await User.help.set()
-
-        text = Messages(user)['choose_action']
-        markup = keyboards.HelpKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-
-
-@dp.message_handler(state=User.help)
-async def online_started_handler(message: types.Message, state: FSMContext):
-    user = message.from_user.id
-    recieved_text = message.text
-
-    if recieved_text in ["Как отправить номер телефона?", "Телефон рақамини қандай юбориш керак?"]:
-
-        text = "Кнопки в разработке"
-        markup = keyboards.HelpKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-        
-    elif recieved_text in ["Как отправить геолокацию?", "Жойлашувни қандай юбориш керак?"]:
-
-        text = "Кнопки в разработке"
-        
-        markup = keyboards.HelpKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-    elif recieved_text in ["Шарх қолдиринг", "Оставить отзыв"]:
-        
-        # await Online.mode.set()
-
-        text = "Кнопки в разработке"
-        
-        markup = keyboards.HelpKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
-
-
 @dp.message_handler(state=Online.started)
 async def online_started_handler(message: types.Message, state: FSMContext):
     user = message.from_user.id
@@ -3475,7 +3330,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
         if _type == "sale":
             text = Messages(user)["price_list"]
             numbers = []
-            for a in range(1, 21):
+            for a in range(1, 11):
                 numbers.append(a)
             markup = keyboards.PriceSetKeyboard(user, numbers, _property)
 
@@ -3484,7 +3339,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
         elif _type == "rent":
             text = Messages(user)["price_list2"]
             numbers = []
-            for a in range(1, 21):
+            for a in range(1, 11):
                 numbers.append(a)
             markup = keyboards.PriceSetKeyboard(user, numbers, _property)
 
@@ -3506,19 +3361,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
 
     elif recieved_text in ["Сотки", "Соток"]:
         await Search.area.set()
-        async with state.proxy() as data:
-            _type = data["type"]
-            _property = data["property"]
-
-            text = Messages(user)["price_list"]
-            numbers = []
-            for a in range(1, 8):
-                numbers.append(a)
-            markup = keyboards.PriceSetKeyboard(user, numbers, _property)
-
-            await bot.send_message(user, text, reply_markup=markup)
-        
-
+        await bot.send_message(user, text, reply_markup=markup)
     
     elif recieved_text in ["Очистить", "Тозалаш"]:
         async with state.proxy() as data:
@@ -3661,7 +3504,75 @@ async def data_search_handler(message: types.Message, state: FSMContext):
     
         
 
+@dp.callback_query_handler(state=Search.price)
+async def search_price_handler(callback_query: types.CallbackQuery, state: FSMContext):
+    user = callback_query.from_user.id
 
+    data = callback_query.data
+    num = data.split()[1]
+
+    print(f"\n\n{user}\n\n")
+
+
+    async with state.proxy() as data:
+        _type = data['type']
+    
+
+
+    if _type == "sale":
+        if num=="1":
+            price = "10000"
+        elif num=="2":
+            price = "10000 20000"
+        elif num=="3":
+            price = "30000 40000"
+        elif num=="4":
+            price = "40000 50000"
+        elif num=="5":
+            price = "50000 60000"
+        elif num=="6":
+            price = "70000 80000"
+        elif num=="7":
+            price = "80000 90000"
+        elif num=="8":
+            price = "100000 110000"
+        elif num=="9":
+            price = "120000 130000"
+        elif num=="10":
+            price = "130000"
+
+    elif _type == "rent":
+        if num=="1":
+            price = "200"
+        elif num=="2":
+            price = "200 500"
+        elif num=="3":
+            price = "500 700"
+        elif num=="4":
+            price = "700 900"
+        elif num=="5":
+            price = "900 1100"
+        elif num=="6":
+            price = "1100 1300"
+        elif num=="7":
+            price = "1300 1500 "
+        elif num=="8":
+            price = "1500 1700"
+        elif num=="9":
+            price = "1700 1900"
+        elif num=="10":
+            price = "1900"
+
+    async with state.proxy() as data:
+        data['search price'] = price
+        prop = data['property']
+
+
+    await Search.started.set()
+
+    text = Messages(user)['filter']
+    markup = keyboards.SearchKeyboard(prop, user)
+    await bot.send_message(user, text, reply_markup=markup)
 
 @dp.message_handler(state=Search.region)
 async def search_region_handler(message: types.Message, state: FSMContext):

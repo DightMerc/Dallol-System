@@ -689,7 +689,7 @@ async def back1_handler(message: types.Message, state: FSMContext):
         markup = keyboards.MenuKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-    elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo"]:
+    elif current_state in ["User:edit","User:add_info","User:ammount_set", "User:contact", "User:photo","User:help"]:
         await User.language_set.set()
         await state.set_data({})
 

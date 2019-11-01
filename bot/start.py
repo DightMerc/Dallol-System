@@ -3510,7 +3510,7 @@ async def data_search_handler(message: types.Message, state: FSMContext):
             _type = data["type"]
             _property = data["property"]
 
-            text = Messages(user)["price_list"]
+            text = Messages(user)["area_list"]
             numbers = []
             for a in range(1, 8):
                 numbers.append(a)
@@ -3698,30 +3698,44 @@ async def search_room_count_handler(message: types.Message, state: FSMContext):
         markup = keyboards.BackKeyboard(user)
         await bot.send_message(user, text, reply_markup=markup)
 
-@dp.message_handler(state=Search.area)
-async def search_area_handler(message: types.Message, state: FSMContext):
-    user = message.from_user.id
-    recieved_text = message.text
-    data = recieved_text.replace(",","")
-    data = data.replace(".","")
 
-    if data.isdigit():
-        recieved_text = recieved_text.replace(",",".")
+@dp.callback_query_handler(state=Search.area)
+async def search_area_handler(callback_query: types.CallbackQuery, state: FSMContext):
+    user = callback_query.from_user.id
 
-        async with state.proxy() as data:
-            data['search area'] = recieved_text
-            prop = data['property']
+    data = callback_query.data
+    num = data.split()[1]
 
-        await Search.started.set()
+    async with state.proxy() as data:
+        _type = data['type']
+
+    if num=="1":
+        area = "0 2"
+    elif num=="2":
+        price = "2 4"
+    elif num=="3":
+        price = "4 6"
+    elif num=="4":
+        price = "6 8"
+    elif num=="5":
+        price = "8 10"
+    elif num=="6":
+        price = "10 12"
+    elif num=="7":
+        price = "12"
+    
 
 
-        text = Messages(user)['filter']
-        markup = keyboards.SearchKeyboard(prop, user)
-        await bot.send_message(user, text, reply_markup=markup)
-    else:
-        text = Messages(user)["digits_only"]
-        markup = keyboards.BackKeyboard(user)
-        await bot.send_message(user, text, reply_markup=markup)
+    async with state.proxy() as data:
+        data['search area'] = price
+        prop = data['property']
+
+
+    await Search.started.set()
+
+    text = Messages(user)['filter']
+    markup = keyboards.SearchKeyboard(prop, user)
+    await bot.send_message(user, text, reply_markup=markup)
     
 
 @dp.message_handler(state=Sale.announcement)

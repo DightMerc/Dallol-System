@@ -109,7 +109,19 @@ async def Search(_type, _property, price, region, room_count, area):
 
 
             if area!="":
-                order_list = order_list.filter(area=area)
+                if " " in area:
+                    areas = area.split(" ")
+                    order_list = order_list.filter(ammount__lte=int(areas[1]))
+                    order_list = order_list.filter(ammount__gte=int(areas[0]))
+                else:
+                    if int(area)!=12:
+                        print(f"\n\n{area}\n\n")
+
+                        order_list = order_list.filter(ammount__lte=int(area))
+
+                    else:
+
+                        order_list = order_list.filter(ammount__gte=int(area))
             
         else:
             pass

@@ -100,11 +100,7 @@ def Messages(user):
             'end_text_rieltor_land': client.getMessage(109),
             'end_text_rieltor_free_area': client.getMessage(110),
 
-
-
-
-            
-
+            'area_list': client.getMessage(115),
 
         }
     else:
@@ -201,12 +197,7 @@ def Messages(user):
             'end_text_rieltor_land': client.getMessage(113),
             'end_text_rieltor_free_area': client.getMessage(114),
 
-
-
-
-
-
-
+            'area_list': client.getMessage(116),
 
         }
 

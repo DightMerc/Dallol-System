@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dispatch ™ Грузоперевозки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      content="Автомобильный транспорт. Цены на перевозку грузов, поиск грузов и грузов для грузоперевозок, международные перевозки. D&D®"
+      name="description"
+    />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/dispatch.png" />
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <!-- dropify -->
+        <link href="assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
+        <script>
+            
+                let counterInc = 0;
+                function incrementValue() { 
+                counterInc++;
+                if(counterInc === 2){
+                    document.getElementById('number').innerHTML = "Создать";
+                }
+            }
+        </script>
+  </head>
+
+  <body>
+    <!-- Begin page -->
+    <div id="wrapper">
+      @@include('./partials/topbar.html', {"title": "Добавить грузовик"})
+      @@include('./partials/left-sidebar.html')
+      
+
+      <!-- ============================================================== -->
+      <!-- Start Page Content here -->
+      <!-- ============================================================== -->
+
+      <div class="content-page">
+        <div class="content">
+          <!-- Start Content-->
+          <div class="container-fluid">
+                <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form>
+                                        <div id="basicwizard">
+
+                                            <ul class="nav nav-pills bg-light nav-justified form-wizard-header mb-4">
+                                                <li class="nav-item">
+                                                    <a href="#basictab1" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2"> 
+                                                        <i class="mdi mdi-truck-fast mr-1"></i>
+                                                        <span class="d-none d-sm-inline">О Грузовике</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#basictab2" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
+                                                        <i class=" mdi mdi-truck-trailer mr-1"></i>
+                                                        <span class="d-none d-sm-inline">О Багаже</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#basictab3" data-toggle="tab" class="nav-link rounded-0 pt-2 pb-2">
+                                                        <i class="mdi mdi-transcribe mr-1"></i>
+                                                        <span class="d-none d-sm-inline">Дополнительные данные</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content border-0 mb-0">
+                                                <div class="tab-pane" id="basictab1">
+                                                    <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <div class="row">
+                                                                    <h4 class="header-title mt-0 mb-3">Добавить картинку грузовика</h4>
+                                                                    <input type="file" class="dropify" data-default-file="assets/images/gallery/truck.jpg"  />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <div class="row mt-4">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label class="col-sm-12 col-form-label" for="name">Название</label>
+                                                                        <div class="col-sm-12">
+                                                                                <select class="form-control">
+                                                                                    <option>Грузовик</option>
+                                                                                    <option>Полуприцеп</option>
+                                                                                    <option>Сцепка</option>
+                                                                                </select>   
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label class="col-sm-12  col-form-label" for="simpleinput">Номер грузовика</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text" id="simpleinput" class="form-control" placeholder="Пример: 01 A 123 AA">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label class="col-sm-12  col-form-label" for="simpleinput">Тех Паспорт</label>
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text" id="simpleinput" class="form-control" placeholder="Пример: AA12345">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                        <div class="form-group col-sm-4">
+                                                                            <br/>
+                                                                            <label class="col-sm-12  col-form-label" for="simpleinput">Размер грузовика</label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" id="simpleinput" class="form-control" placeholder="Длина: 4м">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <br/>
+                                                                            <label class="col-sm-12  col-form-label" for="simpleinput">&nbsp;</label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" id="simpleinput" class="form-control" placeholder="Ширина: 1м">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group col-sm-4">
+                                                                            <br/>
+                                                                            <label class="col-sm-12  col-form-label" for="simpleinput">&nbsp;</label>
+                                                                            <div class="col-sm-12">
+                                                                                <input type="text" id="simpleinput" class="form-control" placeholder="Высота: 1м">
+                                                                            </div>
+                                                                        </div>
+                                                            </div>
+                                                            
+                                                            </div>
+                                                            
+                                                            
+                                                    </div> <!-- end row -->
+                                                    <div class="row">
+                                                            <div class="form-group col-sm-4">
+                                                                <label class="col-sm-12  col-form-label" for="simpleinput">Номер мотора</label>
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" id="simpleinput" class="form-control" placeholder="Пример: 1996">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-sm-4">
+                                                                <label class="col-sm-12  col-form-label" for="simpleinput">Год выпуска</label>
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" id="simpleinput" class="form-control" placeholder="Пример: E124">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-sm-4">
+                                                                    <label class="col-sm-12 col-form-label" for="name">Место нахождение</label>
+                                                                    <div class="col-sm-12">
+                                                                            <select class="form-control">
+                                                                                <option>Ташкент</option>
+                                                                                <option>Россия</option>
+                                                                                <option>Киргизия</option>
+                                                                            </select>   
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="basictab2">
+                                                    <div class="row">
+                                                            <div class="form-group col-sm-6">
+                                                                <label class="col-md-3 col-form-label" for="name">Тип</label>
+                                                                <div class="col-md-9">
+                                                                        <select class="form-control">
+                                                                            <option>Грузовик</option>
+                                                                            <option>Полуприцеп</option>
+                                                                            <option>Сцепка</option>
+                                                                        </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-sm-6">
+                                                                <label class="col-sm-12  col-form-label" for="simpleinput">Максимальная загрузка</label>
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" id="simpleinput" class="form-control" placeholder="Пример: 1.5т">
+                                                                </div>
+                                                            </div>
+                                                    </div> <!-- end row -->
+                                                    <div class="row">
+                                                            <div class="form-group col-sm-4">
+                                                                    <br/>
+                                                                    <label class="col-sm-12  col-form-label" for="simpleinput">Размер багажа</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" id="simpleinput" class="form-control" placeholder="Длина: 4м">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-sm-4">
+                                                                    <br/>
+                                                                    <label class="col-sm-12  col-form-label" for="simpleinput">&nbsp;</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" id="simpleinput" class="form-control" placeholder="Ширина: 1м">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-sm-4">
+                                                                    <br/>
+                                                                    <label class="col-sm-12  col-form-label" for="simpleinput">&nbsp;</label>
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" id="simpleinput" class="form-control" placeholder="Высота: 1м">
+                                                                    </div>
+                                                                </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="basictab3">
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-4">
+                                                            <label class="col-sm-12  col-form-label" for="simpleinput">Компания</label>
+                                                            <div class="col-sm-12">
+                                                                <input type="text" id="simpleinput" class="form-control" placeholder="Пример: Dispatch">
+                                                            </div>
+                                                        </div>
+                                                            <div class="form-group col-sm-4">
+                                                                <label class="col-sm-12  col-form-label" for="simpleinput">Описание</label>
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" id="simpleinput" class="form-control" placeholder="Пример: Dispatch">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group col-sm-4">
+                                                                    <label class="col-sm-12  col-form-label" for="simpleinput">Документы: </label>
+                                                                    <input type="file"/>
+                                                                </div>
+                                                    </div> <!-- end row -->
+                                                </div>
+
+                                                <ul class="list-inline wizard mb-0 mt-3">
+                                                    <li class="previous list-inline-item">
+                                                        <a href="javascript: void(0);" class="btn btn-secondary" >Предыдущий</a>
+                                                    </li>
+                                                    <li class="next list-inline-item float-right">
+                                                        <a href="javascript: void(0);" class="btn btn-secondary" onclick="incrementValue()" id="number">Следующий</a>
+                                                    </li>
+                                                </ul>
+
+                                            </div> <!-- tab-content -->
+                                        </div> <!-- end #basicwizard-->
+                                    </form>
+
+                                </div> <!-- end card-body -->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+          </div>
+          <!-- container-fluid -->
+        </div>
+        <!-- content -->
+
+        @@include('./partials/footer.html')
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- End Page content -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- END wrapper -->
+
+    @@include('./partials/right-sidebar.html')
+
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
+
+    <!-- Table Editable plugin-->
+    <script src="assets/libs/jquery-tabledit/jquery.tabledit.min.js"></script>
+    <!-- Plugins js-->
+    <script src="assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <!-- Init js-->
+    <script src="assets/js/pages/form-wizard.init.js"></script>
+
+          <!-- dropify js -->
+          <script src="assets/libs/dropify/dropify.min.js"></script>
+
+          <!-- form-upload init -->
+          <script src="assets/js/pages/form-fileupload.init.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/app.min.js"></script>
+  </body>
+</html>

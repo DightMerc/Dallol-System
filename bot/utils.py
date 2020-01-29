@@ -57,7 +57,14 @@ def OnlineGenerateEndText(data, user):
         _master = data[15]
         _prop_state = data[16]
 
-        ann_number = client.GetLastAnnouncment()
+
+        print(f"\n\n{_room_count}\n\n")
+        if int(_room_count) in [1,2]:
+            _room_count = f"#S{_room_count}"
+        elif int(_room_count) in [3,4]:
+            _room_count = f"#M{_room_count}"
+        elif int(_room_count)>4:
+            _room_count = f"#L{_room_count}"
 
         if client.getUserLanguage(user)=="RU":
 
@@ -82,7 +89,7 @@ def OnlineGenerateEndText(data, user):
             if _square == 0:
                 _square = ""
             else:
-                _square = "Общая площадь: {}\n".format(_square)
+                _square = "{}\n".format(_square)
 
             if _property == "Участок":
                 return Messages(user)['end_text_rieltor_area'].format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
@@ -113,19 +120,19 @@ def OnlineGenerateEndText(data, user):
             if _square == 0:
                 _square = ""
             else:
-                _square = "Умумий майдон: {}\n".format(_square)            
+                _square = "{}\n".format(_square)            
 
             if _property == "Участок":
                 _property = "Ховли"
-                return Messages(user)['end_text_rieltor_area'].format(_property.lower(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_area'].format(_property.capitalize(),  _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Квартира":
-                return Messages(user)['end_text_rieltor_flat'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_flat'].format(_property.capitalize(), _master, first_phrase, _region, _title,_reference, _prop_state, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Участок земли":
                 _property = "Ер"
-                return Messages(user)['end_text_rieltor_land'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _prop_state, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_land'].format(_property.capitalize(), _master, first_phrase, _region, _title,_reference, _prop_state, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Коммерческая недвижимость":
                 _property = "Уй-жойсиз қурилиш"
-                return Messages(user)['end_text_rieltor_free_area'].format(_property.lower(), _master, first_phrase, _region, _title,_reference, _state, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_rieltor_free_area'].format(_property.capitalize(), _master, first_phrase, _region, _title,_reference, _state, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
     except Exception as e:
         print("\n\n{}\n\n".format(e))
 
@@ -150,10 +157,16 @@ def GenerateEndText(data, mode, user):
         _main_floor = data[13]
         _floor = data[14]
 
-        if mode:
-            ann_number = data[15]
-        else:
-            ann_number = client.GetLastAnnouncment()
+        print(f"\n\n{_room_count}\n\n")
+
+        if int(_room_count) in [1,2]:
+            _room_count = f"#S{_room_count}"
+        elif int(_room_count) in [3,4]:
+            _room_count = f"#M{_room_count}"
+        elif int(_room_count)>4:
+            _room_count = f"#L{_room_count}"
+
+
 
         if client.getUserLanguage(user)=="RU":
 
@@ -177,7 +190,7 @@ def GenerateEndText(data, mode, user):
             if _square == 0:
                 _square = ""
             else:
-                _square = "Общая площадь: {}\n".format(_square)
+                _square = "{}\n".format(_square)
 
             if _property == "Участок":
                 return Messages(user)['end_text_area'].format(first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
@@ -208,19 +221,19 @@ def GenerateEndText(data, mode, user):
             if _square == 0:
                 _square = ""
             else:
-                _square = "Умумий майдон: {}\n".format(_square)
+                _square = "{}\n".format(_square)
 
             if _property == "Участок":
                 _property = "Ховли"
-                return Messages(user)['end_text_area'].format(_property.lower(), first_phrase, _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_area'].format(_property.capitalize(), first_phrase, _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Квартира":
-                return Messages(user)['end_text_flat'].format(_property.lower(), first_phrase, _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_flat'].format(_property.capitalize(), first_phrase, _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Участок земли":
                 _property = "Ер"
-                return Messages(user)['end_text_land'].format(_property.lower(), first_phrase, _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_land'].format(_property.capitalize(), first_phrase, _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
             elif _property == "Коммерческая недвижимость":
                 _property = "Уй-жойсиз қурилиш"
-                return Messages(user)['end_text_free_area'].format(_property.lower(), first_phrase, _region, _title,_reference, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
+                return Messages(user)['end_text_free_area'].format(_property.capitalize(), first_phrase, _region, _title,_reference, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
     except Exception as e:
         print("\n\n{}\n\n".format(e))
 

@@ -18,10 +18,10 @@ def PriceSetKeyboard(user, numbers, property):
                 button_list.append(InlineKeyboardButton(f'{number}', callback_data=f'{property} {number}'))
         footer = []
 
-        if client.getUserLanguage(user)=="RU":
-                footer.append(InlineKeyboardButton('⏮ Назад',callback_data='back'))
-        else:
-                footer.append(InlineKeyboardButton('⏮ Ортга', callback_data='back'))
+        # if client.getUserLanguage(user)=="RU":
+        #         footer.append(InlineKeyboardButton('⏮ Назад',callback_data='back'))
+        # else:
+        #         footer.append(InlineKeyboardButton('⏮ Ортга', callback_data='back'))
         return InlineKeyboardMarkup(inline_keyboard=buildMenu(button_list, n_cols=4, footer_buttons=footer))
         
 
@@ -1005,15 +1005,29 @@ def BackKeyboard(user):
                 return ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(KeyboardButton('⏮ Ортга'))
 
 
-def RegionKeyboard(user):
+def MainRegionKeyboard(user):
         if client.getUserLanguage(user)=="RU":
                 buttons = []
-                for region in client.getRegions():
+                for region in client.getMainRegions():
+                        buttons.append(KeyboardButton("{}".format(region.title)))
+                return ReplyKeyboardMarkup(keyboard=build_menu(buttons, 2, footer_buttons=KeyboardButton('⏮ Назад')),one_time_keyboard=True, resize_keyboard=True)
+        else:
+                buttons = []
+                for region in client.getMainRegions():
+                        buttons.append(KeyboardButton("{}".format(region.title)))
+                return ReplyKeyboardMarkup(keyboard=build_menu(buttons, 2, footer_buttons=KeyboardButton('⏮ Ортга')),one_time_keyboard=True, resize_keyboard=True)
+        
+
+
+def RegionKeyboard(user, main):
+        if client.getUserLanguage(user)=="RU":
+                buttons = []
+                for region in client.getRegions(main):
                         buttons.append(KeyboardButton("#{}".format(region.title)))
                 return ReplyKeyboardMarkup(keyboard=build_menu(buttons, 2, footer_buttons=KeyboardButton('⏮ Назад')),one_time_keyboard=True, resize_keyboard=True)
         else:
                 buttons = []
-                for region in client.getRegions():
+                for region in client.getRegions(main):
                         buttons.append(KeyboardButton("#{}".format(region.title)))
                 return ReplyKeyboardMarkup(keyboard=build_menu(buttons, 2, footer_buttons=KeyboardButton('⏮ Ортга')),one_time_keyboard=True, resize_keyboard=True)
         

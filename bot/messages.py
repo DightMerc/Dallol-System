@@ -102,6 +102,10 @@ def Messages(user):
 
             'area_list': client.getMessage(115),
 
+            'price_list_common': client.getMessage(117),
+            'price_list2_common': client.getMessage(118)
+
+
         }
     else:
         MESSAGES = {
@@ -198,6 +202,8 @@ def Messages(user):
             'end_text_rieltor_free_area': client.getMessage(114),
 
             'area_list': client.getMessage(116),
+            'price_list_common': client.getMessage(119),
+            'price_list2_common': client.getMessage(120)
 
         }
 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Dispatch ™ Грузоперевозки</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Автомобильный транспорт. Цены на перевозку грузов, поиск грузов и грузов для грузоперевозок, международные перевозки. D&D®" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/dispatch.png">
+
+        <link href="assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+        <link href="assets/libs/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html', {"title": "Добавить блог"})
+
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                         
+                        <div class="card">
+                            
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                    <textarea class="form-control" rows="7" id="example-textarea" placeholder="Титул..." style="border: none; font-size: 35px;"></textarea>
+                                                    <div class="row">
+                                                        <div class="task-tags ml-2">
+                                                            <h5>Теги</h5>
+                                                            <input type="text" value="Спорт,Наука,Политика" data-role="tagsinput" placeholder="Добавить тег..."/>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                        <div class="col-md-6">
+                                                                <label class="col-form-label">Статус</label>
+                                                                <select class="form-control">
+                                                                    <option>Активный</option>
+                                                                    <option>Не Активный</option>
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                                <label class="col-form-label">Категория</label>
+                                                                <select class="form-control">
+                                                                    <option>Спорт</option>
+                                                                    <option>Наука</option>
+                                                                    <option>Политика</option>
+                                                                    <option>Юмор</option>
+                                                                </select>
+                                                        </div>
+                                                </div>
+                                            </br>
+                                                <div class="row">
+                                                        <div class="col-md-12">
+                                                                <h4 class="header-title mt-0 mb-3">Добавить картинку</h4>
+                                                                <input type="file" class="dropify" data-height="300" />
+                                                        </div>
+                                                    </div>
+                                                    
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <textarea class="form-control" rows="20" id="example-textarea" placeholder="Описание..." style="border: none; font-size: 20px;"></textarea>
+                                                </div>
+                                        </div>
+                                        <div class="form-group text-right mb-2 mr-3">
+                                            <button class="btn btn-primary waves-effect waves-light mr-1" type="submit">
+                                                Добавить
+                                            </button>
+                                            <button type="reset" class="btn btn-secondary waves-effect waves-light">
+                                                Сброс
+                                            </button>
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+                                </div> <!-- end Snow-editor-->
+                            </div> <!-- end card-body-->
+                        </div>
+                    </div> <!-- container-fluid -->
+
+                </div> <!-- content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <script src="assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+
+        <!-- dropify js -->
+        <script src="assets/libs/dropify/dropify.min.js"></script>
+
+        <!-- form-upload init -->
+        <script src="assets/js/pages/form-fileupload.init.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+        
+    </body>
+</html>

@@ -3,8 +3,16 @@ from api.models import TelegramUser
 
 # Create your models here.
 
+class MainRegion(models.Model):
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title
+
 class Region(models.Model):
     title = models.CharField(max_length=200)
+
+    regionOwner = models.ForeignKey(MainRegion, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -41,7 +49,3 @@ class Admin(models.Model):
     title = models.CharField(max_length=200)
 
     user = models.ManyToManyField(TelegramUser)
-
-
-
-

@@ -1,0 +1,54 @@
+.register-name{
+    color:  #3336D4;
+}
+.login-name{
+    color: #3336D4;
+}
+.btn-icon{
+    background-color: #FBCDE3;
+    color: #9D4184;
+    border-radius: 50%; 
+    width: 44px; 
+    height: 44px;
+}
+.btn-icon:hover {
+    color:#fff;
+    background-color:#FBCDE3;
+}
+.banned{
+    padding: 10px; 
+    border-radius: 100px; 
+    background-color: #FBCDE3; 
+    color: #9D4184
+}
+.active1{
+    padding: 10px; 
+    border-radius: 100px; 
+    background-color: #D8E5FF; 
+    color: #3468F5 
+}
+.not-accepted{
+    padding: 10px; 
+    border-radius: 100px; 
+    background-color: #e8e8e8; 
+    color: #707070 
+}
+
+.badge-primary1{
+    padding: 5px 10px;
+    background-color: lightblue;
+    color: #3336D4
+}
+.btn-edit{
+    background-color: lightgreen;
+    color: green;
+}
+.btn-edit:hover{
+    background-color: lightgreen;
+    color: white;
+}
+
+
+.inbox-item-date{
+    top: 40px;
+}

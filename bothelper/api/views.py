@@ -16,6 +16,9 @@ from .utils import OnlineGenerateEndText, GenerateEndText
 from django.core.paginator import Paginator
 from .forms import PostForm, PostForm2
 
+from django.contrib.auth import authenticate, login, logout
+
+
 
 def StatView(request):
 
@@ -215,6 +218,71 @@ def OperationShowViewAgency(request, operation, pk, rieltor):
 
         return redirect("/accounts/login/")
 
+
+def NewAnnView(request):
+    if request.user.is_authenticated:
+        if True:
+            if request.method == "POST":
+                form = PostForm2(request.POST, request.FILES)
+                if form.is_valid():
+                    post = form.save()
+                    post.user = request.user
+                    post = form.save()
+
+
+                    agency = Agency.objects.get(user=request.user)
+                    agency.rieltors.add(OnlineRieltor.objects.get(id=post.id))
+
+                    return redirect('/')
+
+
+                else:
+                    return HttpResponse(form.errors)
+            else:
+
+                form = PostForm2()
+                return render(request, 'api/addAnn.html', {
+                    'form': form,
+                })
+            
+        else:
+            return HttpResponse("Доступ запрещён. Свяжитесь с администратором")
+    else:
+
+        return redirect("/accounts/login/")
+
+
+def NewAgentView(request):
+    if request.user.is_authenticated:
+        if True:
+            if request.method == "POST":
+                form = PostForm(request.POST, request.FILES)
+                if form.is_valid():
+                    post = form.save()
+                    post.user = request.user
+                    post = form.save()
+
+
+                    agency = Agency.objects.get(user=request.user)
+                    agency.rieltors.add(OnlineRieltor.objects.get(id=post.id))
+
+                    return redirect('/')
+
+
+                else:
+                    return HttpResponse(form.errors)
+            else:
+
+                form = PostForm()
+                return render(request, 'api/addAgent.html', {
+                    'form': form,
+                })
+            
+        else:
+            return HttpResponse("Доступ запрещён. Свяжитесь с администратором")
+    else:
+
+        return redirect("/accounts/login/")
     
 def OperationViewCommonAgency(request, pk):
     if request.user.is_authenticated:
@@ -243,7 +311,7 @@ def OperationViewCommonAgency(request, pk):
             text = GenerateEndText(data)
 
             
-            return render(request, 'api/statisticsSingle.html', {
+            return render(request, 'api/admin.html', {
                 "order": order,
                 "text": text,
                 
@@ -322,6 +390,23 @@ def OnlineStatViewAgencySingle(request, pk):
         return redirect("/accounts/login/")
 
 
+def TryLoginView(request):
+    password = request.POST.get('password')
+    username = request.POST.get('login')
+
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return HttpResponse("ok")
+
+    else:
+        return HttpResponse("Доступ запрещён. Свяжитесь с администратором")
+
+
+
+
+
+
 def OnlineMain(request):
     if request.user.is_authenticated:
         try:
@@ -352,12 +437,17 @@ def OnlineMain(request):
                 rentLand += Order.objects.filter(active=True).filter(type="rent").filter(property="Участок земли").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
                 rentArea += Order.objects.filter(active=True).filter(type="rent").filter(property="Участок").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
                 rentFreeArea += Order.objects.filter(active=True).filter(type="rent").filter(property="Коммерческая недвижимость").filter(user=TelegramUser.objects.get(phone=int(online.user.username))).count()
-
+                salePercent = int(saleOrders*100/(saleOrders+rentOrders))
+                rentPercent =  int(rentOrders*100/(saleOrders+rentOrders))
             
-            return render(request, 'api/common.html', {
+            return render(request, 'api/index.html', {
                     'onliners': onliners.all(),
                     'saleOrders': saleOrders,
                     'rentOrders': rentOrders,
+                    'salePercent': salePercent,
+                    'rentPercent': rentPercent,
+                    'orders': saleOrders+rentOrders,
+
 
                     "saleFlat": saleFlat,
                     "saleLand": saleLand,
@@ -367,14 +457,41 @@ def OnlineMain(request):
                     "rentFlat": rentFlat,
                     "rentLand": rentLand,
                     "rentArea": rentArea,
-                    "rentFreeArea": rentFreeArea
+                    "rentFreeArea": rentFreeArea,
+                    "agency": Agency.objects.get(user=request.user)
 
                 })
         except Exception as e:
-            return HttpResponse("Доступ разрешен только для агенств. Войдите в учетную запись агентства")
+            
+            return HttpResponse("Доступ разрешен только для агенств. Войдите в учетную запись агентства " + str(e))
             
     else:
-        return redirect("/accounts/login/")
+        return redirect("/login/")
+
+    
+def LoginForm(request):
+    return render(request, 'api/pages-login.html', {
+                })
+
+def AgentsView(request):
+    return render(request, 'api/users.html', {
+        "agency": Agency.objects.get(user=request.user)
+                })
+
+def AnnsView(request, operation):
+    return render(request, 'api/admins.html', {
+        "agency": Agency.objects.get(user=request.user),
+        "orders": Order.objects.filter(active=True).filter(type=str(operation)).filter(user=TelegramUser.objects.get(phone=request.user.username)),
+                "trigger": False,
+
+                })
+
+def TryLogoutView(request):
+
+    if request.user is not None:
+        logout(request)
+        return redirect("/")
+
 
 
 def OnlineStatView(request):
@@ -597,9 +714,10 @@ def OperationViewCommon(request, pk):
             text = GenerateEndText(data)
 
             
-            return render(request, 'api/statisticsSingle.html', {
+            return render(request, 'api/admins.html', {
                 "order": order,
                 "text": text,
+                "trigger": True,
                 
             })
         else:

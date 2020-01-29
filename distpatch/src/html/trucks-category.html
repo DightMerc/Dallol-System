@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Dispatch ™ Грузоперевозки</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Автомобильный транспорт. Цены на перевозку грузов, поиск грузов и грузов для грузоперевозок, международные перевозки. D&D®" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/dispatch.png">
+
+        <!-- Responsive Table css -->
+        <link href="assets/libs/rwd-table/rwd-table.min.css" rel="stylesheet" type="text/css" />
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <style>
+        .btn-icon{
+                background-color: #FBCDE3;
+                color: #9D4184;
+                border-radius: 50%; 
+                width: 44px; 
+                height: 44px;
+            }
+            .btn-icon:hover {
+                color:#fff;
+                background-color:#FBCDE3;
+            }
+            </style>
+
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html', {"title": "Грузовики"})
+
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                            <div class="form-group text-right mb-0">
+                                    <a href="./add-trucks-category.html">
+                                        <button
+                                        class="btn btn-primary waves-effect waves-light mr-1"
+                                        type="submit"
+                                      >
+                                        + Добавить грузовик
+                                      </button>
+                                    </a>
+                                    </div>
+                                </br>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card-box">
+
+                                    <div class="responsive-table-plugin">
+                                        <div class="table-rep-plugin">
+                                            <div class="table-responsive" data-pattern="priority-columns">
+                                                <table id="tech-companies-1" class="table table-striped mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th data-priority="1">Название</th>
+                                                            <th data-priority="2">Марка</th>
+                                                            <th data-priority="3">Номер грузовика</th>
+                                                            <th data-priority="4">Тип грузовика</th>
+                                                            <th></th>
+                                                          </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <th>1</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect"> <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>2</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>3</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>4</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>5</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>6</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>7</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <!-- Repeat -->
+                                                    <tr>
+                                                        <th>1</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>2</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>3</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>4</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>5</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>6</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>7</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <!-- Repeat -->
+                                                    <tr>
+                                                        <th>1</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>2</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>3</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>4</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>5</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>6</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>7</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <!-- Repeat -->
+                                                    <tr>
+                                                        <th>1</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>2</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>3</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>4</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>5</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>6</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>7</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <!-- Repeat -->
+                                                    <tr>
+                                                        <th>1</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>2</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>3</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>4</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>5</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>6</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>7</th>
+                                                        <td>597.74</td>
+                                                        <td>12:12PM</td>
+                                                        <td>14.81 (2.54%)</td>
+                                                        <td>582.93</td>
+                                                        <td><button class="btn btn-icon waves-effect " > <i class="fas fa-trash"></i> </button></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br/>
+                                                <nav style="float: right;">
+                                                    <ul class="pagination pagination-split">
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="#" aria-label="Previous">
+                                                                <span aria-hidden="true">&laquo;</span>
+                                                                <span class="sr-only">Previous</span>
+                                                              </a>
+                                                          </li>
+                                                          <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                          <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                                          <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                          <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                          <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                          <li class="page-item">
+                                                              <a class="page-link" href="#" aria-label="Next">
+                                                                  <span aria-hidden="true">&raquo;</span>
+                                                                  <span class="sr-only">Next</span>
+                                                              </a>
+                                                          </li>
+                                                      </ul>
+                                                  </nav>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                        
+                    </div> <!-- container-fluid -->
+
+                </div> <!-- content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <!-- Responsive Table js -->
+        <script src="assets/libs/rwd-table/rwd-table.min.js"></script>
+
+        <!-- Init js -->
+        <script src="assets/js/pages/responsive-table.init.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+        
+    </body>
+</html>

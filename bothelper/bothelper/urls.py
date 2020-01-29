@@ -18,7 +18,6 @@ from django.urls import path, re_path, include
 
 from django.conf import settings
 from django.views.static import serve
-from controlcenter.views import controlcenter
 from django.conf.urls import url
 
 

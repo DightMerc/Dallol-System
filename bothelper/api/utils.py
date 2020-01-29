@@ -43,11 +43,11 @@ def OnlineGenerateEndText(data):
         data = []
         data.append(f"Категория: {_property.lower()}")
         data.append(f"Риелтор: {_master}")
-        data.append("_ _ _")
+        
 
         data.append(f"{first_phrase}")
         data.append(f"{_region}")
-        data.append("_ _ _")
+        
 
         data.append(f"{_title}")
         data.append(f"Ориентир: {_reference}")
@@ -61,12 +61,12 @@ def OnlineGenerateEndText(data):
             data.append(f"Площадь: {_square} кв.м")
             if _area!="":
                 data.append(_area)
-            data.append("_ _ _")
+            
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
 
             data.append(_add_info)
-            data.append("_ _ _")
+            
             data.append(f"Контакты: {str(_contact).replace('+','')}")
             
             return data
@@ -77,12 +77,12 @@ def OnlineGenerateEndText(data):
             data.append(f"Площадь: {_square} кв.м")
             data.append(f"Этажей в доме: {_main_floor}")
             data.append(f"Этаж квартиры: {_floor}")
-            data.append("_ _ _")
+            
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
 
             data.append(_add_info)
-            data.append("_ _ _")
+            
             data.append(f"Контакты: {str(_contact).replace('+','')}")
 
             return data
@@ -90,12 +90,12 @@ def OnlineGenerateEndText(data):
             data.append(f"Состояние: {_prop_state}")
             if _area!="":
                 data.append(_area)
-            data.append("_ _ _")
+            
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
 
             data.append(_add_info)
-            data.append("_ _ _")
+            
             data.append(f"Контакты: {str(_contact).replace('+','')}")
 
             return data
@@ -104,12 +104,12 @@ def OnlineGenerateEndText(data):
             data.append(f"Состояние: {_prop_state}")
             if _area!="":
                 data.append(_area)
-            data.append("_ _ _")
+            
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
 
             data.append(_add_info)
-            data.append("_ _ _")
+            
             data.append(f"Контакты: {str(_contact).replace('+','')}")
 
             return data
@@ -166,10 +166,10 @@ def GenerateEndText(data):
         data = []
         data.append(f"{first_phrase} {_property.lower()}")
         data.append(f"Район: {_region}")
-        data.append("_ _ _")
+        
 
         data.append(f"{_title}")
-        data.append("_ _ _")
+        
 
         data.append(f"Ориентир: {_reference}")
 
@@ -178,16 +178,19 @@ def GenerateEndText(data):
             data.append(f"Площадь: {_square} кв.м")
             if _area!="":
                 data.append(_area)
-            data.append("_ _ _")
+            
             
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
 
             data.append(_add_info)
-            data.append("_ _ _")
+            
 
             data.append(f"Контакты: {str(_contact).replace('+','')}")
-            return(data)
+            string = ""
+            for a in data:
+                string += str(a) + "\n\n"
+            return(string)
 
             return Messages(user)['end_text_area'].format(first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _area, _ammount, _add_info, str(_contact).replace("+",""))
         elif _property == "Квартира":
@@ -196,29 +199,35 @@ def GenerateEndText(data):
                 data.append(_square)
             data.append(f"Этажей в доме: {_main_floor}")
             data.append(f"Этаж квартиры: {_floor}")
-            data.append("_ _ _")
+            
             
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
             data.append(_add_info)
-            data.append("_ _ _")
+            
 
             data.append(f"Контакты: {str(_contact).replace('+','')}")
-            return(data)
+            string = ""
+            for a in data:
+                string += str(a) + "\n\n"
+            return(string)
 
             return Messages(user)['end_text_flat'].format(first_phrase,_property.lower(), _region, _title,_reference, _room_count, _square, _main_floor, _floor, _ammount, _add_info, str(_contact).replace("+",""))
         elif _property == "Участок земли":
             if _area!="":
                 data.append(_area)
-            data.append("_ _ _")
+            
             
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
             data.append(_add_info)
-            data.append("_ _ _")
+            
 
             data.append(f"Контакты: {str(_contact).replace('+','')}")
-            return(data)
+            string = ""
+            for a in data:
+                string += str(a) + "\n\n"
+            return(string)
 
             return Messages(user)['end_text_land'].format(first_phrase,_property.lower(), _region, _title,_reference, _area, _ammount, _add_info, str(_contact).replace("+",""))
         elif _property == "Коммерческая недвижимость":
@@ -226,15 +235,18 @@ def GenerateEndText(data):
                 data.append(_area)
             if _square!="":
                 data.append(_square)
-            data.append("_ _ _")
+            
             
             data.append(f"Цена: {_ammount} у.е")
-            data.append("_ _ _")
+            
             data.append(_add_info)
-            data.append("_ _ _")
+            
 
             data.append(f"Контакты: {str(_contact).replace('+','')}")
-            return(data)
+            string = ""
+            for a in data:
+                string += str(a) + "\n\n"
+            return(string)
             return Messages(user)['end_text_free_area'].format(first_phrase,_property.lower(), _region, _title,_reference, _area, _square, _ammount, _add_info, str(_contact).replace("+",""))
         
     except Exception as e:

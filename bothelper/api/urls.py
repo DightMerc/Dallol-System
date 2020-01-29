@@ -1,10 +1,19 @@
 from django.urls import path
 from .views import StatView, OnlineStatView, OperationMoreView, OperationShowView, OperationView, OperationMoreViewCommon, OperationViewCommon, OperationShowViewCommon, InactiveCommonView, OnlineAccountView, OnlineMain
 from .views import OnlineStatViewAgencySingle, OperationShowViewCommonAgency, OperationMoreViewCommonAgency, OperationMoreViewAgency, OperationViewCommonAgency, OperationShowViewAgency, OperationViewAgency
+from .views import LoginForm, TryLoginView, TryLogoutView, AgentsView, AnnsView, NewAgentView, NewAnnView
 urlpatterns = [
-    path("stat/", StatView, name="stat"),
+    # path("stat/", StatView, name="stat"),
     path("online/accounts/create/", OnlineAccountView, name="onlineStat"),
     path("", OnlineMain, name="onlineMain"),
+    path("login/", LoginForm, name="onlineMain"),
+    path("try_login/", TryLoginView, name="onlineMain"),
+    path("logout/", TryLogoutView, name="TryLogoutView"),
+    path("agents/", AgentsView, name="AgentsView"),
+    path("ann/<str:operation>", AnnsView, name="AnnsView"),
+    path("addAgent/", NewAgentView, name="NewAgentView"),
+    path("addAnn/", NewAnnView, name="NewAnnView"),
+
 
     path("statistics/", OnlineStatView, name="onlineStat"),
     path("more/<str:operation>/<str:property>/<int:pk>/", OperationMoreView, name="onlineStatMore"),

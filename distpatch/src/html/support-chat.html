@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Dispatch ™ Грузоперевозки</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Автомобильный транспорт. Цены на перевозку грузов, поиск грузов и грузов для грузоперевозок, международные перевозки. D&D®" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/dispatch.png">
+
+        <!--Morris Chart-->
+        <link rel="stylesheet" href="assets/libs/morris-js/morris.css" />
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="assets/css/custom-style.css">
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html', {"title": "Чат Поддержки"})
+
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xl-5">
+                                
+                                <div class="card-box">
+                                        <div class="col-xl-12">
+                                                <ul class="nav nav-tabs nav-justified">
+                                                    <li class="nav-item">
+                                                        <a href="#home2" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                                                            <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+                                                            <span class="d-none d-sm-block">Чат</span>   
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#profile2" data-toggle="tab" aria-expanded="true" class="nav-link">
+                                                            <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+                                                            <span class="d-none d-sm-block">Заказы</span> 
+                                                        </a>
+                                                    </li>
+                                                </ul>
+    
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane fade show active" id="home2">
+                                                            <div class="inbox-widget">
+                                        
+                                                                    <div class="inbox-item">
+                                                                        <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-1.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Chadengle</h5>
+                                                                            <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">13:40 PM</p>
+                                                                        </a>
+                                                                    </div>
+                                                                    
+                                                                    <div class="inbox-item">
+                                                                        <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-2.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Tomaslau</h5>
+                                                                            <p class="inbox-item-text">I've finished it! See you so...</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">13:34 PM</p>
+                                                                        </a>
+                                                                    </div>
+                            
+                                                                    <div class="inbox-item">
+                                                                            <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-3.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Stillnotdavid</h5>
+                                                                            <p class="inbox-item-text">This theme is awesome!</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">13:17 PM</p>
+                                                                        </a>
+                                                                    </div>
+                            
+                                                                    <div class="inbox-item">
+                                                                        <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-4.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Kurafire</h5>
+                                                                            <p class="inbox-item-text">Nice to meet you</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">12:20 PM</p>
+                                                                        </a>
+                                                                    </div>
+                            
+                                                                    <div class="inbox-item">
+                                                                        <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-5.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Shahedk</h5>
+                                                                            <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">10:15 AM</p>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="inbox-item">
+                                                                            <a href="#">
+                                                                                <div class="inbox-item-img"><img src="assets/images/users/user-1.jpg" class="rounded-circle" alt=""></div>
+                                                                                <div class="dropdown float-right">
+                                                                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                            <i class="mdi mdi-dots-vertical"></i>
+                                                                                        </a>
+                                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                                            <!-- item-->
+                                                                                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <h5 class="inbox-item-author mt-0 mb-1">Chadengle</h5>
+                                                                                <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                                <p class="inbox-item-date" style="top: 40px">13:40 PM</p>
+                                                                            </a>
+                                                                        </div>
+                                                                        
+                                                                        <div class="inbox-item">
+                                                                            <a href="#">
+                                                                                <div class="inbox-item-img"><img src="assets/images/users/user-2.jpg" class="rounded-circle" alt=""></div>
+                                                                                <div class="dropdown float-right">
+                                                                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                            <i class="mdi mdi-dots-vertical"></i>
+                                                                                        </a>
+                                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                                            <!-- item-->
+                                                                                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <h5 class="inbox-item-author mt-0 mb-1">Tomaslau</h5>
+                                                                                <p class="inbox-item-text">I've finished it! See you so...</p>
+                                                                                <p class="inbox-item-date" style="top: 40px">13:34 PM</p>
+                                                                            </a>
+                                                                        </div>
+                                
+                                                                        <div class="inbox-item">
+                                                                                <a href="#">
+                                                                                <div class="inbox-item-img"><img src="assets/images/users/user-3.jpg" class="rounded-circle" alt=""></div>
+                                                                                <div class="dropdown float-right">
+                                                                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                            <i class="mdi mdi-dots-vertical"></i>
+                                                                                        </a>
+                                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                                            <!-- item-->
+                                                                                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <h5 class="inbox-item-author mt-0 mb-1">Stillnotdavid</h5>
+                                                                                <p class="inbox-item-text">This theme is awesome!</p>
+                                                                                <p class="inbox-item-date" style="top: 40px">13:17 PM</p>
+                                                                            </a>
+                                                                        </div>
+                                
+                                                                        <div class="inbox-item">
+                                                                            <a href="#">
+                                                                                <div class="inbox-item-img"><img src="assets/images/users/user-4.jpg" class="rounded-circle" alt=""></div>
+                                                                                <div class="dropdown float-right">
+                                                                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                            <i class="mdi mdi-dots-vertical"></i>
+                                                                                        </a>
+                                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                                            <!-- item-->
+                                                                                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <h5 class="inbox-item-author mt-0 mb-1">Kurafire</h5>
+                                                                                <p class="inbox-item-text">Nice to meet you</p>
+                                                                                <p class="inbox-item-date" style="top: 40px">12:20 PM</p>
+                                                                            </a>
+                                                                        </div>
+                                
+                                                                        <div class="inbox-item">
+                                                                            <a href="#">
+                                                                                <div class="inbox-item-img"><img src="assets/images/users/user-5.jpg" class="rounded-circle" alt=""></div>
+                                                                                <div class="dropdown float-right">
+                                                                                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                            <i class="mdi mdi-dots-vertical"></i>
+                                                                                        </a>
+                                                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                                                            <!-- item-->
+                                                                                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <h5 class="inbox-item-author mt-0 mb-1">Shahedk</h5>
+                                                                                <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                                <p class="inbox-item-date" style="top: 40px">10:15 AM</p>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="inbox-item">
+                                                                                <a href="#">
+                                                                                    <div class="inbox-item-img"><img src="assets/images/users/user-1.jpg" class="rounded-circle" alt=""></div>
+                                                                                    <div class="dropdown float-right">
+                                                                                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                                <i class="mdi mdi-dots-vertical"></i>
+                                                                                            </a>
+                                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                                <!-- item-->
+                                                                                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <h5 class="inbox-item-author mt-0 mb-1">Chadengle</h5>
+                                                                                    <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                                    <p class="inbox-item-date" style="top: 40px">13:40 PM</p>
+                                                                                </a>
+                                                                            </div>
+                                                                            
+                                                                            <div class="inbox-item">
+                                                                                <a href="#">
+                                                                                    <div class="inbox-item-img"><img src="assets/images/users/user-2.jpg" class="rounded-circle" alt=""></div>
+                                                                                    <div class="dropdown float-right">
+                                                                                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                                <i class="mdi mdi-dots-vertical"></i>
+                                                                                            </a>
+                                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                                <!-- item-->
+                                                                                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <h5 class="inbox-item-author mt-0 mb-1">Tomaslau</h5>
+                                                                                    <p class="inbox-item-text">I've finished it! See you so...</p>
+                                                                                    <p class="inbox-item-date" style="top: 40px">13:34 PM</p>
+                                                                                </a>
+                                                                            </div>
+                                    
+                                                                            <div class="inbox-item">
+                                                                                    <a href="#">
+                                                                                    <div class="inbox-item-img"><img src="assets/images/users/user-3.jpg" class="rounded-circle" alt=""></div>
+                                                                                    <div class="dropdown float-right">
+                                                                                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                                <i class="mdi mdi-dots-vertical"></i>
+                                                                                            </a>
+                                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                                <!-- item-->
+                                                                                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <h5 class="inbox-item-author mt-0 mb-1">Stillnotdavid</h5>
+                                                                                    <p class="inbox-item-text">This theme is awesome!</p>
+                                                                                    <p class="inbox-item-date" style="top: 40px">13:17 PM</p>
+                                                                                </a>
+                                                                            </div>
+                                    
+                                                                            <div class="inbox-item">
+                                                                                <a href="#">
+                                                                                    <div class="inbox-item-img"><img src="assets/images/users/user-4.jpg" class="rounded-circle" alt=""></div>
+                                                                                    <div class="dropdown float-right">
+                                                                                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                                <i class="mdi mdi-dots-vertical"></i>
+                                                                                            </a>
+                                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                                <!-- item-->
+                                                                                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <h5 class="inbox-item-author mt-0 mb-1">Kurafire</h5>
+                                                                                    <p class="inbox-item-text">Nice to meet you</p>
+                                                                                    <p class="inbox-item-date" style="top: 40px">12:20 PM</p>
+                                                                                </a>
+                                                                            </div>
+                                    
+                                                                            <div class="inbox-item">
+                                                                                <a href="#">
+                                                                                    <div class="inbox-item-img"><img src="assets/images/users/user-5.jpg" class="rounded-circle" alt=""></div>
+                                                                                    <div class="dropdown float-right">
+                                                                                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                                <i class="mdi mdi-dots-vertical"></i>
+                                                                                            </a>
+                                                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                                                <!-- item-->
+                                                                                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <h5 class="inbox-item-author mt-0 mb-1">Shahedk</h5>
+                                                                                    <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                                    <p class="inbox-item-date" style="top: 40px">10:15 AM</p>
+                                                                                </a>
+                                                                            </div>
+                                                                </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade" id="profile2">
+                                                            <div class="inbox-widget">
+                                                                    <div class="inbox-item">
+                                                                            <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-3.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Stillnotdavid</h5>
+                                                                            <p class="inbox-item-text">This theme is awesome!</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">13:17 PM</p>
+                                                                        </a>
+                                                                    </div>
+                            
+                                                                    <div class="inbox-item">
+                                                                        <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-4.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Kurafire</h5>
+                                                                            <p class="inbox-item-text">Nice to meet you</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">12:20 PM</p>
+                                                                        </a>
+                                                                    </div>
+                            
+                                                                    <div class="inbox-item">
+                                                                        <a href="#">
+                                                                            <div class="inbox-item-img"><img src="assets/images/users/user-5.jpg" class="rounded-circle" alt=""></div>
+                                                                            <div class="dropdown float-right">
+                                                                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                                                                                        <i class="mdi mdi-dots-vertical"></i>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                                        <!-- item-->
+                                                                                        <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <h5 class="inbox-item-author mt-0 mb-1">Shahedk</h5>
+                                                                            <p class="inbox-item-text">Hey! there I'm available...</p>
+                                                                            <p class="inbox-item-date" style="top: 40px">10:15 AM</p>
+                                                                        </a>
+                                                                    </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- end col -->
+
+
+                                    
+                                </div>
+                            </div><!-- end col -->
+                            <div class="col-xl-7">
+                                    <div class="card-box">
+                                    
+
+                                            <div class="media mb-3">
+                                                <img src="assets/images/users/user-6.jpg" alt="" class="comment-avatar avatar-sm rounded mr-2">
+                                                <div class="media-body">
+                                                    <h5 class="mt-0"><a href="#" class="text-dark">John Smith</a><small class="ml-1 text-muted">about 4 hour ago</small></h5>
+                                                    <p>i'm in the middle of a timelapse animation myself! (Very different though.) Awesome stuff.</p>
+                                                </div>
+                                            </div>
+        
+                                            <div class="media mb-3 float-right">
+                                                <div class="col-md-11">
+                                                        <div class="media-body">
+                                                                <h5 class="mt-0"><a href="#" class="text-dark">Nicolai Larson</a><small class="ml-1 text-muted">about 10 hour ago</small></h5>
+                                                                <p>The parallax is a little odd but O.o that house build is awesome!!</p>
+                                                            </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <img src="assets/images/users/user-7.jpg" alt="" class="comment-avatar avatar-sm rounded mr-2">
+                                                </div>
+                                                
+                                            </div>
+                                                <div class="media mb-3 float-left">
+                                                    <img src="assets/images/users/user-6.jpg" alt="" class="comment-avatar avatar-sm rounded mr-2">
+                                                    <div class="media-body">
+                                                        <h5 class="mt-0"><a href="#" class="text-dark">John Smith</a><small class="ml-1 text-muted">about 4 hour ago</small></h5>
+                                                        <p>i'm in the middle of a timelapse animation myself! (Very different though.) Awesome stuff.</p>
+                                                    </div>
+                                                </div>
+            
+                                                <div class="media mb-3 float-right">
+                                                    <div class="col-md-11">
+                                                            <div class="media-body">
+                                                                    <h5 class="mt-0"><a href="#" class="text-dark">Nicolai Larson</a><small class="ml-1 text-muted">about 10 hour ago</small></h5>
+                                                                    <p>The parallax is a little odd but O.o that house build is awesome!!</p>
+                                                                </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <img src="assets/images/users/user-7.jpg" alt="" class="comment-avatar avatar-sm rounded mr-2">
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                            <form method="post">
+                                                    <span class="input-icon icon-right">
+                                                        <textarea rows="3" class="form-control" placeholder="Post a new message"></textarea>
+                                                    </span>
+                                                    <div class="pt-1 float-right">
+                                                        <a href="" class="btn btn-primary btn-sm waves-effect waves-light">Send</a>
+                                                    </div>
+                                                    <ul class="nav nav-pills profile-pills mt-1">
+                                                        <li>
+                                                            <a href="#"><i class="fa fa-user"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#"><i class="fa fa-location-arrow"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#"><i class=" fa fa-camera"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#"><i class="far fa-smile"></i></a>
+                                                        </li>
+                                                    </ul>
+                
+                                                </form>
+                                        </div>
+                            </div>
+                        </div>
+                        <!-- end row -->        
+                        
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <!-- knob plugin -->
+        <script src="assets/libs/jquery-knob/jquery.knob.min.js"></script>
+
+        <!--Morris Chart-->
+        <script src="assets/libs/morris-js/morris.min.js"></script>
+        <script src="assets/libs/raphael/raphael.min.js"></script>
+
+        <!-- Dashboard init js-->
+        <script src="assets/js/pages/dashboard.init.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+        
+    </body>
+</html>
